@@ -1,0 +1,7 @@
+Flask
+Flask-SQLAlchemy
+gunicorn
+python-dotenv
+psycopg2-binary
+flask_dance
+twilio

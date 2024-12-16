@@ -1,0 +1,386 @@
+body {
+    background-image: url('/uploads/bgindex.jpg');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    position: relative;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.logo {
+    height: 60px;
+    margin-right: 20px;
+}
+
+.denr-logo {
+    height: 100px;
+    margin-right: 20px;
+}
+
+.newph-logo {
+    height: 100px;
+    margin-left: 20px;
+}
+
+.topbar {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    z-index: 3;
+}
+
+.page-title {
+    font-size: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    flex-wrap: nowrap;
+}
+
+.page-title h1 {
+    margin: 0 20px;
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 80px;
+}
+
+.login-container {
+    background: rgba(68, 68, 68, 0.601);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    margin-top: 0;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 50px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 25px;
+}
+
+.login-container input:hover {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 1);
+}
+
+.button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.button:hover {
+    transform: scale(1.05);
+}
+
+.login-button {
+    background-color: #007BFF; /* Login button color */
+}
+
+.login-button:hover {
+    background-color: #1c8000;
+}
+
+.create-account-button {
+    background-color: blue; /* Create account button color */
+    font-size: 20px;
+    padding: 10px;
+    margin-top: 20px; /* Increased margin */
+}
+
+.create-account-button:hover {
+    background-color: darkblue;
+}
+
+.info p {
+    color: white;
+    font-weight: bold; /* Make text bold */
+    font-size: 1.5em; /* Increased font size */
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 2;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: rgb(42, 42, 42);
+    padding: 20px;
+    border: 2px solid #888; /* Added border */
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    color: white;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-group {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+label {
+    font-weight: bold;
+    color: #ffffff;
+    text-align: left;
+    font-size: 1.2em;
+    margin-right: 1em;
+    flex: 1;
+}
+
+input {
+    width: 100%;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 0.3em;
+    box-sizing: border-box;
+    font-size: 1.2em;
+    flex: 2;
+}
+
+.important-note {
+    display: block;
+    color: #ffcc00;
+    font-size: 0.9em;
+    margin-top: -0.5em;
+    margin-bottom: 1em;
+    text-align: right;
+    width: 100%;
+}
+
+.otp-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.otp-group input {
+    width: 100%;
+}
+
+.otp-group input#otp {
+    width: 50%; /* Reduced width */
+    text-align: center; /* Center text */
+    margin-top: 1em; /* Added margin */
+}
+
+.otp-group button {
+    margin-top: 0.5em;
+    width: auto;
+}
+
+.otp-buttons {
+    display: flex;
+    gap: 0.5em;
+}
+
+.otp-status {
+    margin-top: 0.5em;
+    font-size: 1.5em;
+}
+
+.loading-icon, .check-icon, .error-icon {
+    font-size: 1.5em;
+}
+
+.countdown {
+    margin-top: 0.5em;
+    font-size: 1.2em;
+    color: #ffcc00;
+}
+
+.modal-content button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal-content button:hover {
+    transform: scale(1.05);
+}
+
+.modal-content .send-otp {
+    background-color: #28a745;
+}
+
+.modal-content .send-otp:hover {
+    background-color: #005c14;
+}
+
+.modal-content .create-account {
+    background-color: #007BFF;
+}
+
+.modal-content .create-account:hover {
+    background-color: #006b20;
+}
+
+.disabled-text {
+    color: #ffcc00;
+    font-size: 1em;
+    margin-top: 0.5em;
+}
+
+.dialogue {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #333;
+    color: white;
+    padding: 40px; /* Increased padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 2000;
+    display: none;
+    text-align: center;
+    width: 80%; /* Increased width */
+    max-width: 800px; /* Increased max-width */
+    height: auto; /* Adjust height */
+    max-height: 80%; /* Increased max-height */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    border: 2px solid #888; /* Added border */
+    font-size: 1.5em; /* Increased font size */
+}
+
+.dialogue.show {
+    display: block;
+}
+
+.dialogue button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 1.2em; /* Increased font size */
+}
+
+.dialogue button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .page-title h1 {
+        font-size: 30px;
+    }
+    .denr-logo, .newph-logo {
+        height: 50px;
+    }
+    .login-container {
+        width: 80%;
+        padding: 10px;
+    }
+    .login-container h2 {
+        font-size: 30px;
+    }
+    .login-container input, .login-container button {
+        font-size: 18px;
+    }
+    .modal-content {
+        width: 90%;
+        padding: 10px;
+    }
+    .modal-content input, .modal-content button {
+        font-size: 18px;
+    }
+}

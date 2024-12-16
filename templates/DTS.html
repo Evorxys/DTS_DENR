@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/DTS_styles.css">
+    <link rel="icon" href="/uploads/denr_logo.png" type="image/png">
+</head>
+<body class="fade-in">
+
+    <style>
+        html::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+            z-index: -1;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeInAnimation 1s forwards;
+        }
+        @keyframes fadeInAnimation {
+            to {
+                opacity: 1;
+            }
+        }
+        .floating-button, .floating-menu {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .icons-right {
+                display: none;
+            }
+            .floating-button {
+                display: flex;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                z-index: 10;
+            }
+            .floating-menu {
+                display: none;
+                position: fixed;
+                bottom: 80px;
+                right: 20px;
+                background-color: #333;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                z-index: 10;
+            }
+            .floating-menu.open {
+                display: block;
+            }
+            .floating-menu button {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                background-color: #555;
+                color: white;
+                border: none;
+                cursor: pointer;
+                text-align: left;
+            }
+            .floating-menu button:hover {
+                background-color: #777;
+            }
+        }
+        </style>
+
+    <header>
+        <div class="top-bar" id="topBar">
+            <div class="left-section">
+                <div class="menu-icon" onclick="toggleMenu()">☰</div>
+                <div class="page-title">Document Action Tracking System</div>
+            </div>
+            <div class="center-section">
+                <div class="datetime" id="datetime"></div>
+                <div class="username">{{ section_designation }} Section</div>
+            </div>
+            <div class="icons-right" id="iconsRight">
+                <div class="search-icon" onclick="toggleSearch()">🔍</div>
+                <div class="paint-icon" onclick="togglePaintMenu()">🎨</div>
+                <div class="notification-bell" onclick="toggleNotifications()">🔔</div>
+                <div class="print-icon" onclick="printPage()">🖨️</div>
+                <div class="chat-icon" onclick="toggleChat()">💬</div>
+            </div>
+            <div class="notifications" id="notifications">
+                <ul>
+                    <li>Notification 1</li>
+                    <li>Notification 2</li>
+                    <li>Notification 3</li>
+                </ul>
+            </div>
+            <!-- Content for the top bar -->
+        </div>
+    </header>
+    <div class="paint-menu" id="paintMenu">
+        <button onclick="changeTheme('default')">Default</button>
+        <button onclick="changeTheme('dark')">Dark</button>
+        <button onclick="changeTheme('darker')">Darker</button>
+    </div>
+    <div class="sliding-menu" id="slidingMenu">
+        <ul>
+            <li><a href="#" onclick="toggleNewDocumentModal()">➕ New Document</a></li> <!-- New option with onclick event -->
+            <li><a href="#">⬇️ Incoming</a></li>
+            <li><a href="#">⬆️ Outgoing</a></li>
+            <li><a href="#">🔃 On Process</a></li>
+            <li><a href="#">📄 All Docs</a></li>
+        </ul>
+        <div class="logout-trademark">
+            <a href="{{ url_for('index') }}" class="logout-button">Logout</a>
+            <div class="trademark">© 2024 DATS</div>
+        </div>
+    </div>
+    <div class="search-bar" id="searchBar">
+        <input type="text" placeholder="Search...">
+        <button onclick="performSearch()">Search</button>
+    </div>
+    <div class="chatbox" id="chatbox">
+        <div class="chatbox-header">
+            Chat
+            <span class="close-icon" onclick="toggleChat()">✖</span>
+        </div>
+        <div class="chatbox-messages" id="chatboxMessages"></div>
+        <div class="chatbox-input">
+            <input type="text" id="chatInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <div class="content" id="content">
+        <div class="table-container">
+            <table class="document-table" id="documentTable">
+                <thead>
+                    <tr>
+                        <th>TRACKING NO.</th>
+                        <th>DOCUMENT TYPE</th>
+                        <th>DOCUMENT PROPERTIES</th>
+                        <th>SUBJECT</th>
+                        <th>DATE RELEASED</th>
+                        <th>RECEIVING OFFICE/SECTION</th>
+                        <th>STATUS</th>
+                        <th>DOCUMENT CATEGORY</th> <!-- New column added -->
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in documents %}
+                    <tr>
+                        <td>{{ document.tracking_no }}</td>
+                        <td>{{ document.document_type }}</td>
+                        <td>{{ document.document_properties }}</td>
+                        <td>{{ document.subject }}</td>
+                        <td>{{ document.date_released.strftime('%B %d, %Y %I:%M %p') }}</td> <!-- Updated format -->
+                        <td>{{ document.receiving_office_section }}</td>
+                        <td>{{ document.status }}</td>
+                        <td>{{ document.document_category }}</td>
+                        <td><button class="action-button" onclick="viewDocument('{{ document.tracking_no }}')">View</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button class="floating-button" onclick="toggleFloatingMenu()">+</button>
+    <div class="floating-menu" id="floatingMenu">
+        <button onclick="toggleSearch()">🔍 Search</button>
+        <button onclick="togglePaintMenu()">🎨 Paint</button>
+        <button onclick="toggleNotifications()">🔔 Notifications</button>
+        <button onclick="printPage()">🖨️ Print</button>
+        <button onclick="toggleChat()">💬 Chat</button>
+    </div>
+    <div class="notifications-modal" id="notificationsModal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleNotificationsModal()">✖</span>
+            <ul>
+                <li onclick="displayNotification('Notification 1 details')">Notification 1</li>
+                <li onclick="displayNotification('Notification 2 details')">Notification 2</li>
+                <li onclick="displayNotification('Notification 3 details')">Notification 3</li>
+            </ul>
+            <div id="notificationDetails"></div>
+        </div>
+    </div>
+    <div class="expired-alert-modal" id="expiredAlertModal">
+        <div class="notification-content">
+            <p>You have a Simple Document that needs your attention!</p>
+            <button id="viewExpiredDocumentButton" onclick="viewExpiredDocument()">View Document</button>
+        </div>
+    </div>
+    <div class="new-document-modal" id="newDocumentModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleNewDocumentModal()">✖</span>
+            <form id="newDocumentForm">
+                <label for="documentType">Document Type:</label>
+                <input type="text" id="documentType" name="documentType" required>
+                
+                <label for="documentProperties">Document Properties:</label>
+                <textarea id="documentProperties" name="documentProperties" required></textarea>
+                
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required>
+                
+                <label for="dateReleased">Date Released:</label>
+                <input type="datetime-local" id="dateReleased" name="dateReleased" required>
+                
+                <label for="receivingOfficeSection">Receiving Office/Section:</label>
+                <input type="text" id="receivingOfficeSection" name="receivingOfficeSection" required>
+                
+                <label for="documentCategory">Document Category:</label>
+                <select id="documentCategory" name="documentCategory" required>
+                    <option value="Simple Document">Simple Document</option>
+                    <option value="Technical Document">Technical Document</option>
+                    <option value="Highly Technical">Highly Technical</option>
+                </select>
+                
+                <button type="submit">Add Document</button>
+            </form>
+        </div>
+    </div>
+    <div class="success-dialog" id="successDialog">
+        <div class="dialog-content">
+            <span class="close-dialog" onclick="toggleSuccessDialog()">✖</span>
+            <p>Document added successfully!</p>
+            <button onclick="toggleSuccessDialog()">OK</button>
+        </div>
+    </div>
+    <div class="view-document-modal" id="viewDocumentModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleViewDocumentModal()">✖</span>
+            <div id="documentDetails">
+                <!-- Document details will be loaded here -->
+            </div>
+        </div>
+    </div>
+    <script>
+        let lastMessageTime = 0;
+
+        function toggleMenu() {
+            const menu = document.getElementById('slidingMenu');
+            const content = document.getElementById('content');
+            menu.classList.toggle('open');
+            content.classList.toggle('shift-right');
+        }
+
+        function toggleNotificationsModal() {
+            const modal = document.getElementById('notificationsModal');
+            modal.classList.toggle('open');
+        }
+
+        function closeModal(event) {
+            if (event.target === document.getElementById('notificationsModal')) {
+                toggleNotificationsModal();
+            }
+        }
+
+        function displayNotification(details) {
+            const detailsDiv = document.getElementById('notificationDetails');
+            detailsDiv.textContent = details;
+        }
+
+        function toggleNotifications() {
+            toggleNotificationsModal();
+        }
+
+        function toggleSearch() {
+            const searchBar = document.getElementById('searchBar');
+            searchBar.classList.toggle('open');
+        }
+
+        function togglePaintMenu() {
+            const paintMenu = document.getElementById('paintMenu');
+            const paintIcon = document.querySelector('.paint-icon');
+            const rect = paintIcon.getBoundingClientRect();
+            paintMenu.style.top = `${rect.bottom}px`;
+            paintMenu.style.left = `${rect.left}px`;
+            paintMenu.classList.toggle('open');
+        }
+
+        function changeTheme(theme) {
+            const elements = {
+                topBar: document.getElementById('topBar'),
+                slidingMenu: document.getElementById('slidingMenu'),
+                documentTable: document.getElementById('documentTable'),
+                chatbox: document.getElementById('chatbox'),
+                notifications: document.getElementById('notifications'),
+                searchBar: document.getElementById('searchBar')
+            };
+
+            switch (theme) {
+                case 'dark':
+                    elements.topBar.style.backgroundColor = '#000';
+                    elements.topBar.style.color = '#fff';
+                    elements.slidingMenu.style.backgroundColor = '#333';
+                    elements.slidingMenu.style.color = '#fff';
+                    elements.documentTable.style.backgroundColor = '#444';
+                    elements.documentTable.style.color = '#fff';
+                    elements.chatbox.style.backgroundColor = '#333';
+                    elements.chatbox.style.color = '#fff';
+                    elements.notifications.style.backgroundColor = '#333';
+                    elements.notifications.style.color = '#fff';
+                    elements.searchBar.style.backgroundColor = '#333';
+                    elements.searchBar.style.color = '#fff';
+                    break;
+                case 'darker':
+                    elements.topBar.style.backgroundColor = '#1a1a1a';
+                    elements.topBar.style.color = '#fff';
+                    elements.slidingMenu.style.backgroundColor = '#0d0d0d';
+                    elements.slidingMenu.style.color = '#fff';
+                    elements.documentTable.style.backgroundColor = '#1a1a1a';
+                    elements.documentTable.style.color = '#fff';
+                    elements.chatbox.style.backgroundColor = '#0d0d0d';
+                    elements.chatbox.style.color = '#fff';
+                    elements.notifications.style.backgroundColor = '#0d0d0d';
+                    elements.notifications.style.color = '#fff';
+                    elements.searchBar.style.backgroundColor = '#0d0d0d';
+                    elements.searchBar.style.color = '#fff';
+                    break;
+                default:
+                    elements.topBar.style.backgroundColor = '#333';
+                    elements.topBar.style.color = '#fff';
+                    elements.slidingMenu.style.backgroundColor = '#434242';
+                    elements.slidingMenu.style.color = '#fff';
+                    elements.documentTable.style.backgroundColor = '#333';
+                    elements.documentTable.style.color = '#fff';
+                    elements.chatbox.style.backgroundColor = '#333';
+                    elements.chatbox.style.color = '#fff';
+                    elements.notifications.style.backgroundColor = '#333';
+                    elements.notifications.style.color = '#fff';
+                    elements.searchBar.style.backgroundColor = '#333';
+                    elements.searchBar.style.color = '#fff';
+                    break;
+            }
+        }
+
+        function performSearch() {
+            const query = document.querySelector('#searchBar input').value;
+            alert('Searching for: ' + query);
+            // Implement search functionality here
+        }
+
+        function printPage() {
+            window.print();
+        }
+
+        function toggleChat() {
+            const chatbox = document.getElementById('chatbox');
+            const iconsRight = document.getElementById('iconsRight');
+            chatbox.classList.toggle('open');
+            iconsRight.classList.toggle('shift-left');
+        }
+
+        function formatTimestamp(date) {
+            return date.toLocaleString('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true,
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value;
+            if (message.trim() !== "") {
+                const messagesContainer = document.getElementById('chatboxMessages');
+                const messageElement = document.createElement('div');
+                const currentTime = new Date().getTime();
+                const timestamp = formatTimestamp(new Date());
+                messageElement.classList.add('chatbox-message', 'sent');
+                messageElement.innerHTML = `<span>${message}</span>`;
+                if (currentTime - lastMessageTime > 300000) { // 5 minutes
+                    const timestampElement = document.createElement('small');
+                    timestampElement.classList.add('timestamp');
+                    timestampElement.textContent = timestamp;
+                    messagesContainer.appendChild(timestampElement);
+                }
+                messagesContainer.appendChild(messageElement);
+                input.value = "";
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                lastMessageTime = currentTime;
+            }
+        }
+
+        function toggleFloatingMenu() {
+            const floatingMenu = document.getElementById('floatingMenu');
+            floatingMenu.classList.toggle('open');
+        }
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: true 
+            };
+            const formattedDateTime = now.toLocaleDateString('en-US', options);
+            document.getElementById('datetime').textContent = formattedDateTime;
+        }
+
+        setInterval(updateDateTime, 1000);
+        document.addEventListener('DOMContentLoaded', updateDateTime);
+
+        // Simulate receiving a message
+        setTimeout(() => {
+            const messagesContainer = document.getElementById('chatboxMessages');
+            const messageElement = document.createElement('div');
+            const timestamp = formatTimestamp(new Date());
+            messageElement.classList.add('chatbox-message', 'received');
+            messageElement.innerHTML = `<span>Hello! How can I help you?</span>`;
+            const timestampElement = document.createElement('small');
+            timestampElement.classList.add('timestamp');
+            timestampElement.textContent = timestamp;
+            messagesContainer.appendChild(timestampElement);
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }, 2000);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('fade-in');
+            const notificationsModal = document.getElementById('notificationsModal');
+            notificationsModal.classList.remove('open');
+
+            // Check for Simple Document and set timer
+            const simpleDocument = document.querySelector('td:contains("Simple Document")');
+            if (simpleDocument) {
+                const dateReleasedText = simpleDocument.parentElement.querySelector('td:nth-child(5)').textContent;
+                const dateReleased = new Date(Date.parse(dateReleasedText));
+                const now = new Date();
+                const timeDiff = (now - dateReleased) / 1000 / 60; // Time difference in minutes
+                if (timeDiff > 2) {
+                    showExpiredAlertModal();
+                }
+            }
+        });
+
+        function toggleNewDocumentModal() {
+            const modal = document.getElementById('newDocumentModal');
+            modal.classList.toggle('open');
+        }
+
+        function toggleSuccessDialog() {
+            const dialog = document.getElementById('successDialog');
+            dialog.classList.toggle('open');
+        }
+
+        document.getElementById('newDocumentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/add_document', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    toggleNewDocumentModal();
+                    toggleSuccessDialog();
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    alert('Failed to add document');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        function showExpiredAlertModal(trackingNo) {
+            const notification = document.getElementById('expiredAlertModal');
+            const viewButton = document.getElementById('viewExpiredDocumentButton');
+            viewButton.setAttribute('onclick', `viewDocument('${trackingNo}')`);
+            notification.classList.add('show');
+        }
+
+        function viewExpiredDocument() {
+            // Redirect to the document with expired timer
+            window.location.href = '/DTS.html'; // Adjust the URL as needed
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('fade-in');
+            const notificationsModal = document.getElementById('notificationsModal');
+            notificationsModal.classList.remove('open');
+
+            // Check for Simple Document with Pending status and set timer
+            const rows = document.querySelectorAll('#documentTable tbody tr');
+            rows.forEach(row => {
+                const status = row.querySelector('td:nth-child(7)').textContent.trim();
+                const category = row.querySelector('td:nth-child(8)').textContent.trim();
+                const dateReleasedText = row.querySelector('td:nth-child(5)').textContent.trim();
+                const dateReleased = new Date(Date.parse(dateReleasedText));
+                const now = new Date();
+                const timeDiff = (now - dateReleased) / 1000 / 60; // Time difference in minutes
+
+                if (status === 'Pending' && category === 'Simple Document' && timeDiff > 1) {
+                    const trackingNo = row.querySelector('td:nth-child(1)').textContent.trim();
+                    showExpiredAlertModal(trackingNo);
+                }
+            });
+        });
+
+        function toggleViewDocumentModal() {
+            const modal = document.getElementById('viewDocumentModal');
+            modal.classList.toggle('open');
+        }
+
+        function viewDocument(trackingNo) {
+            fetch(`/document_details?tracking_no=${trackingNo}`)
+                .then(response => response.json())
+                .then(data => {
+                    const documentDetails = document.getElementById('documentDetails');
+                    documentDetails.innerHTML = `
+                        <h2>Document Details</h2>
+                        <p><strong>Tracking No:</strong> ${data.tracking_no}</p>
+                        <p><strong>Document Type:</strong> ${data.document_type}</p>
+                        <p><strong>Document Properties:</strong> ${data.document_properties}</p>
+                        <p><strong>Subject:</strong> ${data.subject}</p>
+                        <p><strong>Date Released:</strong> ${new Date(data.date_released).toLocaleString()}</p>
+                        <p><strong>Receiving Office/Section:</strong> ${data.receiving_office_section}</p>
+                        <p><strong>Status:</strong> ${data.status}</p>
+                        <p><strong>Document Category:</strong> ${data.document_category}</p>
+                    `;
+                    toggleViewDocumentModal();
+                    updateDocumentStatus(trackingNo, 'Processed');
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function updateDocumentStatus(trackingNo, status) {
+            fetch(`/update_document_status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ tracking_no: trackingNo, status: status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Document status updated successfully');
+                } else {
+                    console.error('Failed to update document status');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Refresh the page every 1 minute
+        setInterval(() => {
+            location.reload();
+        }, 60000);
+    </script>
+</body>
+</html>
