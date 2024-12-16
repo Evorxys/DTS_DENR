@@ -77,6 +77,53 @@
                 background-color: #777;
             }
         }
+        @media (max-width: 600px) {
+            .content {
+                overflow-x: auto;
+            }
+            .document-table {
+                width: 1000px;
+            }
+            .top-bar {
+                flex-direction: column;
+                height: auto;
+                padding: 10px;
+            }
+            .left-section, .center-section, .icons-right {
+                width: 100%;
+                justify-content: center;
+            }
+            .page-title {
+                font-size: 20px;
+                margin: 10px 0;
+            }
+            .datetime, .username {
+                font-size: 18px;
+            }
+            .icons-right {
+                justify-content: space-around;
+            }
+            .menu-icon, .notification-bell, .search-icon, .print-icon, .chat-icon, .paint-icon {
+                padding: 10px;
+                font-size: 20px;
+            }
+        }
+        @media (min-width: 601px) and (max-width: 1024px) {
+            body {
+                font-size: 16px;
+            }
+            .container {
+                padding: 20px;
+            }
+        }
+        @media (min-width: 1025px) {
+            body {
+                font-size: 18px;
+            }
+            .container {
+                padding: 30px;
+            }
+        }
         </style>
 
     <header>
