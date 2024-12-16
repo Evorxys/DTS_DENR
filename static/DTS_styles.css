@@ -461,7 +461,7 @@ body.darker {
     background-color: #777;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .content {
         overflow-x: auto;
     }
@@ -490,6 +490,33 @@ body.darker {
     .menu-icon, .notification-bell, .search-icon, .print-icon, .chat-icon, .paint-icon {
         padding: 10px;
         font-size: 20px;
+    }
+    /* Styles for phones */
+    body {
+        font-size: 14px;
+    }
+    .container {
+        padding: 10px;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    /* Styles for tablets */
+    body {
+        font-size: 16px;
+    }
+    .container {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 1025px) {
+    /* Styles for laptops and desktops */
+    body {
+        font-size: 18px;
+    }
+    .container {
+        padding: 30px;
     }
 }
 
@@ -774,4 +801,3 @@ body.darker {
     cursor: pointer;
     font-size: 24px;
 }
-/* ...existing code... */
