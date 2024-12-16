@@ -491,12 +491,48 @@ body.darker {
         padding: 10px;
         font-size: 20px;
     }
-    /* Styles for phones */
-    body {
-        font-size: 14px;
+    .floating-button {
+        display: flex;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
     }
-    .container {
+    .floating-menu {
+        display: none;
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        background-color: #333;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        z-index: 10;
+    }
+    .floating-menu.open {
+        display: block;
+    }
+    .floating-menu button {
+        display: block;
+        width: 100%;
         padding: 10px;
+        background-color: #555;
+        color: white;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+    }
+    .floating-menu button:hover {
+        background-color: #777;
     }
 }
 

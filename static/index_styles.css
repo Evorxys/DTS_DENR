@@ -383,6 +383,9 @@ input {
     .modal-content input, .modal-content button {
         font-size: 18px;
     }
+    .info p {
+        font-size: 1em;
+    }
 }
 
 @media (max-width: 600px) {
@@ -392,6 +395,24 @@ input {
     }
     .container {
         padding: 10px;
+    }
+    .login-container {
+        width: 90%;
+    }
+    .login-container h2 {
+        font-size: 25px;
+    }
+    .login-container input, .login-container button {
+        font-size: 16px;
+    }
+    .modal-content {
+        width: 95%;
+    }
+    .modal-content input, .modal-content button {
+        font-size: 16px;
+    }
+    .info p {
+        font-size: 0.9em;
     }
 }
 
