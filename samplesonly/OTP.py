@@ -11,9 +11,8 @@ def generate_otp(length=6):
 
 # Function to send OTP via email
 def send_otp_email(to_email, otp):
-    # Email sender's details (use your email and app password if using Gmail)
     sender_email = "jay.lord.diniega1@gmail.com"
-    sender_password = "wowd wgpo rojn jozw"  # You might need to create an app-specific password for Gmail
+    sender_password = "wowd wgpo rojn jozw"
 
     # Set up the email server (SMTP)
     smtp_server = "smtp.gmail.com"

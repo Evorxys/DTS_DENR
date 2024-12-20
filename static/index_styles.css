@@ -9,6 +9,7 @@ body {
     font-family: Arial, sans-serif;
     position: relative;
     overflow: hidden; /* Prevent scrolling */
+    font-size: 14px; /* Reduced font size */
 }
 
 body::before {
@@ -28,12 +29,12 @@ body::before {
 }
 
 .denr-logo {
-    height: 100px;
+    height: 50px; /* Reduced image size */
     margin-right: 20px;
 }
 
 .newph-logo {
-    height: 100px;
+    height: 50px; /* Reduced image size */
     margin-left: 20px;
 }
 
@@ -61,7 +62,7 @@ body::before {
 .page-title h1 {
     margin: 0 20px;
     color: white;
-    font-size: 50px;
+    font-size: 30px; /* Reduced font size */
     font-weight: bold;
 }
 
@@ -77,7 +78,7 @@ body::before {
 
 .login-container {
     background: rgba(68, 68, 68, 0.601);
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 30%;
@@ -91,7 +92,7 @@ body::before {
     margin-bottom: 20px;
     color: white;
     font-weight: bold;
-    font-size: 50px;
+    font-size: 30px;
 }
 
 .login-container input {
@@ -101,7 +102,7 @@ body::before {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
-    font-size: 25px;
+    font-size: 18px; /* Reduced input font size */
 }
 
 .login-container input:hover {
@@ -116,7 +117,7 @@ body::before {
     border: none;
     border-radius: 5px;
     color: white;
-    font-size: 25px;
+    font-size: 18px; /* Reduced button font size */
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
 }
@@ -134,10 +135,11 @@ body::before {
 }
 
 .create-account-button {
-    background-color: blue; /* Create account button color */
-    font-size: 20px;
-    padding: 10px;
-    margin-top: 20px; /* Increased margin */
+    background-color: blue;
+    font-size: 16px;
+    padding: 8px;
+    margin-top: 20px;
+    width: 70%;
 }
 
 .create-account-button:hover {
@@ -147,7 +149,7 @@ body::before {
 .info p {
     color: white;
     font-weight: bold; /* Make text bold */
-    font-size: 1.5em; /* Increased font size */
+    font-size: 0.9em; /* Reduced font size */
 }
 
 .footer {
@@ -159,6 +161,7 @@ body::before {
     text-align: center;
     padding: 10px 0;
     z-index: 2;
+    font-size: 0.8em;
 }
 
 .modal {
@@ -177,10 +180,10 @@ body::before {
 
 .modal-content {
     background-color: rgb(42, 42, 42);
-    padding: 20px;
+    padding: 10px; /* Reduced padding */
     border: 2px solid #888; /* Added border */
     border-radius: 10px;
-    width: 90%;
+    width: 90%; /* Reduced modal content width */
     max-width: 600px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
@@ -250,9 +253,9 @@ input {
 }
 
 .otp-group input#otp {
-    width: 50%; /* Reduced width */
-    text-align: center; /* Center text */
-    margin-top: 1em; /* Added margin */
+    width: 50%;
+    text-align: center;
+    margin-top: 1em;
 }
 
 .otp-group button {
@@ -287,7 +290,7 @@ input {
     border: none;
     border-radius: 5px;
     color: white;
-    font-size: 25px;
+    font-size: 18px; /* Reduced input and button font size */
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
 }
@@ -357,6 +360,55 @@ input {
 
 .dialogue button:hover {
     background-color: #0056b3;
+}
+
+.loader {
+    width: 22px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #F10C49;
+    animation: l10 1.5s infinite linear;
+}
+
+@keyframes l10 {
+    0%    {box-shadow: 
+            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6,30px 0 #F4DD51, 0 0 #E3AAD6,
+            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6}
+    12.5% {box-shadow: 
+            0 0 #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6,30px 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #E3AAD6,
+            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6}
+    25%   {box-shadow: 
+            0 0 #F4DD51, 0 0 #E3AAD6,30px 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #E3AAD6,
+            0 30px #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6}
+    37.5% {box-shadow: 
+            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #E3AAD6,
+            0 30px #F4DD51, calc(-30px*0.707) calc(30px*0.707) #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6}
+    50%   {box-shadow: 
+            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6,
+            0 30px #F4DD51, calc(-30px*0.707) calc(30px*0.707) #E3AAD6,-30px 0 #F4DD51, 0 0 #E3AAD6}
+    62.5% {box-shadow: 
+            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6,
+            0 0 #F4DD51, calc(-30px*0.707) calc(30px*0.707) #E3AAD6,-30px 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #E3AAD6}
+    75%   {box-shadow: 
+            0 -30px #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6,
+            0 0 #F4DD51, 0 0 #E3AAD6,-30px 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #E3AAD6}
+    87.5% {box-shadow: 
+            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6,
+            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #E3AAD6}
+    100%  {box-shadow: 
+            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6,30px 0 #F4DD51, 0 0 #E3AAD6,
+            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6}
+}
+
+.loader-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 @media (max-width: 768px) {

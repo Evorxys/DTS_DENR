@@ -243,6 +243,27 @@ def update_document_status():
     else:
         return {'error': 'Document not found'}, 404
 
+@app.route('/search_documents')
+def search_documents():
+    field = request.args.get('field')
+    query = request.args.get('query')
+    if field not in ['tracking_no', 'document_type', 'subject', 'receiving_office_section', 'status', 'document_category']:
+        return {'error': 'Invalid search field'}, 400
+
+    documents = Document.query.filter(getattr(Document, field).ilike(f'%{query}%')).all()
+    results = [{
+        'tracking_no': doc.tracking_no,
+        'document_type': doc.document_type,
+        'document_properties': doc.document_properties,
+        'subject': doc.subject,
+        'date_released': doc.date_released.isoformat(),
+        'receiving_office_section': doc.receiving_office_section,
+        'status': doc.status,
+        'document_category': doc.document_category
+    } for doc in documents]
+
+    return {'documents': results}
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

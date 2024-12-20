@@ -22,11 +22,14 @@
                 <input type="text" id="username" name="username" placeholder="Username" required>
                 <input type="password" id="password" name="password" placeholder="Password" required>
                 <button type="submit" class="button login-button">Login</button>
+                <div class="loader-container" id="loginLoaderContainer" style="display: none;">
+                    <div class="loader" id="loginLoader"></div>
+                </div> <!-- Loader container -->
             </form>
             <button onclick="openModal()" class="button create-account-button">No Account? Create Account</button>
             <div class="info">
-                <p>Date: <span id="date" style="color: white;"></span></p>
-                <p>Time: <span id="time" style="color: white;"></span></p>
+                <p>Date: <span id="date" style="color: white; font-size: 0.8em;"></span></p>
+                <p>Time: <span id="time" style="color: white; font-size: 0.8em;"></span></p>
             </div>
         </div>
     </div>
@@ -80,6 +83,11 @@
             event.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const loginButton = document.querySelector('.login-button');
+            const loginLoaderContainer = document.getElementById('loginLoaderContainer');
+
+            loginButton.style.display = 'none';
+            loginLoaderContainer.style.display = 'flex';
 
             fetch('/login', {
                 method: 'POST',
@@ -91,12 +99,16 @@
             .then(response => {
                 if (response.status === 400) {
                     showDialogue('Username does not exist, create an account');
+                    loginButton.style.display = 'block';
+                    loginLoaderContainer.style.display = 'none';
                 } else {
                     this.submit();
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                loginButton.style.display = 'block';
+                loginLoaderContainer.style.display = 'none';
             });
         });
 
@@ -192,8 +204,8 @@
                     countdownElement.innerHTML = 'OTP expired';
                     otpInput.disabled = true;
                     otpValid = false;
-                    sendOtpButton.disabled = false; // Re-enable the button
-                    disabledText.style.display = 'none'; // Hide the disabled text
+                    sendOtpButton.disabled = false;
+                    disabledText.style.display = 'none';
                     showDialogue('OTP expired. Please resend the code.');
                 }
             }, 1000);
