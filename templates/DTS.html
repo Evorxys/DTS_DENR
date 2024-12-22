@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/static/DTS_styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/DTS_styles.css">
     <link rel="icon" href="/uploads/denr_logo.png" type="image/png">
 </head>
 <body class="fade-in">
@@ -19,7 +19,6 @@
             </div>
             <div class="icons-right" id="iconsRight">
                 <div class="search-icon" onclick="toggleSearch()">🔍</div>
-                <div class="paint-icon" onclick="togglePaintMenu()">🎨</div>
                 <div class="notification-bell" onclick="toggleNotifications()">🔔</div>
                 <div class="print-icon" onclick="printPage()">🖨️</div>
                 <div class="chat-icon" onclick="toggleChat()">💬</div>
@@ -34,11 +33,6 @@
             <!-- Content for the top bar -->
         </div>
     </header>
-    <div class="paint-menu" id="paintMenu">
-        <button onclick="changeTheme('default')">Default</button>
-        <button onclick="changeTheme('dark')">Dark</button>
-        <button onclick="changeTheme('darker')">Darker</button>
-    </div>
     <div class="sliding-menu" id="slidingMenu">
         <ul>
             <li><a href="#" onclick="toggleNewDocumentModal()">➕ New Document</a></li>
@@ -104,7 +98,6 @@
     <button class="floating-button" onclick="toggleFloatingMenu()">+</button>
     <div class="floating-menu" id="floatingMenu">
         <button onclick="toggleSearch()">🔍 Search</button>
-        <button onclick="togglePaintMenu()">🎨 Paint</button>
         <button onclick="toggleNotifications()">🔔 Notifications</button>
         <button onclick="printPage()">🖨️ Print</button>
         <button onclick="toggleChat()">💬 Chat</button>
@@ -184,6 +177,8 @@
         function toggleNotificationsModal() {
             const modal = document.getElementById('notificationsModal');
             modal.classList.toggle('open');
+            modal.classList.add('animate');
+            setTimeout(() => modal.classList.remove('animate'), 500);
         }
 
         function closeModal(event) {
@@ -204,71 +199,8 @@
         function toggleSearch() {
             const searchBar = document.getElementById('searchBar');
             searchBar.classList.toggle('open');
-        }
-
-        function togglePaintMenu() {
-            const paintMenu = document.getElementById('paintMenu');
-            const paintIcon = document.querySelector('.paint-icon');
-            const rect = paintIcon.getBoundingClientRect();
-            paintMenu.style.top = `${rect.bottom}px`;
-            paintMenu.style.left = `${rect.left}px`;
-            paintMenu.classList.toggle('open');
-        }
-
-        function changeTheme(theme) {
-            const elements = {
-                topBar: document.getElementById('topBar'),
-                slidingMenu: document.getElementById('slidingMenu'),
-                documentTable: document.getElementById('documentTable'),
-                chatbox: document.getElementById('chatbox'),
-                notifications: document.getElementById('notifications'),
-                searchBar: document.getElementById('searchBar')
-            };
-
-            switch (theme) {
-                case 'dark':
-                    elements.topBar.style.backgroundColor = '#000';
-                    elements.topBar.style.color = '#fff';
-                    elements.slidingMenu.style.backgroundColor = '#333';
-                    elements.slidingMenu.style.color = '#fff';
-                    elements.documentTable.style.backgroundColor = '#444';
-                    elements.documentTable.style.color = '#fff';
-                    elements.chatbox.style.backgroundColor = '#333';
-                    elements.chatbox.style.color = '#fff';
-                    elements.notifications.style.backgroundColor = '#333';
-                    elements.notifications.style.color = '#fff';
-                    elements.searchBar.style.backgroundColor = '#333';
-                    elements.searchBar.style.color = '#fff';
-                    break;
-                case 'darker':
-                    elements.topBar.style.backgroundColor = '#1a1a1a';
-                    elements.topBar.style.color = '#fff';
-                    elements.slidingMenu.style.backgroundColor = '#0d0d0d';
-                    elements.slidingMenu.style.color = '#fff';
-                    elements.documentTable.style.backgroundColor = '#1a1a1a';
-                    elements.documentTable.style.color = '#fff';
-                    elements.chatbox.style.backgroundColor = '#0d0d0d';
-                    elements.chatbox.style.color = '#fff';
-                    elements.notifications.style.backgroundColor = '#0d0d0d';
-                    elements.notifications.style.color = '#fff';
-                    elements.searchBar.style.backgroundColor = '#0d0d0d';
-                    elements.searchBar.style.color = '#fff';
-                    break;
-                default:
-                    elements.topBar.style.backgroundColor = '#333';
-                    elements.topBar.style.color = '#fff';
-                    elements.slidingMenu.style.backgroundColor = '#434242';
-                    elements.slidingMenu.style.color = '#fff';
-                    elements.documentTable.style.backgroundColor = '#333';
-                    elements.documentTable.style.color = '#fff';
-                    elements.chatbox.style.backgroundColor = '#333';
-                    elements.chatbox.style.color = '#fff';
-                    elements.notifications.style.backgroundColor = '#333';
-                    elements.notifications.style.color = '#fff';
-                    elements.searchBar.style.backgroundColor = '#333';
-                    elements.searchBar.style.color = '#fff';
-                    break;
-            }
+            searchBar.classList.add('animate');
+            setTimeout(() => searchBar.classList.remove('animate'), 500);
         }
 
         function performSearch() {
@@ -283,9 +215,9 @@
 
         function toggleChat() {
             const chatbox = document.getElementById('chatbox');
-            const iconsRight = document.getElementById('iconsRight');
             chatbox.classList.toggle('open');
-            iconsRight.classList.toggle('shift-left');
+            chatbox.classList.add('animate');
+            setTimeout(() => chatbox.classList.remove('animate'), 500);
         }
 
         function formatTimestamp(date) {
@@ -324,7 +256,11 @@
 
         function toggleFloatingMenu() {
             const floatingMenu = document.getElementById('floatingMenu');
+            const floatingButton = document.querySelector('.floating-button');
             floatingMenu.classList.toggle('open');
+            floatingButton.classList.toggle('open');
+            floatingMenu.classList.add('animate');
+            setTimeout(() => floatingMenu.classList.remove('animate'), 500);
         }
 
         function updateDateTime() {
@@ -361,32 +297,44 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }, 2000);
 
+        function checkSimpleDocumentTimers() {
+            const rows = document.querySelectorAll('#documentTable tbody tr');
+            rows.forEach(row => {
+                const status = row.querySelector('td:nth-child(7)').textContent.trim();
+                const category = row.querySelector('td:nth-child(8)').textContent.trim();
+                const dateReleasedText = row.querySelector('td:nth-child(5)').textContent.trim();
+                const dateReleased = new Date(Date.parse(dateReleasedText));
+                const now = new Date();
+                const timeDiff = (now - dateReleased) / 1000 / 60; // Time difference in minutes
+
+                if (status === 'Pending' && category === 'Simple Document' && timeDiff > 1) {
+                    const trackingNo = row.querySelector('td:nth-child(1)').textContent.trim();
+                    showExpiredAlertModal(trackingNo);
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('fade-in');
             const notificationsModal = document.getElementById('notificationsModal');
             notificationsModal.classList.remove('open');
 
-            // Check for Simple Document and set timer
-            const simpleDocument = document.querySelector('td:contains("Simple Document")');
-            if (simpleDocument) {
-                const dateReleasedText = simpleDocument.parentElement.querySelector('td:nth-child(5)').textContent;
-                const dateReleased = new Date(Date.parse(dateReleasedText));
-                const now = new Date();
-                const timeDiff = (now - dateReleased) / 1000 / 60; // Time difference in minutes
-                if (timeDiff > 2) {
-                    showExpiredAlertModal();
-                }
-            }
+            checkSimpleDocumentTimers();
+            setInterval(checkSimpleDocumentTimers, 60000); // Refresh every 1 minute
         });
 
         function toggleNewDocumentModal() {
             const modal = document.getElementById('newDocumentModal');
             modal.classList.toggle('open');
+            modal.classList.add('animate');
+            setTimeout(() => modal.classList.remove('animate'), 500);
         }
 
         function toggleSuccessDialog() {
             const dialog = document.getElementById('successDialog');
             dialog.classList.toggle('open');
+            dialog.classList.add('animate');
+            setTimeout(() => dialog.classList.remove('animate'), 500);
         }
 
         document.getElementById('newDocumentForm').addEventListener('submit', function(event) {
@@ -416,6 +364,8 @@
             const viewButton = document.getElementById('viewExpiredDocumentButton');
             viewButton.setAttribute('onclick', `viewDocument('${trackingNo}')`);
             notification.classList.add('show');
+            notification.classList.add('animate');
+            setTimeout(() => notification.classList.remove('animate'), 500);
         }
 
         function viewExpiredDocument() {
@@ -423,31 +373,11 @@
             window.location.href = '/DTS.html'; // Adjust the URL as needed
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('fade-in');
-            const notificationsModal = document.getElementById('notificationsModal');
-            notificationsModal.classList.remove('open');
-
-            // Check for Simple Document with Pending status and set timer
-            const rows = document.querySelectorAll('#documentTable tbody tr');
-            rows.forEach(row => {
-                const status = row.querySelector('td:nth-child(7)').textContent.trim();
-                const category = row.querySelector('td:nth-child(8)').textContent.trim();
-                const dateReleasedText = row.querySelector('td:nth-child(5)').textContent.trim();
-                const dateReleased = new Date(Date.parse(dateReleasedText));
-                const now = new Date();
-                const timeDiff = (now - dateReleased) / 1000 / 60; // Time difference in minutes
-
-                if (status === 'Pending' && category === 'Simple Document' && timeDiff > 1) {
-                    const trackingNo = row.querySelector('td:nth-child(1)').textContent.trim();
-                    showExpiredAlertModal(trackingNo);
-                }
-            });
-        });
-
         function toggleViewDocumentModal() {
             const modal = document.getElementById('viewDocumentModal');
             modal.classList.toggle('open');
+            modal.classList.add('animate');
+            setTimeout(() => modal.classList.remove('animate'), 500);
         }
 
         function viewDocument(trackingNo) {
@@ -468,6 +398,8 @@
                     `;
                     toggleViewDocumentModal();
                     updateDocumentStatus(trackingNo, 'Processed');
+                    const notification = document.getElementById('expiredAlertModal');
+                    notification.classList.remove('show');
                 })
                 .catch(error => console.error('Error:', error));
         }
@@ -491,10 +423,18 @@
             .catch(error => console.error('Error:', error));
         }
 
-        // Refresh the page every 1 minute
-        setInterval(() => {
-            location.reload();
-        }, 60000);
+        // Ensure the plus icon shows when the screen is small
+        function checkScreenSize() {
+            const floatingButton = document.querySelector('.floating-button');
+            if (window.innerWidth <= 768) {
+                floatingButton.style.display = 'block';
+            } else {
+                floatingButton.style.display = 'none';
+            }
+        }
+
+        window.addEventListener('resize', checkScreenSize);
+        document.addEventListener('DOMContentLoaded', checkScreenSize);
     </script>
 </body>
 </html>

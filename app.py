@@ -57,6 +57,13 @@ class Document(db.Model):
     status = db.Column(db.String(50), nullable=False)
     document_category = db.Column(db.String(100), nullable=False)
 
+# Database model for Admin Users
+class AdminUser(db.Model):
+    __tablename__ = 'admin_users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+
 def send_otp(email):
     otp = ''.join(random.choices(string.digits, k=6))
     session['otp'] = otp
@@ -99,15 +106,25 @@ def index():
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
-    if not username:
-        return 'Username is required', 400
+    password = request.form['password']
+    if not username or not password:
+        return 'Username and password are required', 400
 
-    # Check if the user exists in the database
+    # Check if the user exists in the admin_users table
+    admin_user = AdminUser.query.filter_by(username=username).first()
+    if admin_user and admin_user.password == password:
+        return redirect(url_for('admin_dashboard'))
+
+    # Check if the user exists in the other_users table
     user = OtherUser.query.filter_by(username=username).first()
-    if not user:
-        return 'Username does not exist', 400
+    if not user or user.password != password:
+        return 'Invalid username or password', 400
 
     return redirect(url_for('dts', username=username))
+
+@app.route('/admin_dashboard')
+def admin_dashboard():
+    return render_template('the_admin.html')
 
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account():
@@ -123,8 +140,12 @@ def create_account():
         if not name or not position or not section_designation or not username or not password or not gmail or not otp:
             return 'All fields are required', 400
         
+        # Check if the username already exists
+        if OtherUser.query.filter_by(username=username).first():
+            return 'Username already exists. Please use another username', 400
+        
         # Check if the user already exists
-        if OtherUser.query.filter_by(username=username).first() or OtherUser.query.filter_by(gmail=gmail).first():
+        if OtherUser.query.filter_by(gmail=gmail).first():
             return 'The user for this gmail already exists', 400
         
         # Verify OTP
@@ -141,7 +162,7 @@ def create_account():
             flash('You took too long in creating the account, please refresh the page')
             return redirect(url_for('create_account'))
         
-        return redirect(url_for('index'))  # Redirect to index.html after successful account creation
+        return redirect(url_for('index'))
     
     return render_template('create_account.html')
 
@@ -243,26 +264,11 @@ def update_document_status():
     else:
         return {'error': 'Document not found'}, 404
 
-@app.route('/search_documents')
-def search_documents():
-    field = request.args.get('field')
-    query = request.args.get('query')
-    if field not in ['tracking_no', 'document_type', 'subject', 'receiving_office_section', 'status', 'document_category']:
-        return {'error': 'Invalid search field'}, 400
-
-    documents = Document.query.filter(getattr(Document, field).ilike(f'%{query}%')).all()
-    results = [{
-        'tracking_no': doc.tracking_no,
-        'document_type': doc.document_type,
-        'document_properties': doc.document_properties,
-        'subject': doc.subject,
-        'date_released': doc.date_released.isoformat(),
-        'receiving_office_section': doc.receiving_office_section,
-        'status': doc.status,
-        'document_category': doc.document_category
-    } for doc in documents]
-
-    return {'documents': results}
+@app.route('/check_username', methods=['POST'])
+def check_username():
+    username = request.form['username']
+    user_exists = OtherUser.query.filter_by(username=username).first() is not None
+    return {'exists': user_exists}
 
 if __name__ == '__main__':
     with app.app_context():

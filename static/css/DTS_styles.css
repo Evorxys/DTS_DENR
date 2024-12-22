@@ -27,13 +27,15 @@ body, header {
 .top-bar {
     width: 100%;
     height: 100px;
-    background-color: #333;
+    background-color: #3b3b3b;
     color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: 24px;
-    position: relative;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
 }
 
 .left-section {
@@ -63,7 +65,7 @@ body, header {
 }
 
 .datetime {
-    font-size: 24px; /* Increased font size */
+    font-size: 20px;
     color: #ccc;
     margin-top: 5px;
     background-color: rgb(0, 0, 0);
@@ -73,7 +75,7 @@ body, header {
 }
 
 .username {
-    font-size: 25px;
+    font-size: 20px;
     color: #ccc;
     margin-top: 5px;
     background-color: rgb(0, 0, 0);
@@ -95,9 +97,9 @@ body, header {
     position: fixed;
     top: 100px;
     left: -250px;
-    width: 250px;
+    width: 230px;
     height: calc(100% - 100px);
-    background-color: #434242;
+    background-color: #282828;
     overflow-y: hidden;
     transition: left 0.5s;
     display: flex;
@@ -203,58 +205,6 @@ body, header {
     padding: 20px;
 }
 
-.paint-icon {
-    position: relative;
-    cursor: pointer;
-    font-size: 24px;
-    padding: 20px;
-}
-
-.paint-menu {
-    display: none;
-    position: absolute;
-    background-color: #333;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-}
-
-.paint-menu.open {
-    display: block;
-}
-
-.paint-menu button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 5px;
-    background-color: #555;
-    color: white;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-}
-
-.paint-menu button:hover {
-    background-color: #777;
-}
-
-/* Theme styles */
-body.default {
-    background-color: #333;
-    color: white;
-}
-
-body.dark {
-    background-color: #000;
-    color: white;
-}
-
-body.darker {
-    background-color: #1a1a1a;
-    color: white;
-}
-
 .notifications {
     position: absolute;
     right: 0;
@@ -325,9 +275,9 @@ body.darker {
     display: none;
     position: fixed;
     right: 0;
-    top: 0;
+    top: 100px; 
     width: 300px;
-    height: 100%;
+    height: calc(100% - 100px);
     background-color: #333;
     color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -337,6 +287,7 @@ body.darker {
 
 .chatbox.open {
     display: flex;
+    animation: slideInFromRight 0.5s forwards;
 }
 
 .chatbox-header {
@@ -422,29 +373,33 @@ body.darker {
 .content {
     padding: 20px;
     transition: transform 0.5s ease, width 0.5s ease;
+    margin-top: 100px;
 }
 
 .content.shift-right {
     transform: translateX(250px);
-    width: calc(100% - 250px);
+    width: calc(96% - 250px);
 }
 
 .document-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background-color: #10132dc3;
 }
 
 .document-table th, .document-table td {
-    border: 1px solid #ddd;
+    border: 1px solid #ffffff;
     padding: 8px;
     text-align: left;
-    color: white;
+    color: rgb(251, 251, 251);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .document-table th {
-    background-color: #333;
-    color: white;
+    background-color: #00ddff94;
+    color: rgb(0, 0, 0);
+    text-align: center; /* Center the text */
 }
 
 .action-button {
@@ -508,16 +463,7 @@ body.darker {
         cursor: pointer;
         z-index: 10;
     }
-    .floating-menu {
-        display: none;
-        position: fixed;
-        bottom: 80px;
-        right: 20px;
-        background-color: #333;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        z-index: 10;
-    }
+
     .floating-menu.open {
         display: block;
     }
@@ -537,7 +483,7 @@ body.darker {
 }
 
 @media (min-width: 601px) and (max-width: 1024px) {
-    /* Styles for tablets */
+
     body {
         font-size: 16px;
     }
@@ -547,7 +493,7 @@ body.darker {
 }
 
 @media (min-width: 1025px) {
-    /* Styles for laptops and desktops */
+
     body {
         font-size: 18px;
     }
@@ -556,7 +502,7 @@ body.darker {
     }
 }
 
-/* ...existing code... */
+
 html::before {
     content: "";
     position: absolute;
@@ -599,6 +545,10 @@ html::before {
         justify-content: center;
         cursor: pointer;
         z-index: 10;
+        transition: transform 0.3s ease;
+    }
+    .floating-button.open {
+        transform: rotate(45deg);
     }
     .floating-menu {
         display: none;
@@ -609,6 +559,7 @@ html::before {
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         z-index: 10;
+        transition: transform 0.3s ease;
     }
     .floating-menu.open {
         display: block;
@@ -622,12 +573,13 @@ html::before {
         border: none;
         cursor: pointer;
         text-align: left;
+        transition: transform 0.3s ease;
     }
     .floating-menu button:hover {
         background-color: #777;
     }
 }
-/* ...existing code... */
+
 .notifications-modal {
     display: none;
     position: fixed;
@@ -648,9 +600,9 @@ html::before {
 .modal-content {
     background-color: #333;
     color: white;
-    padding: 30px; /* Increased padding */
+    padding: 30px;
     border-radius: 10px;
-    width: 400px; /* Increased width */
+    width: 400px;
     max-height: 80%;
     overflow-y: auto;
     position: relative;
@@ -658,10 +610,10 @@ html::before {
 
 .close-modal {
     position: absolute;
-    top: 15px; /* Adjusted position */
-    right: 15px; /* Adjusted position */
+    top: 15px;
+    right: 15px;
     cursor: pointer;
-    font-size: 24px; /* Increased font size */
+    font-size: 24px;
 }
 
 .modal-content ul {
@@ -671,10 +623,10 @@ html::before {
 }
 
 .modal-content ul li {
-    padding: 15px; /* Increased padding */
+    padding: 15px;
     cursor: pointer;
     border-bottom: 1px solid #444;
-    font-size: 18px; /* Increased font size */
+    font-size: 18px;
 }
 
 .modal-content ul li:hover {
@@ -683,13 +635,13 @@ html::before {
 
 #notificationDetails {
     margin-top: 20px;
-    padding: 15px; /* Increased padding */
+    padding: 15px; 
     background-color: #444;
     border-radius: 5px;
-    font-size: 18px; /* Increased font size */
+    font-size: 18px; 
 }
 
-/* ...existing code... */
+
 .new-document-modal {
     display: none;
     position: fixed;
@@ -759,7 +711,7 @@ html::before {
     background-color: #0056b3;
 }
 
-/* ...existing code... */
+
 .new-document-modal form select {
     padding: 10px;
     margin-top: 5px;
@@ -780,7 +732,7 @@ html::before {
     outline: none;
     background-color: #666;
 }
-/* ...existing code... */
+
 .success-dialog {
     display: none;
     position: fixed;
@@ -872,7 +824,7 @@ html::before {
 .expired-alert-modal button:hover {
     background-color: #0056b3;
 }
-/* ...existing code... */
+
 .view-document-modal {
     display: none;
     position: fixed;
@@ -907,4 +859,92 @@ html::before {
     right: 15px;
     cursor: pointer;
     font-size: 24px;
+}
+
+.floating-button {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.3s ease;
+}
+
+.floating-button.open {
+    transform: rotate(45deg);
+}
+
+.floating-menu {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background-color: #333;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    transition: transform 0.3s ease;
+}
+
+.floating-menu.open {
+    display: block;
+}
+
+.floating-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.floating-menu button:hover {
+    background-color: #777;
+}
+
+@media (max-width: 768px) {
+    .icons-right {
+        display: none;
+    }
+    .floating-button {
+        display: flex;
+    }
+}
+
+.animate {
+    animation: move 0.5s ease-in-out;
+}
+
+@keyframes move {
+    0% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* ...existing code... */
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
 }

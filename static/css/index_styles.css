@@ -188,6 +188,7 @@ body::before {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     color: white;
+    font-size: 0.9em; /* Reduced font size */
 }
 
 .close {
@@ -216,28 +217,29 @@ label {
     font-weight: bold;
     color: #ffffff;
     text-align: left;
-    font-size: 1.2em;
+    font-size: 1em; /* Reduced font size */
     margin-right: 1em;
     flex: 1;
 }
 
 input {
     width: 100%;
-    padding: 1em;
+    padding: 0.5em; /* Reduced padding */
     border: 1px solid #ccc;
     border-radius: 0.3em;
     box-sizing: border-box;
-    font-size: 1.2em;
+    font-size: 1em; /* Reduced font size */
     flex: 2;
 }
 
 .important-note {
     display: block;
     color: #ffcc00;
-    font-size: 0.9em;
-    margin-top: -0.5em;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 3em;
     margin-bottom: 1em;
-    text-align: right;
+    text-align: left;
     width: 100%;
 }
 
@@ -256,6 +258,11 @@ input {
     width: 50%;
     text-align: center;
     margin-top: 1em;
+}
+
+.otp-group input#email {
+    margin-top: 2em; /* Increased top margin */
+    text-align: center; /* Center the content */
 }
 
 .otp-group button {
@@ -290,7 +297,7 @@ input {
     border: none;
     border-radius: 5px;
     color: white;
-    font-size: 18px; /* Reduced input and button font size */
+    font-size: 1em; /* Reduced font size */
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
 }
@@ -409,6 +416,12 @@ input {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+}
+
+.username-status {
+    font-size: 0.9em;
+    margin-bottom: 1.1em;
+    text-align: right;
 }
 
 @media (max-width: 768px) {
