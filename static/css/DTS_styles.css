@@ -480,6 +480,17 @@ body, header {
     .floating-menu button:hover {
         background-color: #777;
     }
+    .chatbox {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        height: auto;
+        max-height: 50%; /* Set max height */
+    }
+    .chatbox.open {
+        animation: none;
+    }
 }
 
 @media (min-width: 601px) and (max-width: 1024px) {
