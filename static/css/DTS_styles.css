@@ -462,6 +462,12 @@ body, header {
         justify-content: center;
         cursor: pointer;
         z-index: 10;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .floating-button.open {
+        transform: rotate(45deg);
+        background-color: red; /* Change color to red when open */
     }
 
     .floating-menu.open {
@@ -490,6 +496,9 @@ body, header {
     }
     .chatbox.open {
         animation: none;
+    }
+    .sliding-menu {
+        display: none; /* Hide the sliding menu */
     }
 }
 
