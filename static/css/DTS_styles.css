@@ -97,7 +97,7 @@ body, header {
     position: fixed;
     top: 100px;
     left: -250px;
-    width: 230px;
+    width: 250px;
     height: calc(100% - 100px);
     background-color: #282828;
     overflow-y: hidden;
@@ -240,22 +240,34 @@ body, header {
 
 .search-bar {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 100px;
-    right: 0;
-    background-color: #333;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(51, 51, 51, 0.8);
     padding: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1;
+    z-index: 1200;
 }
 
 .search-bar.open {
     display: block;
+    animation: slideDownFromTopCenter 0.5s forwards;
 }
 
 .search-bar input {
     padding: 5px;
     font-size: 16px;
+}
+
+.search-bar select {
+    padding: 5px;
+    font-size: 16px;
+    margin-left: 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 3px;
 }
 
 .search-bar button {
@@ -265,6 +277,7 @@ body, header {
     color: white;
     border: none;
     cursor: pointer;
+    margin-left: 10px;
 }
 
 .search-bar button:hover {
@@ -422,6 +435,8 @@ body, header {
     }
     .document-table {
         width: 1000px;
+        font-size: 10px;
+        margin-top: 50px;
     }
     .top-bar {
         flex-direction: column;
@@ -492,13 +507,13 @@ body, header {
         transform: translate(-50%, -50%);
         width: 90%;
         height: auto;
-        max-height: 50%; /* Set max height */
+        max-height: 50%;
     }
     .chatbox.open {
         animation: none;
     }
     .sliding-menu {
-        display: none; /* Hide the sliding menu */
+        display: none;
     }
 }
 
@@ -521,7 +536,6 @@ body, header {
         padding: 30px;
     }
 }
-
 
 html::before {
     content: "";
@@ -968,3 +982,77 @@ html::before {
         transform: translateX(0);
     }
 }
+
+@keyframes slideDownFromTopCenter {
+    from {
+        transform: translateY(-100%) translateX(-50%);
+    }
+    to {
+        transform: translateY(0) translateX(-50%);
+    }
+}
+
+.icons-right div {
+    margin-right: 10px; /* Added right margin */
+}
+
+/* ...existing code... */
+.help-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #333;
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    max-height: 80%;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.5s;
+}
+
+.help-modal.open {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.help-modal .modal-content {
+    position: relative;
+    width: 100%;
+}
+
+.help-modal .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.help-icon {
+    position: relative;
+    cursor: pointer;
+    font-size: 24px;
+    padding: 20px;
+}
+
+/* ...existing code... */
+.selected-row {
+    background-color: #108500 !important; /* Highlight color for selected row */
+    color: white;
+}
+/* ...existing code... */

@@ -50,6 +50,14 @@
                     <label for="section">Section/Designation:</label>
                     <input type="text" id="section" name="section" required>
                 </div>
+                <div class="form-group">
+                    <label for="office">Office:</label>
+                    <select id="office" name="office" required>
+                        <option value="" disabled selected>Select Office</option>
+                        <option value="CENRO">CENRO</option>
+                        <option value="PENRO">PENRO</option>
+                    </select>
+                </div>
                 <small class="important-note">Important to remember</small>
                 <div class="form-group">
                     <label for="username">Username:</label>
@@ -62,6 +70,7 @@
                 </div>
                 <div class="form-group otp-group">
                     <input type="email" id="email" name="email" placeholder="Enter Email" required>
+                    <div id="email-status" class="email-status"></div>
                     <input type="text" id="otp" name="otp" placeholder="Enter OTP" required oninput="verifyOtp()" disabled>
                     <div class="otp-buttons">
                         <button type="button" class="send-otp" onclick="sendOtp()" id="sendOtpButton">Send OTP</button>
@@ -79,6 +88,23 @@
         <button onclick="closeDialogue()">OK</button>
     </div>
     <script src="/static/js/index_jvs.js"></script>
+    <script>
+        function showErrorModal(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorModal').style.display = 'flex';
+        }
+
+        function closeErrorModal() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+
+        window.onload = function() {
+            const errorMessage = "{{ error_message }}";
+            if (errorMessage) {
+                showDialogue(errorMessage);
+            }
+        }
+    </script>
     <footer class="footer">
         <p>&copy; 2024 DATS DENR. DINIEGA.</p>
     </footer>

@@ -37,9 +37,33 @@ function toggleSearch() {
 }
 
 function performSearch() {
-    const query = document.querySelector('#searchBar input').value;
-    alert('Searching for: ' + query);
-    // Implement search functionality here
+    const query = document.querySelector('#searchBar input').value.toLowerCase();
+    const category = document.querySelector('#searchCategory').value;
+    const rows = document.querySelectorAll('#documentTable tbody tr');
+
+    rows.forEach(row => {
+        const cell = row.querySelector(`td:nth-child(${getCategoryIndex(category)})`).textContent.toLowerCase();
+        if (cell.includes(query)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function getCategoryIndex(category) {
+    switch (category) {
+        case 'tracking_no':
+            return 1;
+        case 'document_type':
+            return 2;
+        case 'subject':
+            return 4;
+        case 'receiving_office_section':
+            return 6;
+        default:
+            return 1;
+    }
 }
 
 function printPage() {

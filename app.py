@@ -42,6 +42,7 @@ class OtherUser(db.Model):
     gmail = db.Column(db.String(255), unique=True, nullable=False)
     position = db.Column(db.String(100))
     section_designation = db.Column(db.String(100))
+    office = db.Column(db.String(100))  # Add this line
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 # Database model for Documents
@@ -132,12 +133,13 @@ def create_account():
         name = request.form['name']
         position = request.form['position']
         section_designation = request.form['section']
+        office = request.form['office']
         username = request.form['username']
         password = request.form['password']
         gmail = request.form['email']
         otp = request.form['otp']
         
-        if not name or not position or not section_designation or not username or not password or not gmail or not otp:
+        if not name or not position or not section_designation or not office or not username or not password or not gmail or not otp:
             return 'All fields are required', 400
         
         # Check if the username already exists
@@ -154,7 +156,7 @@ def create_account():
         
         try:
             # Create a new user
-            new_user = OtherUser(name=name, position=position, section_designation=section_designation, username=username, password=password, gmail=gmail)
+            new_user = OtherUser(name=name, position=position, section_designation=section_designation, office=office, username=username, password=password, gmail=gmail)
             db.session.add(new_user)
             db.session.commit()
             send_account_creation_email(gmail)  # Send account creation email
@@ -164,11 +166,22 @@ def create_account():
         
         return redirect(url_for('index'))
     
-    return render_template('create_account.html')
+    return render_template('index.html')
+
+@app.route('/check_email', methods=['POST'])
+def check_email():
+    email = request.form['email']
+    email_exists = OtherUser.query.filter_by(gmail=email).first() is not None
+    return {'exists': email_exists}
 
 @app.route('/send_otp', methods=['POST'])
 def send_otp_route():
     email = request.form['email']
+    username = request.form['username']
+    if OtherUser.query.filter_by(gmail=email).first():
+        return 'Email already exists', 400
+    if OtherUser.query.filter_by(username=username).first():
+        return 'Username already exists', 400
     send_otp(email)
     return 'OTP sent. Please check your email', 200
 

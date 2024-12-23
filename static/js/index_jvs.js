@@ -46,15 +46,45 @@ updateDateTime();
 
 let otpValid = false;
 
+function checkEmail() {
+    const email = document.getElementById('email').value;
+    const emailStatus = document.getElementById('email-status');
+
+    fetch('/check_email', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `email=${email}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.exists) {
+            emailStatus.innerHTML = '❌ Email already exists';
+            emailStatus.style.color = 'red';
+        } else {
+            emailStatus.innerHTML = '✅ Email available';
+            emailStatus.style.color = 'green';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        emailStatus.innerHTML = '';
+    });
+}
+
+document.getElementById('email').addEventListener('input', checkEmail);
+
 function sendOtp() {
     const email = document.getElementById('email').value;
+    const username = document.getElementById('username').value;
     const otpStatus = document.getElementById('otp-status');
     const otpInput = document.getElementById('otp');
     const sendOtpButton = document.getElementById('sendOtpButton');
     const disabledText = document.getElementById('disabled-text');
     otpStatus.innerHTML = '<span class="loading-icon">⏳</span>';
-    if (!email) {
-        showDialogue('Email is required');
+    if (!email || !username) {
+        showDialogue('Email and Username are required');
         otpStatus.innerHTML = '';
         return;
     }
@@ -63,9 +93,15 @@ function sendOtp() {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `email=${email}`
+        body: `email=${email}&username=${username}`
     })
-    .then(response => response.text())
+    .then(response => {
+        if (response.status === 400) {
+            return response.text().then(text => { throw new Error(text); });
+        } else {
+            return response.text();
+        }
+    })
     .then(data => {
         showDialogue(data);
         otpStatus.innerHTML = '';
@@ -76,8 +112,8 @@ function sendOtp() {
         startCountdown();
     })
     .catch(error => {
+        otpStatus.innerHTML = `<span class="error-icon">❌</span> ${error.message}`;
         console.error('Error:', error);
-        otpStatus.innerHTML = '<span class="error-icon">❌</span>';
     });
 }
 

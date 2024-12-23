@@ -10,18 +10,19 @@
     <header>
         <div class="top-bar" id="topBar">
             <div class="left-section">
-                <div class="menu-icon" onclick="toggleMenu()">☰</div> <!-- Remove this line for smaller devices -->
+                <div class="menu-icon" onclick="toggleMenu()">☰</div>
                 <div class="page-title">Document Action Tracking System</div>
             </div>
             <div class="center-section">
                 <div class="datetime" id="datetime"></div>
-                <div class="username">{{ section_designation }} Section</div>
+                <div class="username">{{ section_designation }} SECTION</div>
             </div>
             <div class="icons-right" id="iconsRight">
                 <div class="search-icon" onclick="toggleSearch()">🔍</div>
                 <div class="notification-bell" onclick="toggleNotifications()">🔔</div>
-                <div class="print-icon" onclick="printPage()">🖨️</div>
+                <div class="print-icon" onclick="printSelectedDocument()">🖨️</div>
                 <div class="chat-icon" onclick="toggleChat()">💬</div>
+                <div class="help-icon" onclick="toggleHelp()">❓</div>
             </div>
             <div class="notifications" id="notifications">
                 <ul>
@@ -48,6 +49,12 @@
     </div>
     <div class="search-bar" id="searchBar">
         <input type="text" placeholder="Search...">
+        <select id="searchCategory">
+            <option value="tracking_no">Tracking No.</option>
+            <option value="document_type">Document Type</option>
+            <option value="subject">Subject</option>
+            <option value="receiving_office_section">Receiving Office/Section</option>
+        </select>
         <button onclick="performSearch()">Search</button>
     </div>
     <div class="chatbox" id="chatbox">
@@ -79,7 +86,7 @@
                 </thead>
                 <tbody>
                     {% for document in documents %}
-                    <tr>
+                    <tr onclick="selectRow(this)">
                         <td>{{ document.tracking_no }}</td>
                         <td>{{ document.document_type }}</td>
                         <td>{{ document.document_properties }}</td>
@@ -165,6 +172,57 @@
             </div>
         </div>
     </div>
+    <div class="help-modal" id="helpModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleHelp()">✖</span>
+            <h2>Help</h2>
+            <p>Republic Act No. 9485, also known as the Anti-Red Tape Act of 2007, aims to improve the efficiency of government services by reducing bureaucratic red tape, preventing graft and corruption, and providing penalties for violations.</p>
+        </div>
+    </div>
     <script src="/static/js/DTS_jvs.js"></script>
+    <script>
+        function toggleHelp() {
+            const helpModal = document.getElementById('helpModal');
+            helpModal.classList.toggle('open');
+        }
+        function selectRow(row) {
+            const selectedRow = document.querySelector('.selected-row');
+            if (selectedRow) {
+                selectedRow.classList.remove('selected-row');
+            }
+            row.classList.add('selected-row');
+        }
+        function printSelectedDocument() {
+            const selectedRow = document.querySelector('.selected-row');
+            if (!selectedRow) {
+                alert('Please select a document to print.');
+                return;
+            }
+
+            const trackingNo = selectedRow.querySelector('td:nth-child(1)').textContent.trim();
+            const documentType = selectedRow.querySelector('td:nth-child(2)').textContent.trim();
+            const documentProperties = selectedRow.querySelector('td:nth-child(3)').textContent.trim();
+            const subject = selectedRow.querySelector('td:nth-child(4)').textContent.trim();
+            const dateReleased = selectedRow.querySelector('td:nth-child(5)').textContent.trim();
+            const receivingOfficeSection = selectedRow.querySelector('td:nth-child(6)').textContent.trim();
+            const status = selectedRow.querySelector('td:nth-child(7)').textContent.trim();
+            const documentCategory = selectedRow.querySelector('td:nth-child(8)').textContent.trim();
+
+            const printWindow = window.open('', '', 'width=800,height=600');
+            printWindow.document.write('<html><head><title>Print Document</title></head><body>');
+            printWindow.document.write('<h2>Document Details</h2>');
+            printWindow.document.write(`<p><strong>Tracking No:</strong> ${trackingNo}</p>`);
+            printWindow.document.write(`<p><strong>Document Type:</strong> ${documentType}</p>`);
+            printWindow.document.write(`<p><strong>Document Properties:</strong> ${documentProperties}</p>`);
+            printWindow.document.write(`<p><strong>Subject:</strong> ${subject}</p>`);
+            printWindow.document.write(`<p><strong>Date Released:</strong> ${dateReleased}</p>`);
+            printWindow.document.write(`<p><strong>Receiving Office/Section:</strong> ${receivingOfficeSection}</p>`);
+            printWindow.document.write(`<p><strong>Status:</strong> ${status}</p>`);
+            printWindow.document.write(`<p><strong>Document Category:</strong> ${documentCategory}</p>`);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
 </body>
 </html>

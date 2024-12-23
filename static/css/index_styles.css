@@ -232,6 +232,23 @@ input {
     flex: 2;
 }
 
+select {
+    width: 100%;
+    padding: 0.5em; /* Reduced padding */
+    border: 1px solid #ccc;
+    border-radius: 0.3em;
+    box-sizing: border-box;
+    font-size: 1em; /* Reduced font size */
+    flex: 2;
+    background-color: white;
+    color: black;
+}
+
+select:hover {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 1);
+}
+
 .important-note {
     display: block;
     color: #ffcc00;
@@ -379,32 +396,32 @@ input {
 
 @keyframes l10 {
     0%    {box-shadow: 
-            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6,30px 0 #F4DD51, 0 0 #E3AAD6,
-            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6}
+            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #04db00,30px 0 #F4DD51, 0 0 #04db00,
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00}
     12.5% {box-shadow: 
-            0 0 #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6,30px 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #E3AAD6,
-            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6}
+            0 0 #F4DD51, calc(30px*0.707) calc(-30px*0.707) #04db00,30px 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #04db00,
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00}
     25%   {box-shadow: 
-            0 0 #F4DD51, 0 0 #E3AAD6,30px 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #E3AAD6,
-            0 30px #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6}
+            0 0 #F4DD51, 0 0 #04db00,30px 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #04db00,
+            0 30px #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00}
     37.5% {box-shadow: 
-            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #E3AAD6,
-            0 30px #F4DD51, calc(-30px*0.707) calc(30px*0.707) #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6}
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #04db00,
+            0 30px #F4DD51, calc(-30px*0.707) calc(30px*0.707) #04db00,0 0 #F4DD51, 0 0 #04db00}
     50%   {box-shadow: 
-            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6,
-            0 30px #F4DD51, calc(-30px*0.707) calc(30px*0.707) #E3AAD6,-30px 0 #F4DD51, 0 0 #E3AAD6}
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00,
+            0 30px #F4DD51, calc(-30px*0.707) calc(30px*0.707) #04db00,-30px 0 #F4DD51, 0 0 #04db00}
     62.5% {box-shadow: 
-            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6,
-            0 0 #F4DD51, calc(-30px*0.707) calc(30px*0.707) #E3AAD6,-30px 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #E3AAD6}
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00,
+            0 0 #F4DD51, calc(-30px*0.707) calc(30px*0.707) #04db00,-30px 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #04db00}
     75%   {box-shadow: 
-            0 -30px #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6,
-            0 0 #F4DD51, 0 0 #E3AAD6,-30px 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #E3AAD6}
+            0 -30px #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00,
+            0 0 #F4DD51, 0 0 #04db00,-30px 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #04db00}
     87.5% {box-shadow: 
-            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6,
-            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #E3AAD6}
+            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #04db00,0 0 #F4DD51, 0 0 #04db00,
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #04db00}
     100%  {box-shadow: 
-            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #E3AAD6,30px 0 #F4DD51, 0 0 #E3AAD6,
-            0 0 #F4DD51, 0 0 #E3AAD6,0 0 #F4DD51, 0 0 #E3AAD6}
+            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #04db00,30px 0 #F4DD51, 0 0 #04db00,
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00}
 }
 
 .loader-container {
@@ -421,6 +438,12 @@ input {
 .username-status {
     font-size: 0.9em;
     margin-bottom: 1.1em;
+    text-align: right;
+}
+
+.email-status {
+    font-size: 0.9em;
+    margin-top: 0.5em;
     text-align: right;
 }
 
