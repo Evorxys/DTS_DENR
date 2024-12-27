@@ -994,9 +994,30 @@ html::before {
 
 .icons-right div {
     margin-right: 10px; /* Added right margin */
+    position: relative; /* Added for tooltip positioning */
 }
 
-/* ...existing code... */
+.icons-right div:hover::after {
+    content: attr(data-tooltip); /* Use the data-tooltip attribute for the text */
+    position: absolute;
+    bottom: 100%; /* Position above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 12px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.icons-right div:hover::after {
+    opacity: 1;
+}
+
 .help-modal {
     display: none;
     position: fixed;
@@ -1055,4 +1076,10 @@ html::before {
     background-color: #108500 !important; /* Highlight color for selected row */
     color: white;
 }
+/* ...existing code... */
+
+.document-table tbody tr:hover {
+    cursor: pointer;
+}
+
 /* ...existing code... */

@@ -8,12 +8,14 @@ import smtplib
 import random
 import string
 import uuid  # Add this import for generating unique tracking numbers
+from itsdangerous import URLSafeSerializer  # Add this import for URL encryption
 
 # Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
+serializer = URLSafeSerializer(app.secret_key)  # Initialize the URLSafeSerializer
 
 # Database configuration
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -121,7 +123,8 @@ def login():
     if not user or user.password != password:
         return 'Invalid username or password', 400
 
-    return redirect(url_for('dts', username=username))
+    encrypted_username = serializer.dumps(username)  # Encrypt the username
+    return redirect(url_for('dts', username=encrypted_username))
 
 @app.route('/admin_dashboard')
 def admin_dashboard():
@@ -135,11 +138,11 @@ def create_account():
         section_designation = request.form['section']
         office = request.form['office']
         username = request.form['username']
-        password = request.form['password']
+        encrypted_password = request.form['encryptedPassword']
         gmail = request.form['email']
         otp = request.form['otp']
         
-        if not name or not position or not section_designation or not office or not username or not password or not gmail or not otp:
+        if not name or not position or not section_designation or not office or not username or not encrypted_password or not gmail or not otp:
             return 'All fields are required', 400
         
         # Check if the username already exists
@@ -156,7 +159,7 @@ def create_account():
         
         try:
             # Create a new user
-            new_user = OtherUser(name=name, position=position, section_designation=section_designation, office=office, username=username, password=password, gmail=gmail)
+            new_user = OtherUser(name=name, position=position, section_designation=section_designation, office=office, username=username, password=encrypted_password, gmail=gmail)
             db.session.add(new_user)
             db.session.commit()
             send_account_creation_email(gmail)  # Send account creation email
@@ -180,8 +183,6 @@ def send_otp_route():
     username = request.form['username']
     if OtherUser.query.filter_by(gmail=email).first():
         return 'Email already exists', 400
-    if OtherUser.query.filter_by(username=username).first():
-        return 'Username already exists', 400
     send_otp(email)
     return 'OTP sent. Please check your email', 200
 
@@ -195,7 +196,12 @@ def verify_otp_route():
 
 @app.route('/DTS.html')
 def dts():
-    username = request.args.get('username')
+    encrypted_username = request.args.get('username')
+    try:
+        username = serializer.loads(encrypted_username)  # Decrypt the username
+    except:
+        return 'Invalid username', 400
+
     user = OtherUser.query.filter_by(username=username).first()
     if user:
         section_designation = user.section_designation

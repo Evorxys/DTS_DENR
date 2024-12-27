@@ -18,11 +18,11 @@
                 <div class="username">{{ section_designation }} SECTION</div>
             </div>
             <div class="icons-right" id="iconsRight">
-                <div class="search-icon" onclick="toggleSearch()">🔍</div>
-                <div class="notification-bell" onclick="toggleNotifications()">🔔</div>
-                <div class="print-icon" onclick="printSelectedDocument()">🖨️</div>
-                <div class="chat-icon" onclick="toggleChat()">💬</div>
-                <div class="help-icon" onclick="toggleHelp()">❓</div>
+                <div class="search-icon" onclick="toggleSearch()" data-tooltip="Search">🔍</div>
+                <div class="notification-bell" onclick="toggleNotifications()" data-tooltip="Notifications">🔔</div>
+                <div class="print-icon" onclick="printSelectedDocument()" data-tooltip="Print">🖨️</div>
+                <div class="chat-icon" onclick="toggleChat()" data-tooltip="Chat">💬</div>
+                <div class="help-icon" onclick="toggleHelp()" data-tooltip="Help">❓</div>
             </div>
             <div class="notifications" id="notifications">
                 <ul>
@@ -109,6 +109,7 @@
         <button onclick="toggleNotifications()">🔔 Notifications</button>
         <button onclick="printPage()">🖨️ Print</button>
         <button onclick="toggleChat()">💬 Chat</button>
+        <button onclick="toggleHelp()">❓ Help</button> <!-- Added help icon -->
     </div>
     <div class="notifications-modal" id="notificationsModal" onclick="closeModal(event)">
         <div class="modal-content">
