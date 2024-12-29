@@ -16,9 +16,8 @@
             <div class="center-section">
                 <div class="datetime" id="datetime"></div>
                 <div class="username">{{ section_designation }} SECTION</div>
-                <!-- Add logout button for smaller screens -->
-                <div class="logout-button-small-screen">
-                    <a href="{{ url_for('index') }}" class="logout-button">Logout</a>
+                <div class="profile-button-small-screen">
+                    <button class="profile-button" onclick="toggleProfileModal()">👤</button>
                 </div>
             </div>
             <div class="icons-right" id="iconsRight">
@@ -47,7 +46,7 @@
             <li><a href="#">📄 All Docs</a></li>
         </ul>
         <div class="logout-trademark">
-            <a href="{{ url_for('index') }}" class="logout-button">Logout</a>
+            <a href="{{ url_for('index') }}" class="logout-button">Logout</a> <!-- Added logout button -->
             <div class="trademark">© 2024 DATS</div>
         </div>
     </div>
@@ -90,7 +89,7 @@
                 </thead>
                 <tbody>
                     {% for document in documents %}
-                    <tr onclick="selectRow(this)">
+                    <tr onclick="selectRow(this)" ondblclick="viewDocument('{{ document.tracking_no }}')">
                         <td>{{ document.tracking_no }}</td>
                         <td>{{ document.document_type }}</td>
                         <td>{{ document.document_properties }}</td>
@@ -184,6 +183,14 @@
             <p>Republic Act No. 9485, also known as the Anti-Red Tape Act of 2007, aims to improve the efficiency of government services by reducing bureaucratic red tape, preventing graft and corruption, and providing penalties for violations.</p>
         </div>
     </div>
+    <div class="profile-modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleProfileModal()">✖</span>
+            <h2>Profile Options</h2>
+            <button onclick="manageProfile()">Manage Profile</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </div>
     <script src="/static/js/DTS_jvs.js"></script>
     <script>
         function toggleHelp() {
@@ -227,6 +234,19 @@
             printWindow.document.write('</body></html>');
             printWindow.document.close();
             printWindow.print();
+        }
+
+        function toggleProfileModal() {
+            const profileModal = document.getElementById('profileModal');
+            profileModal.classList.toggle('open');
+        }
+
+        function logout() {
+            window.location.href = "{{ url_for('index') }}";
+        }
+
+        function manageProfile() {
+            alert('Manage Profile functionality is not implemented yet.');
         }
     </script>
 </body>

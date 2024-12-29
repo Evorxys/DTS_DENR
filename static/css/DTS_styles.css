@@ -166,7 +166,7 @@ body, header {
     margin-bottom: 5px;
     color: white;
     text-decoration: none;
-    background-color: #555;
+    background-color: #d9534f; /* Changed to red */
     padding: 10px 20px;
     font-size: 18px;
     border-radius: 5px;
@@ -174,7 +174,7 @@ body, header {
 }
 
 .sliding-menu .logout-button:hover {
-    background-color: #777;
+    background-color: #c9302c; /* Darker red on hover */
 }
 
 .notification-bell {
@@ -628,6 +628,89 @@ html::before {
     }
     .logout-button-small-screen .logout-button:hover {
         background-color: #777;
+    }
+    .profile-button-small-screen {
+        display: block;
+        margin-top: 10px;
+    }
+    .profile-button {
+        background-color: #555;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+    }
+    .profile-button:hover {
+        background-color: #777;
+    }
+    .profile-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #444; /* Changed background color */
+        color: white;
+        padding: 30px; /* Increased padding */
+        border-radius: 15px; /* Increased border radius */
+        width: 300px; /* Increased width */
+        max-height: 80%;
+        overflow: hidden; /* Remove scrollbar */
+        z-index: 1000;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Increased shadow */
+        animation: fadeIn 0.5s;
+    }
+    .profile-modal.open {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .profile-modal .modal-content {
+        position: relative;
+        width: 100%;
+        text-align: center; /* Centered text */
+    }
+    .profile-modal .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 20px;
+        color: white;
+    }
+    .profile-modal h2 {
+        margin-bottom: 20px; /* Added margin */
+        font-size: 24px; /* Increased font size */
+        color: #ffcc00; /* Changed color */
+    }
+    .profile-modal button {
+        width: 100%; /* Make buttons full width */
+        margin-top: 10px; /* Increased margin */
+        padding: 10px 20px; /* Increased padding */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px; /* Increased font size */
+        transition: background-color 0.3s; /* Added transition */
+    }
+    .profile-modal .logout-button {
+        background-color: #d9534f; /* Red color for logout */
+        color: white;
+    }
+    .profile-modal .logout-button:hover {
+        background-color: #c9302c;
+    }
+    .profile-modal .manage-profile-button {
+        background-color: #5bc0de; /* Blue color for manage profile */
+        color: white;
+    }
+    .profile-modal .manage-profile-button:hover {
+        background-color: #31b0d5;
     }
 }
 
@@ -1105,6 +1188,10 @@ html::before {
     display: none;
 }
 
+.profile-button-small-screen {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .logout-button-small-screen {
         display: block;
@@ -1123,5 +1210,97 @@ html::before {
     .logout-button-small-screen .logout-button:hover {
         background-color: #777;
     }
+    .profile-button-small-screen {
+        display: block;
+        margin-top: 10px;
+    }
+    .profile-button {
+        background-color: #555;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+    }
+    .profile-button:hover {
+        background-color: #777;
+    }
 }
-/* ...existing code... */
+
+.profile-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #444; /* Changed background color */
+    color: white;
+    padding: 30px; /* Increased padding */
+    border-radius: 15px; /* Increased border radius */
+    width: 300px; /* Increased width */
+    max-height: 80%;
+    overflow: hidden; /* Remove scrollbar */
+    z-index: 1000;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Increased shadow */
+    animation: fadeIn 0.5s;
+}
+
+.profile-modal.open {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-modal .modal-content {
+    position: relative;
+    width: 100%;
+    text-align: center; /* Centered text */
+}
+
+.profile-modal .close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+}
+
+.profile-modal h2 {
+    margin-bottom: 20px; /* Added margin */
+    font-size: 24px; /* Increased font size */
+    color: #ffcc00; /* Changed color */
+}
+
+.profile-modal button {
+    width: 100%; /* Make buttons full width */
+    margin-top: 10px; /* Increased margin */
+    padding: 10px 20px; /* Increased padding */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; /* Increased font size */
+    transition: background-color 0.3s; /* Added transition */
+}
+
+.profile-modal .logout-button {
+    background-color: #d9534f; /* Red color for logout */
+    color: white;
+}
+
+.profile-modal .logout-button:hover {
+    background-color: #c9302c;
+}
+
+.profile-modal .manage-profile-button {
+    background-color: #5bc0de; /* Blue color for manage profile */
+    color: white;
+}
+
+.profile-modal .manage-profile-button:hover {
+    background-color: #31b0d5;
+}
