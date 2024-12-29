@@ -177,7 +177,7 @@ def create_account():
             flash('You took too long in creating the account, please refresh the page')
             return redirect(url_for('create_account'))
         
-        return redirect(url_for('index'))
+        return render_template('index.html', success_message='Account created successfully!')
     
     return render_template('index.html')
 

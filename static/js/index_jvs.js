@@ -205,6 +205,16 @@ function closeDialogue() {
     dialogue.classList.remove('show');
 }
 
+function showSuccessModal() {
+    const successModal = document.getElementById('successModal');
+    successModal.classList.add('show');
+}
+
+function closeSuccessModal() {
+    const successModal = document.getElementById('successModal');
+    successModal.classList.remove('show');
+}
+
 window.onclick = function(event) {
     const modal = document.getElementById('createAccountModal');
     if (event.target == modal) {

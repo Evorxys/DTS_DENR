@@ -93,6 +93,10 @@
         <p id="dialogue-message"></p>
         <button onclick="closeDialogue()">OK</button>
     </div>
+    <div id="successModal" class="dialogue">
+        <p id="success-message">Account created successfully!</p>
+        <button onclick="closeSuccessModal()">OK</button>
+    </div>
     <script src="/static/js/index_jvs.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
     <script>
@@ -118,6 +122,20 @@
             if (errorMessage) {
                 showDialogue(errorMessage);
             }
+            const successMessage = "{{ success_message }}";
+            if (successMessage) {
+                showSuccessModal();
+            }
+        }
+
+        function showSuccessModal() {
+            const successModal = document.getElementById('successModal');
+            successModal.classList.add('show');
+        }
+
+        function closeSuccessModal() {
+            const successModal = document.getElementById('successModal');
+            successModal.classList.remove('show');
         }
     </script>
     <footer class="footer">

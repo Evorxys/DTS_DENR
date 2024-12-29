@@ -354,19 +354,19 @@ select:hover {
     transform: translate(-50%, -50%);
     background-color: #333;
     color: white;
-    padding: 40px; /* Increased padding */
+    padding: 20px; /* Reduced padding */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 2000;
     display: none;
     text-align: center;
-    width: 80%; /* Increased width */
-    max-width: 800px; /* Increased max-width */
+    width: 60%; /* Reduced width */
+    max-width: 400px; /* Reduced max-width */
     height: auto; /* Adjust height */
-    max-height: 80%; /* Increased max-height */
+    max-height: 60%; /* Reduced max-height */
     overflow-y: auto; /* Enable scrolling if content overflows */
     border: 2px solid #888; /* Added border */
-    font-size: 1.5em; /* Increased font size */
+    font-size: 1em; /* Reduced font size */
 }
 
 .dialogue.show {
@@ -381,7 +381,7 @@ select:hover {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
-    font-size: 1.2em; /* Increased font size */
+    font-size: 1em; /* Reduced font size */
 }
 
 .dialogue button:hover {
@@ -469,7 +469,7 @@ select:hover {
     .modal-content {
         width: 90%;
         padding: 10px;
-        max-width: 400px; /* Further reduced max-width */
+        max-width: 350px; /* Further reduced max-width */
     }
     .modal-content input, .modal-content button {
         font-size: 18px;
