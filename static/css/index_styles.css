@@ -183,12 +183,14 @@ body::before {
     padding: 10px; /* Reduced padding */
     border: 2px solid #888; /* Added border */
     border-radius: 10px;
-    width: 90%; /* Reduced modal content width */
-    max-width: 600px;
+    width: 80%; /* Reduced modal content width */
+    max-width: 500px; /* Reduced max-width */
+    max-height: 80%; /* Reduced max-height */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     color: white;
     font-size: 0.9em; /* Reduced font size */
+    overflow-y: auto; /* Enable scrolling if content overflows */
 }
 
 .close {
@@ -467,6 +469,7 @@ select:hover {
     .modal-content {
         width: 90%;
         padding: 10px;
+        max-width: 400px; /* Further reduced max-width */
     }
     .modal-content input, .modal-content button {
         font-size: 18px;

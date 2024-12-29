@@ -1,6 +1,6 @@
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    const username = document.getElementById('username').value;
+    const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('password').value;
     const loginLoaderContainer = document.getElementById('loginLoaderContainer');
 
@@ -28,7 +28,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     });
 });
 
-document.getElementById('username').addEventListener('input', function() {
+document.getElementById('loginUsername').addEventListener('input', function() {
     document.getElementById('display-username').textContent = this.value;
 });
 
@@ -46,6 +46,12 @@ let otpValid = false;
 function checkEmail() {
     const email = document.getElementById('email').value;
     const emailStatus = document.getElementById('email-status');
+
+    if (!validateEmail(email)) {
+        emailStatus.innerHTML = '❌ Invalid email format';
+        emailStatus.style.color = 'red';
+        return;
+    }
 
     fetch('/check_email', {
         method: 'POST',
@@ -70,11 +76,16 @@ function checkEmail() {
     });
 }
 
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
 document.getElementById('email').addEventListener('input', checkEmail);
 
 function sendOtp() {
     const email = document.getElementById('email').value;
-    const username = document.getElementById('username').value;
+    const username = document.getElementById('createUsername').value;
     const otpStatus = document.getElementById('otp-status');
     const otpInput = document.getElementById('otp');
     const sendOtpButton = document.getElementById('sendOtpButton');
@@ -83,6 +94,11 @@ function sendOtp() {
     if (!email || !username) {
         showDialogue('Email and Username are required');
         otpStatus.innerHTML = '';
+        return;
+    }
+    if (!validateEmail(email)) {
+        otpStatus.innerHTML = '❌ Invalid email format';
+        otpStatus.style.color = 'red';
         return;
     }
     fetch('/send_otp', {
@@ -196,39 +212,34 @@ window.onclick = function(event) {
     }
 }
 
-let usernameCheckTimeout;
-
 function checkUsername() {
-    clearTimeout(usernameCheckTimeout);
-    usernameCheckTimeout = setTimeout(() => {
-        const username = document.getElementById('username').value;
-        const usernameStatus = document.getElementById('username-status');
+    const username = document.getElementById('createUsername').value;
+    const usernameStatus = document.getElementById('username-status');
 
-        fetch('/check_username', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `username=${username}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.exists) {
-                usernameStatus.innerHTML = '❌ Username taken. Please use another one';
-                usernameStatus.style.color = 'red';
-            } else {
-                usernameStatus.innerHTML = '✅ Username available';
-                usernameStatus.style.color = 'green';
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            usernameStatus.innerHTML = '';
-        });
-    }, 1000);
+    fetch('/check_username', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `username=${username}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.exists) {
+            usernameStatus.innerHTML = '❌ Username already exists';
+            usernameStatus.style.color = 'red';
+        } else {
+            usernameStatus.innerHTML = '✅ Username available';
+            usernameStatus.style.color = 'green';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        usernameStatus.innerHTML = '';
+    });
 }
 
-setInterval(checkUsername, 1000);
+document.getElementById('createUsername').addEventListener('input', checkUsername);
 
 document.getElementById('createAccountForm').addEventListener('submit', function(event) {
     const otpInput = document.getElementById('otp');

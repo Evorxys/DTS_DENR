@@ -157,7 +157,7 @@ def create_account():
         
         # Check if the username already exists
         if OtherUser.query.filter_by(username=username).first():
-            return 'Username already exists. Please use another username', 400
+            return render_template('index.html', error_message='Username already exists. Please use another username')
         
         # Check if the user already exists
         if OtherUser.query.filter_by(gmail=gmail).first():
