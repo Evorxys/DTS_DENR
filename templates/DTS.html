@@ -16,6 +16,10 @@
             <div class="center-section">
                 <div class="datetime" id="datetime"></div>
                 <div class="username">{{ section_designation }} SECTION</div>
+                <!-- Add logout button for smaller screens -->
+                <div class="logout-button-small-screen">
+                    <a href="{{ url_for('index') }}" class="logout-button">Logout</a>
+                </div>
             </div>
             <div class="icons-right" id="iconsRight">
                 <div class="search-icon" onclick="toggleSearch()" data-tooltip="Search">🔍</div>

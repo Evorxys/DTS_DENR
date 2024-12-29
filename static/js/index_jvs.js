@@ -2,7 +2,6 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     event.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-    const encryptedPassword = CryptoJS.SHA256(password).toString();
     const loginLoaderContainer = document.getElementById('loginLoaderContainer');
 
     loginLoaderContainer.style.display = 'flex';
@@ -12,7 +11,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `username=${username}&encryptedPassword=${encryptedPassword}`
+        body: `username=${username}&password=${password}` // Send plain password
     })
     .then(response => {
         if (response.status === 400) {
@@ -237,10 +236,6 @@ document.getElementById('createAccountForm').addEventListener('submit', function
         event.preventDefault();
         showDialogue('Please verify your email address first by entering the OTP sent to your email.');
     } else {
-        const passwordInput = document.getElementById('password');
-        const encryptedPasswordInput = document.getElementById('encryptedPassword');
-        const encryptedPassword = CryptoJS.SHA256(passwordInput.value).toString();
-        encryptedPasswordInput.value = encryptedPassword;
-        passwordInput.disabled = true; // Disable the plain password input to avoid sending it
+        // Remove password encryption
     }
 });

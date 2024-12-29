@@ -612,6 +612,23 @@ html::before {
     .floating-menu button:hover {
         background-color: #777;
     }
+    .logout-button-small-screen {
+        display: block;
+        margin-top: 10px;
+    }
+    .logout-button-small-screen .logout-button {
+        background-color: #555;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+        font-size: 18px;
+    }
+    .logout-button-small-screen .logout-button:hover {
+        background-color: #777;
+    }
 }
 
 .notifications-modal {
@@ -1082,4 +1099,29 @@ html::before {
     cursor: pointer;
 }
 
+/* ...existing code... */
+
+.logout-button-small-screen {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .logout-button-small-screen {
+        display: block;
+        margin-top: 10px;
+    }
+    .logout-button-small-screen .logout-button {
+        background-color: #555;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+        font-size: 18px;
+    }
+    .logout-button-small-screen .logout-button:hover {
+        background-color: #777;
+    }
+}
 /* ...existing code... */

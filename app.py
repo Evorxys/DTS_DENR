@@ -9,6 +9,7 @@ import random
 import string
 import uuid  # Add this import for generating unique tracking numbers
 from itsdangerous import URLSafeSerializer  # Add this import for URL encryption
+from flask_bcrypt import Bcrypt  # Add this import for password hashing
 
 # Load environment variables from .env file
 load_dotenv()
@@ -16,6 +17,7 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 serializer = URLSafeSerializer(app.secret_key)  # Initialize the URLSafeSerializer
+bcrypt = Bcrypt(app)  # Initialize Bcrypt
 
 # Database configuration
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -115,16 +117,24 @@ def login():
 
     # Check if the user exists in the admin_users table
     admin_user = AdminUser.query.filter_by(username=username).first()
-    if admin_user and admin_user.password == password:
-        return redirect(url_for('admin_dashboard'))
+    if admin_user:
+        try:
+            if bcrypt.check_password_hash(admin_user.password, password):
+                return redirect(url_for('admin_dashboard'))
+        except ValueError:
+            return 'Invalid password format', 400
 
     # Check if the user exists in the other_users table
     user = OtherUser.query.filter_by(username=username).first()
-    if not user or user.password != password:
-        return 'Invalid username or password', 400
+    if user:
+        try:
+            if bcrypt.check_password_hash(user.password, password):
+                encrypted_username = serializer.dumps(username)  # Encrypt the username
+                return redirect(url_for('dts', username=encrypted_username))
+        except ValueError:
+            return 'Invalid password format', 400
 
-    encrypted_username = serializer.dumps(username)  # Encrypt the username
-    return redirect(url_for('dts', username=encrypted_username))
+    return 'Invalid username or password', 400
 
 @app.route('/admin_dashboard')
 def admin_dashboard():
@@ -138,7 +148,7 @@ def create_account():
         section_designation = request.form['section']
         office = request.form['office']
         username = request.form['username']
-        encrypted_password = request.form['encryptedPassword']
+        encrypted_password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
         gmail = request.form['email']
         otp = request.form['otp']
         
