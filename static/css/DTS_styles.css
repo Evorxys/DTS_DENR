@@ -430,7 +430,7 @@ body, header {
     background-color: #777;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 600px) { /* Mobile View */
     .content {
         overflow-x: auto;
     }
@@ -462,46 +462,6 @@ body, header {
         padding: 10px;
         font-size: 20px;
     }
-    .floating-button {
-        display: flex;
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #007BFF;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 10;
-        transition: transform 0.3s ease, background-color 0.3s ease;
-    }
-
-    .floating-button.open {
-        transform: rotate(45deg);
-        background-color: red; /* Change color to red when open */
-    }
-
-    .floating-menu.open {
-        display: block;
-    }
-    .floating-menu button {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        background-color: #555;
-        color: white;
-        border: none;
-        cursor: pointer;
-        text-align: left;
-    }
-    .floating-menu button:hover {
-        background-color: #777;
-    }
     .chatbox {
         top: 50%;
         left: 50%;
@@ -518,7 +478,7 @@ body, header {
     }
 }
 
-@media (min-width: 601px) and (max-width: 1024px) {
+@media (min-width: 601px) and (max-width: 1024px) { /* Tablet View */
 
     body {
         font-size: 16px;
@@ -528,7 +488,7 @@ body, header {
     }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 1025px) { /* Large Desktop View */
 
     body {
         font-size: 18px;
@@ -562,6 +522,9 @@ html::before {
 }
 @media (max-width: 768px) {
     .icons-right {
+        display: none;
+    }
+    .menu-icon {
         display: none;
     }
     .floating-button {
@@ -809,6 +772,25 @@ html::before {
 
     .documents-modal .modal-content button:hover {
         background-color: #777;
+    }
+
+    .content {
+        padding-bottom: 80px; /* Add bottom padding to ensure contents are viewed properly */
+    }
+}
+
+@media (min-width: 769px) {
+    .bottom-nav, .documents-modal {
+        display: none;
+    }
+    .content {
+        padding-bottom: 100px;
+    }
+    .profile-modal {
+        display: none; /* Hide profile options modal on desktop view */
+    }
+    .profile-button-small-screen {
+        display: none; /* Hide profile button on larger screen devices */
     }
 }
 
@@ -1093,64 +1075,12 @@ html::before {
     font-size: 24px;
 }
 
-.floating-button {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: transform 0.3s ease;
-}
-
-.floating-button.open {
-    transform: rotate(45deg);
-}
-
-.floating-menu {
-    display: none;
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    background-color: #333;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    z-index: 10;
-    transition: transform 0.3s ease;
-}
-
-.floating-menu.open {
-    display: block;
-}
-
-.floating-menu button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #555;
-    color: white;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    transition: transform 0.3s ease;
-}
-
-.floating-menu button:hover {
-    background-color: #777;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 768px) { /* Mobile View */
     .icons-right {
         display: none;
+    }
+    .menu-icon {
+        display: none; /* Hide the menu icon on smaller screens */
     }
     .floating-button {
         display: flex;
@@ -1161,6 +1091,8 @@ html::before {
         align-items: center;
         position: fixed;
         bottom: 0;
+        left: 0;
+        right: 0;
         width: 100%;
         background-color: #333;
         padding: 10px 0;
@@ -1249,6 +1181,10 @@ html::before {
     .documents-modal .modal-content button:hover {
         background-color: #777;
     }
+
+    .content {
+        padding-bottom: 80px; /* Add bottom padding to ensure contents are viewed properly */
+    }
 }
 
 .animate {
@@ -1282,32 +1218,6 @@ html::before {
     to {
         transform: translateY(0) translateX(-50%);
     }
-}
-
-.icons-right div {
-    margin-right: 10px; /* Added right margin */
-    position: relative; /* Added for tooltip positioning */
-}
-
-.icons-right div:hover::after {
-    content: attr(data-tooltip); /* Use the data-tooltip attribute for the text */
-    position: absolute;
-    bottom: 100%; /* Position above the icon */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #333;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    white-space: nowrap;
-    font-size: 12px;
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.icons-right div:hover::after {
-    opacity: 1;
 }
 
 .help-modal {
@@ -1363,12 +1273,10 @@ html::before {
     padding: 20px;
 }
 
-/* ...existing code... */
 .selected-row {
-    background-color: #108500 !important; /* Highlight color for selected row */
+    background-color: #108500 !important;
     color: white;
 }
-/* ...existing code... */
 
 .document-table tbody tr:hover {
     cursor: pointer;
@@ -1376,130 +1284,58 @@ html::before {
 
 /* ...existing code... */
 
-.logout-button-small-screen {
-    display: none;
-}
-
-.profile-button-small-screen {
-    display: none;
-    position: fixed; /* Changed to fixed */
-    bottom: 20px; /* Aligned with the plus icon */
-    right: 80px; /* Positioned to the left of the plus icon */
-    z-index: 11; /* Ensure it floats above other elements */
-}
-
-@media (max-width: 768px) {
-    .logout-button-small-screen {
-        display: block;
-        margin-top: 10px;
-    }
-    .logout-button-small-screen .logout-button {
-        background-color: #555;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-align: center;
-        display: block;
-        text-decoration: none;
-        font-size: 18px;
-    }
-    .logout-button-small-screen .logout-button:hover {
-        background-color: #777;
-    }
-    .profile-button-small-screen {
-        display: block;
-        position: fixed; /* Changed to fixed */
-        bottom: 20px; /* Aligned with the plus icon */
-        right: 80px; /* Positioned to the left of the plus icon */
-        z-index: 11; /* Ensure it floats above other elements */
-    }
-    .profile-button {
-        background-color: white; /* Changed background color to white */
-        color: black; /* Changed text color to black */
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-align: center;
-        display: block;
-        text-decoration: none;
-        font-size: 18px;
-        border: none;
-        cursor: pointer;
-    }
-    .profile-button:hover {
-        background-color: #f0f0f0; /* Slightly darker shade on hover */
-    }
-}
-
-.profile-modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #444; /* Changed background color */
-    color: white;
-    padding: 30px; /* Increased padding */
-    border-radius: 15px; /* Increased border radius */
-    width: 300px; /* Increased width */
-    max-height: 80%;
-    overflow: hidden; /* Remove scrollbar */
-    z-index: 1000;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Increased shadow */
-    animation: fadeIn 0.5s;
-}
-
-.profile-modal.open {
+.pagination {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    margin-top: 20px;
 }
 
-.profile-modal .modal-content {
-    position: relative;
-    width: 100%;
-    text-align: center; /* Centered text */
-}
-
-.profile-modal .close-modal {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 20px;
+.pagination button {
+    background-color: #007BFF;
     color: white;
-}
-
-.profile-modal h2 {
-    margin-bottom: 20px; /* Added margin */
-    font-size: 24px; /* Increased font size */
-    color: #ffcc00; /* Changed color */
-}
-
-.profile-modal button {
-    width: 100%; /* Make buttons full width */
-    margin-top: 10px; /* Increased margin */
-    padding: 10px 20px; /* Increased padding */
     border: none;
-    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 0 5px;
     cursor: pointer;
-    font-size: 16px; /* Increased font size */
-    transition: background-color 0.3s; /* Added transition */
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
-.profile-modal .logout-button {
-    background-color: #d9534f; /* Red color for logout */
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.pagination .current-page {
+    font-size: 16px;
+    margin: 0 5px;
+    font-weight: bold;
+    color: #007BFF;
+}
+
+.pagination .page-number {
+    background-color: #007BFF;
     color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
-.profile-modal .logout-button:hover {
-    background-color: #c9302c;
+.pagination .page-number.active {
+    background-color: #0056b3;
+    font-weight: bold;
 }
 
-.profile-modal .manage-profile-button {
-    background-color: #5bc0de; /* Blue color for manage profile */
-    color: white;
+.pagination .page-number:hover:not(.active) {
+    background-color: #0056b3;
 }
 
-.profile-modal .manage-profile-button:hover {
-    background-color: #31b0d5;
-}
+/* ...existing code... */

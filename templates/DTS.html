@@ -46,7 +46,7 @@
             <li><a href="#">📄 All Docs</a></li>
         </ul>
         <div class="logout-trademark">
-            <a href="{{ url_for('index') }}" class="logout-button">Logout</a> <!-- Added logout button -->
+            <a href="{{ url_for('index') }}" class="logout-button">Logout</a>
             <div class="trademark">© 2024 DATS</div>
         </div>
     </div>
@@ -103,6 +103,11 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <div class="pagination">
+                <button onclick="prevPage()" id="prevButton">Previous</button>
+                <span id="pageNumbers"></span>
+                <button onclick="nextPage()" id="nextButton">Next</button>
+            </div>
         </div>
     <div class="notifications-modal" id="notificationsModal" onclick="closeModal(event)">
         <div class="modal-content">

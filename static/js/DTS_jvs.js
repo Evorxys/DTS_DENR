@@ -294,3 +294,98 @@ function checkScreenSize() {
 
 window.addEventListener('resize', checkScreenSize);
 document.addEventListener('DOMContentLoaded', checkScreenSize);
+
+function toggleDocumentsModal() {
+    const modal = document.getElementById('documentsModal');
+    modal.classList.toggle('open');
+}
+
+function toggleIncomingDocuments() {
+    // Implement the logic to show incoming documents
+    toggleDocumentsModal(); // Close the document modal
+}
+
+function toggleOutgoingDocuments() {
+    // Implement the logic to show outgoing documents
+    toggleDocumentsModal(); // Close the document modal
+}
+
+function toggleOnProcessDocuments() {
+    // Implement the logic to show on process documents
+    toggleDocumentsModal(); // Close the document modal
+}
+
+function toggleAllDocuments() {
+    // Implement the logic to show all documents
+    toggleDocumentsModal(); // Close the document modal
+}
+
+document.querySelectorAll('#documentsModal button').forEach(button => {
+    button.addEventListener('click', toggleDocumentsModal);
+});
+
+let currentPage = 1;
+const rowsPerPage = 2;
+
+function updatePagination() {
+    const rows = document.querySelectorAll('#documentTable tbody tr');
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    const pageNumbers = document.getElementById('pageNumbers');
+
+    prevButton.disabled = currentPage === 1;
+    nextButton.disabled = currentPage === totalPages;
+
+    pageNumbers.innerHTML = '';
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, currentPage + 2);
+
+    if (endPage - startPage < 4) {
+        if (startPage === 1) {
+            endPage = Math.min(totalPages, startPage + 4);
+        } else if (endPage === totalPages) {
+            startPage = Math.max(1, endPage - 4);
+        }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        const pageNumber = document.createElement('button');
+        pageNumber.textContent = i;
+        pageNumber.classList.add('page-number');
+        if (i === currentPage) {
+            pageNumber.classList.add('active');
+        }
+        pageNumber.addEventListener('click', () => goToPage(i));
+        pageNumbers.appendChild(pageNumber);
+    }
+
+    rows.forEach((row, index) => {
+        row.style.display = (index >= (currentPage - 1) * rowsPerPage && index < currentPage * rowsPerPage) ? '' : 'none';
+    });
+}
+
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        updatePagination();
+    }
+}
+
+function nextPage() {
+    const rows = document.querySelectorAll('#documentTable tbody tr');
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+    if (currentPage < totalPages) {
+        currentPage++;
+        updatePagination();
+    }
+}
+
+function goToPage(page) {
+    currentPage = page;
+    updatePagination();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updatePagination();
+});
