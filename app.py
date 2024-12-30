@@ -7,9 +7,9 @@ import os
 import smtplib
 import random
 import string
-import uuid  # Add this import for generating unique tracking numbers
-from itsdangerous import URLSafeSerializer  # Add this import for URL encryption
-from flask_bcrypt import Bcrypt  # Add this import for password hashing
+import uuid  #generating unique tracking numbers
+from itsdangerous import URLSafeSerializer  #URL encryption
+from flask_bcrypt import Bcrypt  #password hashing
 
 # Load environment variables from .env file
 load_dotenv()

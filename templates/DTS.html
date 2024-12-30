@@ -104,16 +104,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <button class="floating-button" onclick="toggleFloatingMenu()">+</button>
-    <div class="floating-menu" id="floatingMenu">
-        <button onclick="toggleNewDocumentModal()">➕ New Document</button>
-        <button onclick="toggleSearch()">🔍 Search</button>
-        <button onclick="toggleNotifications()">🔔 Notifications</button>
-        <button onclick="printPage()">🖨️ Print</button>
-        <button onclick="toggleChat()">💬 Chat</button>
-        <button onclick="toggleHelp()">❓ Help</button> <!-- Added help icon -->
-    </div>
     <div class="notifications-modal" id="notificationsModal" onclick="closeModal(event)">
         <div class="modal-content">
             <span class="close-modal" onclick="toggleNotificationsModal()">✖</span>
@@ -191,6 +181,45 @@
             <button onclick="logout()">Logout</button>
         </div>
     </div>
+
+    <div class="bottom-nav">
+        <button onclick="toggleDocumentsModal()" class="nav-icon">
+            📄
+            <span>Documents</span>
+        </button>
+        <button onclick="toggleSearch()" class="nav-icon">
+            🔍
+            <span>Search</span>
+        </button>
+        <button onclick="toggleNotifications()" class="nav-icon">
+            🔔
+            <span>Notifications</span>
+        </button>
+        <button onclick="toggleHelp()" class="nav-icon">
+            ❓
+            <span>Help</span>
+        </button>
+        <button onclick="toggleChat()" class="nav-icon">
+            💬
+            <span>Chat</span>
+        </button>
+        <button onclick="toggleProfileModal()" class="nav-icon">
+            👤
+            <span>Profile</span>
+        </button>
+    </div>
+
+    <div class="documents-modal" id="documentsModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleDocumentsModal()">✖</span>
+            <button onclick="toggleNewDocumentModal()">➕ New Document</button>
+            <button onclick="toggleIncomingDocuments()">⬇️ Incoming</button>
+            <button onclick="toggleOutgoingDocuments()">⬆️ Outgoing</button>
+            <button onclick="toggleOnProcessDocuments()">🔃 On Process</button>
+            <button onclick="toggleAllDocuments()">📄 All Docs</button>
+        </div>
+    </div>
+
     <script src="/static/js/DTS_jvs.js"></script>
     <script>
         function toggleHelp() {
@@ -247,6 +276,27 @@
 
         function manageProfile() {
             alert('Manage Profile functionality is not implemented yet.');
+        }
+
+        function toggleDocumentsModal() {
+            const modal = document.getElementById('documentsModal');
+            modal.classList.toggle('open');
+        }
+
+        function toggleIncomingDocuments() {
+            // Implement the logic to show incoming documents
+        }
+
+        function toggleOutgoingDocuments() {
+            // Implement the logic to show outgoing documents
+        }
+
+        function toggleOnProcessDocuments() {
+            // Implement the logic to show on process documents
+        }
+
+        function toggleAllDocuments() {
+            // Implement the logic to show all documents
         }
     </script>
 </body>

@@ -716,6 +716,100 @@ html::before {
     .profile-modal .manage-profile-button:hover {
         background-color: #31b0d5;
     }
+    .bottom-nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #333;
+        padding: 10px 0;
+        z-index: 1000;
+        flex-wrap: wrap; /* Allow wrapping */
+    }
+
+    .bottom-nav button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px; /* Reduced font size */
+        cursor: pointer;
+        transition: color 0.3s;
+        flex: 1 1 20%; /* Ensure buttons take equal space and wrap */
+        max-width: 20%; /* Ensure buttons do not exceed 20% width */
+    }
+
+    .bottom-nav button:hover {
+        color: #007BFF;
+    }
+
+    .bottom-nav .nav-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bottom-nav .nav-icon span {
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .bottom-nav .nav-icon:nth-child(4) {
+        display: none; /* Hide the print button */
+    }
+
+    .documents-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .documents-modal.open {
+        display: flex;
+    }
+
+    .documents-modal .modal-content {
+        background-color: #333;
+        color: white;
+        padding-top: 40px;
+        border-radius: 10px;
+        max-width: 300px;
+        max-height: 80%;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .documents-modal .close-modal {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        cursor: pointer;
+        font-size: 24px;
+    }
+
+    .documents-modal .modal-content button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #555;
+        color: white;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        transition: background-color 0.3s;
+        margin-top: 10px;
+    }
+
+    .documents-modal .modal-content button:hover {
+        background-color: #777;
+    }
 }
 
 .notifications-modal {
@@ -1060,6 +1154,100 @@ html::before {
     }
     .floating-button {
         display: flex;
+    }
+    .bottom-nav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #333;
+        padding: 10px 0;
+        z-index: 1000;
+        flex-wrap: wrap; /* Allow wrapping */
+    }
+
+    .bottom-nav button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px; /* Reduced font size */
+        cursor: pointer;
+        transition: color 0.3s;
+        flex: 1 1 20%; /* Ensure buttons take equal space and wrap */
+        max-width: 20%; /* Ensure buttons do not exceed 20% width */
+    }
+
+    .bottom-nav button:hover {
+        color: #007BFF;
+    }
+
+    .bottom-nav .nav-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .bottom-nav .nav-icon span {
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .bottom-nav .nav-icon:nth-child(4) {
+        display: none; /* Hide the print button */
+    }
+
+    .documents-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .documents-modal.open {
+        display: flex;
+    }
+
+    .documents-modal .modal-content {
+        background-color: #333;
+        color: white;
+        padding-top: 40px;
+        border-radius: 10px;
+        max-width: 300px;
+        max-height: 80%;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .documents-modal .close-modal {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        cursor: pointer;
+        font-size: 24px;
+    }
+
+    .documents-modal .modal-content button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #555;
+        color: white;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        transition: background-color 0.3s;
+        margin-top: 10px;
+    }
+
+    .documents-modal .modal-content button:hover {
+        background-color: #777;
     }
 }
 
