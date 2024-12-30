@@ -10,15 +10,15 @@
     <header>
         <div class="top-bar" id="topBar">
             <div class="left-section">
+                <div class="profile-button-small-screen">
+                    <button class="profile-button" onclick="toggleProfileModal()">👤</button>
+                </div>
                 <div class="menu-icon" onclick="toggleMenu()">☰</div>
                 <div class="page-title">Document Action Tracking System</div>
             </div>
             <div class="center-section">
                 <div class="datetime" id="datetime"></div>
                 <div class="username">{{ section_designation }} SECTION</div>
-                <div class="profile-button-small-screen">
-                    <button class="profile-button" onclick="toggleProfileModal()">👤</button>
-                </div>
             </div>
             <div class="icons-right" id="iconsRight">
                 <div class="search-icon" onclick="toggleSearch()" data-tooltip="Search">🔍</div>
