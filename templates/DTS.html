@@ -104,9 +104,11 @@
                 </tbody>
             </table>
             <div class="pagination">
-                <button onclick="prevPage()" id="prevButton">Previous</button>
+                <button onclick="firstPage()" id="firstButton">|<</button>
+                <button onclick="prevPage()" id="prevButton"><</button>
                 <span id="pageNumbers"></span>
-                <button onclick="nextPage()" id="nextButton">Next</button>
+                <button onclick="nextPage()" id="nextButton">></button>
+                <button onclick="lastPage()" id="lastButton">>|</button>
             </div>
         </div>
     <div class="notifications-modal" id="notificationsModal" onclick="closeModal(event)">

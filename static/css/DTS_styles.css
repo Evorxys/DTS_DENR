@@ -1338,4 +1338,18 @@ html::before {
     background-color: #0056b3;
 }
 
+@media (max-width: 600px) {
+    .pagination {
+        flex-wrap: wrap;
+    }
+    .pagination button, .pagination .page-number {
+        padding: 10px 15px;
+        font-size: 16px;
+        margin: 2px;
+    }
+    .pagination .current-page {
+        font-size: 16px;
+    }
+}
+
 /* ...existing code... */

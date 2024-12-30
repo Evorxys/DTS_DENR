@@ -332,10 +332,14 @@ function updatePagination() {
     const totalPages = Math.ceil(rows.length / rowsPerPage);
     const prevButton = document.getElementById('prevButton');
     const nextButton = document.getElementById('nextButton');
+    const firstButton = document.getElementById('firstButton');
+    const lastButton = document.getElementById('lastButton');
     const pageNumbers = document.getElementById('pageNumbers');
 
     prevButton.disabled = currentPage === 1;
     nextButton.disabled = currentPage === totalPages;
+    firstButton.disabled = currentPage === 1;
+    lastButton.disabled = currentPage === totalPages;
 
     pageNumbers.innerHTML = '';
     let startPage = Math.max(1, currentPage - 2);
@@ -383,6 +387,18 @@ function nextPage() {
 
 function goToPage(page) {
     currentPage = page;
+    updatePagination();
+}
+
+function firstPage() {
+    currentPage = 1;
+    updatePagination();
+}
+
+function lastPage() {
+    const rows = document.querySelectorAll('#documentTable tbody tr');
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+    currentPage = totalPages;
     updatePagination();
 }
 
