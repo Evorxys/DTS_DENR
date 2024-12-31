@@ -2,7 +2,13 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     event.preventDefault();
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('password').value;
+    const termsCheckbox = document.getElementById('termsPrivacyCheckbox');
     const loginLoaderContainer = document.getElementById('loginLoaderContainer');
+
+    if (!termsCheckbox.checked) {
+        showDialogue('You must agree to the terms and conditions and privacy policy.');
+        return;
+    }
 
     loginLoaderContainer.style.display = 'flex';
 

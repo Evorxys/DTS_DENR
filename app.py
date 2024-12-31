@@ -299,6 +299,14 @@ def check_username():
     user_exists = OtherUser.query.filter_by(username=username).first() is not None
     return {'exists': user_exists}
 
+@app.route('/terms_ofService')
+def terms_of_service():
+    return render_template('terms_ofService.html')
+
+@app.route('/privacyPolicy')
+def privacy_policy():
+    return render_template('privacyPolicy.html')
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
