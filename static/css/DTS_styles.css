@@ -1292,9 +1292,9 @@ html::before {
 }
 
 .pagination button {
-    background-color: #007BFF;
+    background-color: #000000;
     color: white;
-    border: none;
+    border: 1px solid #ffffff;
     padding: 10px 20px;
     margin: 0 5px;
     cursor: pointer;
@@ -1308,7 +1308,8 @@ html::before {
 }
 
 .pagination button:hover:not(:disabled) {
-    background-color: #0056b3;
+    background-color: #ffffff;
+    color: black;
 }
 
 .pagination .current-page {
@@ -1330,12 +1331,13 @@ html::before {
 }
 
 .pagination .page-number.active {
-    background-color: #0056b3;
+    background-color: #ffffff;
+    color: black;
     font-weight: bold;
 }
 
 .pagination .page-number:hover:not(.active) {
-    background-color: #0056b3;
+    background-color: #00336a;
 }
 
 @media (max-width: 600px) {
