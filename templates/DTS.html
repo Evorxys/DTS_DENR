@@ -21,11 +21,26 @@
                 <div class="username">{{ section_designation }} SECTION</div>
             </div>
             <div class="icons-right" id="iconsRight">
-                <div class="search-icon" onclick="toggleSearch()" data-tooltip="Search">🔍</div>
-                <div class="notification-bell" onclick="toggleNotifications()" data-tooltip="Notifications">🔔</div>
-                <div class="print-icon" onclick="printSelectedDocument()" data-tooltip="Print">🖨️</div>
-                <div class="chat-icon" onclick="toggleChat()" data-tooltip="Chat">💬</div>
-                <div class="help-icon" onclick="toggleHelp()" data-tooltip="Help">❓</div>
+                <div class="icon-container">
+                    <div class="search-icon" onclick="toggleSearch()" data-tooltip="Search">🔍</div>
+                    <div class="icon-label">Search</div>
+                </div>
+                <div class="icon-container">
+                    <div class="notification-bell" onclick="toggleNotifications()" data-tooltip="Notifications">🔔</div>
+                    <div class="icon-label">Notifications</div>
+                </div>
+                <div class="icon-container">
+                    <div class="print-icon" onclick="printSelectedDocument()" data-tooltip="Print">🖨️</div>
+                    <div class="icon-label">Print</div>
+                </div>
+                <div class="icon-container">
+                    <div class="chat-icon" onclick="toggleChat()" data-tooltip="Chat">💬</div>
+                    <div class="icon-label">Chat</div>
+                </div>
+                <div class="icon-container">
+                    <div class="help-icon" onclick="toggleHelp()" data-tooltip="Help">❓</div>
+                    <div class="icon-label">Help</div>
+                </div>
             </div>
             <div class="notifications" id="notifications">
                 <ul>

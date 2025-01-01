@@ -325,7 +325,7 @@ document.querySelectorAll('#documentsModal button').forEach(button => {
 });
 
 let currentPage = 1;
-const rowsPerPage = 2;
+const rowsPerPage = 10;
 
 function updatePagination() {
     const rows = document.querySelectorAll('#documentTable tbody tr');

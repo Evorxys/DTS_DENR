@@ -222,6 +222,22 @@ def dts():
     current_datetime = datetime.now().strftime('%B %d, %Y %I:%M %p')
     return render_template('DTS.html', section_designation=section_designation, documents=documents)
 
+@app.route('/newDoc.html')
+def new_doc():
+    encrypted_username = request.args.get('username')
+    try:
+        username = serializer.loads(encrypted_username)  # Decrypt the username
+    except:
+        return 'Invalid username', 400
+
+    user = OtherUser.query.filter_by(username=username).first()
+    if user:
+        section_designation = user.section_designation
+    else:
+        section_designation = "Unknown"
+    
+    return render_template('newDoc.html', section_designation=section_designation)
+
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory('uploads', filename)
