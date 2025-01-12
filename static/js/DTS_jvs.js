@@ -121,10 +121,10 @@ function toggleFloatingMenu() {
 }
 
 function updateDateTime() {
-    fetch('https://worldtimeapi.org/api/timezone/Etc/GMT')
+    fetch('https://timeapi.io/api/Time/current/zone?timeZone=Etc/GMT')
         .then(response => response.json())
         .then(data => {
-            const now = new Date(data.datetime);
+            const now = new Date(data.dateTime);
             const options = { 
                 weekday: 'long', 
                 year: 'numeric', 
