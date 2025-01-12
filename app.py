@@ -134,6 +134,7 @@ def send_document_added_email(user, user_gmail, section, office, document_subjec
     sender_email = os.getenv('SENDER_EMAIL')
     sender_password = os.getenv('SENDER_PASSWORD')
     subject = "New Document Added"
+    view_file_url = f"https://dts-denr.onrender.com/viewFile.html/{tracking_no}"
     body = f"""
     <html>
     <body>
@@ -175,6 +176,7 @@ def send_document_added_email(user, user_gmail, section, office, document_subjec
                 <td style="background-color: yellow;">{tracking_no}</td>
             </tr>
         </table>
+        <p>View the document details <a href="{view_file_url}">here</a>.</p>
     </body>
     </html>
     """
@@ -544,6 +546,15 @@ def get_document_categories():
     document_type = request.args.get('document_type')
     categories = DocumentCategory.query.filter_by(document_type=document_type).all()
     return [{'Level_of_Priority': category.level_of_priority} for category in categories]
+
+@app.route('/viewFile.html/<tracking_no>')
+def view_file(tracking_no):
+    document = Document.query.filter_by(tracking_no=tracking_no).first()
+    if document:
+        file_url = f"/uploads/{document.tracking_no}.pdf"  # Adjust the file path as needed
+        return render_template('viewFile.html', document=document, file_url=file_url)
+    else:
+        return {'error': 'Document not found'}, 404
 
 if __name__ == '__main__':
     with app.app_context():
