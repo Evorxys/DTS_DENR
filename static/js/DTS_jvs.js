@@ -270,6 +270,15 @@ function showExpiredAlertModal(trackingNo) {
     notification.classList.add('show');
     notification.classList.add('animate');
     setTimeout(() => notification.classList.remove('animate'), 500);
+
+    // Use the time on the top bar
+    const datetime = document.getElementById('datetime').textContent;
+    const notificationContent = document.querySelector('.notification-content');
+    notificationContent.innerHTML = `
+        <p>You have a Simple Document that needs your attention!</p>
+        <p>Current Time: ${datetime}</p>
+        <button id="viewExpiredDocumentButton" onclick="viewExpiredDocument()">View Document</button>
+    `;
 }
 
 function viewExpiredDocument() {
@@ -305,12 +314,15 @@ function viewDocument(trackingNo) {
             const notification = document.getElementById('expiredAlertModal');
             notification.classList.remove('show');
 
-            // Show or hide the "Mark as Processed" button based on the user's section
-            const userSection = document.querySelector('.username').textContent.split(' ')[0];
+            // Show or hide the "Send To" and "Mark as Processed" buttons based on the page
+            const currentPage = window.location.pathname;
+            const sendToButton = document.querySelector('.send-to-button');
             const markProcessedButton = document.querySelector('.mark-processed-button');
-            if (userSection === 'RECORDS') {
+            if (currentPage.includes('incoming_documents') || currentPage.includes('on_process_documents')) {
+                sendToButton.style.display = 'inline-block';
                 markProcessedButton.style.display = 'inline-block';
             } else {
+                sendToButton.style.display = 'none';
                 markProcessedButton.style.display = 'none';
             }
         })
@@ -575,6 +587,25 @@ function updateDocumentCategory() {
         .catch(error => console.error('Error:', error));
 }
 
+function updateReceivingSections() {
+    const receivingOffice = document.getElementById('sendToReceivingOffice').value;
+    const receivingSection = document.getElementById('sendToReceivingSection');
+    receivingSection.innerHTML = ''; // Clear existing options
+
+    fetch(`/get_receiving_sections?office=${receivingOffice}`)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(section => {
+                const option = document.createElement('option');
+                option.value = section.section_designation;
+                option.textContent = section.section_designation;
+                receivingSection.appendChild(option);
+            });
+            receivingSection.disabled = false; // Enable the select element
+        })
+        .catch(error => console.error('Error:', error));
+}
+
 function viewDocument(trackingNo) {
     fetch(`/document_details?tracking_no=${trackingNo}`)
         .then(response => response.json())
@@ -596,12 +627,15 @@ function viewDocument(trackingNo) {
             const notification = document.getElementById('expiredAlertModal');
             notification.classList.remove('show');
 
-            // Show or hide the "Mark as Processed" button based on the user's section
-            const userSection = document.querySelector('.username').textContent.split(' ')[0];
+            // Show or hide the "Send To" and "Mark as Processed" buttons based on the page
+            const currentPage = window.location.pathname;
+            const sendToButton = document.querySelector('.send-to-button');
             const markProcessedButton = document.querySelector('.mark-processed-button');
-            if (userSection === 'RECORDS') {
+            if (currentPage.includes('incoming_documents') || currentPage.includes('on_process_documents')) {
+                sendToButton.style.display = 'inline-block';
                 markProcessedButton.style.display = 'inline-block';
             } else {
+                sendToButton.style.display = 'none';
                 markProcessedButton.style.display = 'none';
             }
         })
@@ -618,8 +652,39 @@ function handleFileUpload() {
 
 function sendTo() {
     const trackingNo = document.querySelector('#documentDetails p:nth-child(2) strong').nextSibling.textContent.trim();
-    alert(`Send document with Tracking No: ${trackingNo} to another user.`);
-    // Implement the logic to send the document to another user
+    const sendToModal = document.getElementById('sendToModal');
+    const trackingNoField = document.getElementById('sendToTrackingNo');
+    trackingNoField.textContent = trackingNo;
+    sendToModal.classList.add('open');
+}
+
+function closeSendToModal() {
+    const sendToModal = document.getElementById('sendToModal');
+    sendToModal.classList.remove('open');
+}
+
+function updateReceivingOfficeAndSection() {
+    const trackingNo = document.getElementById('sendToTrackingNo').textContent.trim();
+    const receivingOffice = document.getElementById('sendToReceivingOffice').value;
+    const receivingSection = document.getElementById('sendToReceivingSection').value;
+
+    fetch(`/update_receiving_office_and_section`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tracking_no: trackingNo, receiving_office: receivingOffice, receiving_section: receivingSection })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Document updated successfully');
+            closeSendToModal();
+        } else {
+            alert('Failed to update document');
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 function markAsProcessed() {

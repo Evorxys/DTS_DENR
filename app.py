@@ -131,6 +131,9 @@ def send_account_creation_email(email):
 
 def send_document_added_email(user, user_gmail, section, office, document_subject, document_category, tracking_no, receiving_office, receiving_section):
     super_users = SuperUser.query.with_entities(SuperUser.gmail).all()
+    receiving_users = OtherUser.query.filter_by(section_designation=receiving_section, office=receiving_office).all()
+    receiving_user_email = random.choice(receiving_users).gmail if receiving_users else None
+
     sender_email = os.getenv('SENDER_EMAIL')
     sender_password = os.getenv('SENDER_PASSWORD')
     subject = "New Document Added"
@@ -175,6 +178,10 @@ def send_document_added_email(user, user_gmail, section, office, document_subjec
                 <th style="background-color: yellow;">TRACKING NO</th>
                 <td style="background-color: yellow;">{tracking_no}</td>
             </tr>
+            <tr>
+                <th>Receiver Email</th>
+                <td>{receiving_user_email}</td>
+            </tr>
         </table>
         <p>View the document details <a href="{view_file_url}">here</a>.</p>
     </body>
@@ -187,6 +194,73 @@ def send_document_added_email(user, user_gmail, section, office, document_subjec
         server.login(sender_email, sender_password)
         for super_user in super_users:
             server.sendmail(sender_email, super_user.gmail, message)
+        if receiving_user_email:
+            server.sendmail(sender_email, receiving_user_email, message)
+
+import random  # Add this import for random selection
+
+def send_document_update_email(tracking_no, subject, document_category, sender_office, sender_section, receiving_office, receiving_section, status):
+    super_users = SuperUser.query.with_entities(SuperUser.gmail).all()
+    receiving_users = OtherUser.query.filter_by(section_designation=receiving_section, office=receiving_office).all()
+    receiving_user_email = random.choice(receiving_users).gmail if receiving_users else None
+
+    sender_email = os.getenv('SENDER_EMAIL')
+    sender_password = os.getenv('SENDER_PASSWORD')
+    subject_email = "Document Update Notification"
+    body = f"""
+    <html>
+    <body>
+        <p>A document with <strong style="color: blue;">Tracking No: {tracking_no}</strong> has been sent by <strong style="color: green;">{sender_office}</strong> <strong style="color: green;">{sender_section}</strong> to <strong style="color: red;">{receiving_office}</strong> <strong style="color: red;">{receiving_section}</strong>.</p>
+        <table border="1" cellpadding="10" cellspacing="0">
+            <tr>
+                <th>Tracking No</th>
+                <td>{tracking_no}</td>
+            </tr>
+            <tr>
+                <th>Subject</th>
+                <td>{subject}</td>
+            </tr>
+            <tr>
+                <th>Document Category</th>
+                <td>{document_category}</td>
+            </tr>
+            <tr>
+                <th>Sender Office</th>
+                <td>{sender_office}</td>
+            </tr>
+            <tr>
+                <th>Sender Section</th>
+                <td>{sender_section}</td>
+            </tr>
+            <tr>
+                <th>Receiver Office</th>
+                <td>{receiving_office}</td>
+            </tr>
+            <tr>
+                <th>Receiver Section</th>
+                <td>{receiving_section}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{status}</td>
+            </tr>
+            <tr>
+                <th>Receiver Email</th>
+                <td>{receiving_user_email}</td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    """
+
+    message = f"Subject: {subject_email}\nContent-Type: text/html\n\n{body}"
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(sender_email, sender_password)
+        for super_user in super_users:
+            server.sendmail(sender_email, super_user.gmail, message)
+        if receiving_user_email:
+            server.sendmail(sender_email, receiving_user_email, message)
 
 @app.route('/')
 def index():
@@ -452,7 +526,7 @@ def add_document():
     user = OtherUser.query.filter_by(username=username).first()
     user_gmail = user.gmail
 
-    # Send email notification to super users
+    # Send email notification to super users and receiving user
     send_document_added_email(username, user_gmail, section, sender_office, subject, document_category, tracking_no, receiving_office, receiving_section)
 
     return {'success': True}
@@ -489,6 +563,41 @@ def update_document_status():
         return {'success': True}
     else:
         return {'error': 'Document not found'}, 404
+
+@app.route('/update_receiving_office_and_section', methods=['POST'])
+def update_receiving_office_and_section():
+    data = request.get_json()
+    tracking_no = data.get('tracking_no')
+    receiving_office = data.get('receiving_office')
+    receiving_section = data.get('receiving_section')
+
+    document = Document.query.filter_by(tracking_no=tracking_no).first()
+    if document:
+        document.receiving_office = receiving_office
+        document.receiving_section = receiving_section
+        db.session.commit()
+
+        # Send email notification
+        send_document_update_email(
+            tracking_no=document.tracking_no,
+            subject=document.subject,
+            document_category=document.document_category,
+            sender_office=document.sender_office,
+            sender_section=document.sender_section,
+            receiving_office=document.receiving_office,
+            receiving_section=document.receiving_section,
+            status=document.status
+        )
+
+        return {'success': True}
+    else:
+        return {'error': 'Document not found'}, 404
+
+@app.route('/get_receiving_sections')
+def get_receiving_sections():
+    office = request.args.get('office')
+    sections = Document.query.with_entities(Document.receiving_section).filter_by(receiving_office=office).distinct().all()
+    return [{'section_designation': section.receiving_section} for section in sections]
 
 @app.route('/check_username', methods=['POST'])
 def check_username():

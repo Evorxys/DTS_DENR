@@ -150,6 +150,7 @@
             <form id="newDocumentForm" enctype="multipart/form-data">
                 <label for="documentType">Document Type:</label>
                 <select id="documentType" name="documentType" required onchange="updateDocumentCategory()">
+                    <option value="" disabled selected>Select Document Type</option>
                     {% for doc_type in document_types %}
                     <option value="{{ doc_type.document_type }}">{{ doc_type.document_type }}</option>
                     {% endfor %}
@@ -157,6 +158,7 @@
 
                 <label for="documentCategory">Document Category:</label>
                 <select id="documentCategory" name="documentCategory" required disabled>
+                    <option value="" disabled selected>Select Document Category</option>
                     <!-- Options will be populated based on the selected document type -->
                 </select>
                 
@@ -171,12 +173,14 @@
                 
                 <label for="receivingOffice">Receiving Office:</label>
                 <select id="receivingOffice" name="receivingOffice" required>
-                    <option value="{{ office }}">{{ office }}</option>
+                    <option value="" disabled selected>Select Receiving Office</option>
                     <option value="PENRO Isabela">PENRO Isabela</option>
+                    <option value="{{ office }}">{{ office }}</option>
                 </select>
 
                 <label for="receivingSection">Receiving Section:</label>
                 <select id="receivingSection" name="receivingSection" required>
+                    <option value="" disabled selected>Select Receiving Section</option>
                     {% for office in offices|unique(attribute='section_designation') %}
                     <option value="{{ office.section_designation }}">{{ office.section_designation }}</option>
                     {% endfor %}
@@ -209,6 +213,27 @@
             </div>
         </div>
     </div>
+
+    <div class="send-to-modal" id="sendToModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeSendToModal()">✖</span>
+            <h2>Send Document</h2>
+            <p><strong>Tracking No:</strong> <span id="sendToTrackingNo"></span></p>
+            <label for="sendToReceivingOffice">Receiving Office:</label>
+            <select id="sendToReceivingOffice" name="sendToReceivingOffice" required onchange="updateReceivingSections()">
+                <option value="" disabled selected>Select Receiving Office</option>
+                <option value="PENRO Isabela">PENRO Isabela</option>
+                <option value="{{ office }}">{{ office }}</option>
+            </select>
+            <label for="sendToReceivingSection">Receiving Section:</label>
+            <select id="sendToReceivingSection" name="sendToReceivingSection" required>
+                <option value="" disabled selected>Select Receiving Section</option>
+                <!-- Options will be populated based on the selected receiving office -->
+            </select>
+            <button onclick="updateReceivingOfficeAndSection()">Update</button>
+        </div>
+    </div>
+
     <div class="help-modal" id="helpModal">
         <div class="modal-content">
             <span class="close-modal" onclick="toggleHelp()">✖</span>
