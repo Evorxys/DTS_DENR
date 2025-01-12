@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Office</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/S_userOptions/addOffice.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Add Office</h2>
+        <form id="addOfficeForm" action="{{ url_for('add_office') }}" method="post">
+            <div class="form-group">
+                <label for="sectionDesignation">Section Designation:</label>
+                <input type="text" id="sectionDesignation" name="section_designation" required>
+            </div>
+            <div class="form-group">
+                <label for="officeCategory">Office Category:</label>
+                <input type="text" id="officeCategory" name="office_category" required>
+            </div>
+            <button type="submit">Add Office</button>
+        </form>
+    </div>
+    <h2>Office List</h2>
+    <table id="officeTable">
+        <thead>
+            <tr>
+                <th>Section Designation</th>
+                <th>Office Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for office in offices %}
+            <tr data-id="{{ office.id }}" onclick="selectRow(this)">
+                <td>{{ office.section_designation }}</td>
+                <td>{{ office.office_category }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        <button onclick="prevPage()" id="prevButton" title="Previous Page"><</button>
+        <span id="pageNumbers"></span>
+        <button onclick="nextPage()" id="nextButton" title="Next Page">></button>
+    </div>
+    <div class="action-buttons">
+        <button onclick="editSelectedOffice()">Edit</button>
+        <button onclick="deleteSelectedOffice()">Delete</button>
+    </div>
+    <script src="/static/js/S_userOptions/addOffice.js"></script>
+</body>
+</html>

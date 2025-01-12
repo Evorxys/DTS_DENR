@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/static/css/index_styles.css">
+    <link rel="icon" href="/uploads/denr_logo.png" type="image/png">
+</head>
+<body>
+    <div class="topbar">
+        <header class="page-title">
+            <img src="/uploads/denr_logo.png" alt="DENR Logo" class="denr-logo">
+            <h1>Document Action Tracking System</h1>
+            <img src="/uploads/newph_logo.png" alt="NewPH Logo" class="newph-logo">
+        </header>
+    </div>
+    <div class="content">
+        <div class="login-container">
+            <h2>🍀 Login 🍀</h2>
+            <form id="loginForm" action="/login" method="post">
+                <input type="text" id="loginUsername" name="username" placeholder="Username" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <div class="checkbox-container">
+                    <label for="termsPrivacyCheckbox">
+                        <input type="checkbox" id="termsPrivacyCheckbox" required>
+                        I agree to the <a href="/terms_ofService" target="_blank">terms and conditions</a> and <a href="/privacyPolicy" target="_blank">privacy policy</a>
+                    </label>
+                </div>
+                <button type="submit" class="button login-button">Login</button>
+                <div class="loader-container" id="loginLoaderContainer" style="display: none;">
+                    <div class="loader" id="loginLoader"></div>
+                </div>
+            </form>
+            <button onclick="openModal()" class="button create-account-button">No Account? Create Account</button>
+            <div class="info">
+                <p>Date: <span id="date" style="color: white; font-size: 0.8em;"></span></p>
+                <p>Time: <span id="time" style="color: white; font-size: 0.8em;"></span></p>
+            </div>
+        </div>
+    </div>
+    <div id="createAccountModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Create Account</h2>
+            <form id="createAccountForm" action="{{ url_for('create_account') }}" method="post">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="position">Position:</label>
+                    <input type="text" id="position" name="position" required>
+                </div>
+                <div class="form-group">
+                    <label for="office">Office:</label>
+                    <select id="office" name="office" required>
+                        <option value="" disabled selected>Select Office</option>
+                        <option value="PENRO Isabela">PENRO Isabela</option>
+                        <option value="PENRO Sub-office">PENRO Sub-office</option>
+                        <option value="CENRO Naguilian">CENRO Naguilian</option>
+                        <option value="CENRO Cauayan">CENRO Cauayan</option>
+                        <option value="CENRO Palanan">CENRO Palanan</option>
+                        <option value="CENRO San Isidro">CENRO San Isidro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="section">Section/Designation:</label>
+                    <input type="text" id="section" name="section" required>
+                </div>
+                <small class="important-note">Important to remember</small>
+                <div class="form-group">
+                    <label for="createUsername">Username:</label>
+                    <input type="text" id="createUsername" name="username" required oninput="checkUsername()">
+                </div>
+                <div id="username-status" class="username-status"></div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group otp-group">
+                    <input type="email" id="email" name="email" placeholder="Enter Email" required>
+                    <div id="email-status" class="email-status"></div>
+                    <input type="text" id="otp" name="otp" placeholder="Enter OTP" required oninput="verifyOtp()" disabled>
+                    <div class="otp-buttons">
+                        <button type="button" class="send-otp" onclick="sendOtp()" id="sendOtpButton">Send OTP</button>
+                    </div>
+                    <div id="otp-status" class="otp-status"></div>
+                    <div id="countdown" class="countdown"></div>
+                    <div id="disabled-text" class="disabled-text" style="display: none;">Cannot send OTP again</div>
+                </div>
+                <button type="submit" class="create-account">Create Account</button>
+            </form>
+            <!-- Display error message if username already exists -->
+            {% if error_message %}
+            <div class="error-message">
+                <p>{{ error_message }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div id="dialogue" class="dialogue">
+        <p id="dialogue-message"></p>
+        <button onclick="closeDialogue()">OK</button>
+    </div>
+    <div id="successModal" class="dialogue">
+        <p id="success-message">Account created successfully!</p>
+        <button onclick="closeSuccessModal()">OK</button>
+    </div>
+    <script src="/static/js/index_jvs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script>
+        function showErrorModal(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorModal').style.display = 'flex';
+        }
+
+        function closeErrorModal() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+
+        document.getElementById('createAccountForm').addEventListener('submit', function(event) {
+            // Remove password encryption
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            // Remove password encryption
+        });
+
+        window.onload = function() {
+            const errorMessage = "{{ error_message }}";
+            if (errorMessage) {
+                showDialogue(errorMessage);
+            }
+            const successMessage = "{{ success_message }}";
+            if (successMessage) {
+                showSuccessModal();
+            }
+        }
+
+        function showSuccessModal() {
+            const successModal = document.getElementById('successModal');
+            successModal.classList.add('show');
+        }
+
+        function closeSuccessModal() {
+            const successModal = document.getElementById('successModal');
+            successModal.classList.remove('show');
+        }
+    </script>
+    <footer class="footer">
+        <p>&copy; 2024 DATS DENR. DINIEGA.</p>
+    </footer>
+</body>
+</html>

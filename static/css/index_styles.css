@@ -1,0 +1,569 @@
+body {
+    background-image: url('/uploads/bgindex.jpg');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    position: relative;
+    overflow: hidden; /* Prevent scrolling */
+    font-size: 14px; /* Reduced font size */
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.logo {
+    height: 60px;
+    margin-right: 20px;
+}
+
+.denr-logo {
+    height: 50px; /* Reduced image size */
+    margin-right: 20px;
+}
+
+.newph-logo {
+    height: 50px; /* Reduced image size */
+    margin-left: 20px;
+}
+
+.topbar {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    z-index: 3;
+}
+
+.page-title {
+    font-size: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    flex-wrap: nowrap;
+}
+
+.page-title h1 {
+    margin: 0 20px;
+    color: white;
+    font-size: 30px; /* Reduced font size */
+    font-weight: bold;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 80px;
+    text-align: center; /* Center the content */
+}
+
+.content-box {
+    background: rgba(68, 68, 68, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: white;
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+.login-container {
+    background: rgba(39, 39, 39, 0.8);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    margin-top: 0;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 18px; /* Reduced input font size */
+}
+
+.login-container input:hover {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 1);
+}
+
+.button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 18px; /* Reduced button font size */
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.button:hover {
+    transform: scale(1.05);
+}
+
+.login-button {
+    background-color: #007BFF; /* Login button color */
+}
+
+.login-button:hover {
+    background-color: #1c8000;
+}
+
+.create-account-button {
+    background-color: blue;
+    font-size: 16px;
+    padding: 8px;
+    margin-top: 20px;
+    width: 70%;
+}
+
+.create-account-button:hover {
+    background-color: darkblue;
+}
+
+.info p {
+    color: white;
+    font-weight: bold; /* Make text bold */
+    font-size: 0.9em; /* Reduced font size */
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 2;
+    font-size: 0.8em;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: rgb(42, 42, 42);
+    padding: 10px; /* Reduced padding */
+    border: 2px solid #888; /* Added border */
+    border-radius: 10px;
+    width: 80%; /* Reduced modal content width */
+    max-width: 500px; /* Reduced max-width */
+    max-height: 80%; /* Reduced max-height */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    color: white;
+    font-size: 0.9em; /* Reduced font size */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-group {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+label {
+    font-weight: bold;
+    color: #ffffff;
+    text-align: left;
+    font-size: 1em; /* Reduced font size */
+    margin-right: 1em;
+    flex: 1;
+}
+
+input {
+    width: 100%;
+    padding: 0.5em; /* Reduced padding */
+    border: 1px solid #ccc;
+    border-radius: 0.3em;
+    box-sizing: border-box;
+    font-size: 1em; /* Reduced font size */
+    flex: 2;
+}
+
+select {
+    width: 100%;
+    padding: 0.5em; /* Reduced padding */
+    border: 1px solid #ccc;
+    border-radius: 0.3em;
+    box-sizing: border-box;
+    font-size: 1em; /* Reduced font size */
+    flex: 2;
+    background-color: white;
+    color: black;
+}
+
+select:hover {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 1);
+}
+
+.important-note {
+    display: block;
+    color: #ffcc00;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 3em;
+    margin-bottom: 1em;
+    text-align: left;
+    width: 100%;
+}
+
+.otp-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.otp-group input {
+    width: 100%;
+}
+
+.otp-group input#otp {
+    width: 50%;
+    text-align: center;
+    margin-top: 1em;
+}
+
+.otp-group input#email {
+    margin-top: 2em; /* Increased top margin */
+    text-align: center; /* Center the content */
+}
+
+.otp-group button {
+    margin-top: 0.5em;
+    width: auto;
+}
+
+.otp-buttons {
+    display: flex;
+    gap: 0.5em;
+}
+
+.otp-status {
+    margin-top: 0.5em;
+    font-size: 1.5em;
+}
+
+.loading-icon, .check-icon, .error-icon {
+    font-size: 1.5em;
+}
+
+.countdown {
+    margin-top: 0.5em;
+    font-size: 1.2em;
+    color: #ffcc00;
+}
+
+.modal-content button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1em; /* Reduced font size */
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal-content button:hover {
+    transform: scale(1.05);
+}
+
+.modal-content .send-otp {
+    background-color: #28a745;
+}
+
+.modal-content .send-otp:hover {
+    background-color: #005c14;
+}
+
+.modal-content .create-account {
+    background-color: #007BFF;
+}
+
+.modal-content .create-account:hover {
+    background-color: #006b20;
+}
+
+.disabled-text {
+    color: #ffcc00;
+    font-size: 1em;
+    margin-top: 0.5em;
+}
+
+.dialogue {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #333;
+    color: white;
+    padding: 20px; /* Reduced padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 2000;
+    display: none;
+    text-align: center;
+    width: 60%; /* Reduced width */
+    max-width: 400px; /* Reduced max-width */
+    height: auto; /* Adjust height */
+    max-height: 60%; /* Reduced max-height */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    border: 2px solid #888; /* Added border */
+    font-size: 1em; /* Reduced font size */
+}
+
+.dialogue.show {
+    display: block;
+}
+
+.dialogue button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 1em; /* Reduced font size */
+}
+
+.dialogue button:hover {
+    background-color: #0056b3;
+}
+
+.loader {
+    width: 22px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #F10C49;
+    animation: l10 1.5s infinite linear;
+}
+
+@keyframes l10 {
+    0%    {box-shadow: 
+            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #04db00,30px 0 #F4DD51, 0 0 #04db00,
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00}
+    12.5% {box-shadow: 
+            0 0 #F4DD51, calc(30px*0.707) calc(-30px*0.707) #04db00,30px 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #04db00,
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00}
+    25%   {box-shadow: 
+            0 0 #F4DD51, 0 0 #04db00,30px 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #04db00,
+            0 30px #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00}
+    37.5% {box-shadow: 
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, calc(30px*0.707) calc(30px*0.707) #04db00,
+            0 30px #F4DD51, calc(-30px*0.707) calc(30px*0.707) #04db00,0 0 #F4DD51, 0 0 #04db00}
+    50%   {box-shadow: 
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00,
+            0 30px #F4DD51, calc(-30px*0.707) calc(30px*0.707) #04db00,-30px 0 #F4DD51, 0 0 #04db00}
+    62.5% {box-shadow: 
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00,
+            0 0 #F4DD51, calc(-30px*0.707) calc(30px*0.707) #04db00,-30px 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #04db00}
+    75%   {box-shadow: 
+            0 -30px #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00,
+            0 0 #F4DD51, 0 0 #04db00,-30px 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #04db00}
+    87.5% {box-shadow: 
+            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #04db00,0 0 #F4DD51, 0 0 #04db00,
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, calc(-30px*0.707) calc(-30px*0.707) #04db00}
+    100%  {box-shadow: 
+            0 -30px #F4DD51, calc(30px*0.707) calc(-30px*0.707) #04db00,30px 0 #F4DD51, 0 0 #04db00,
+            0 0 #F4DD51, 0 0 #04db00,0 0 #F4DD51, 0 0 #04db00}
+}
+
+.loader-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.username-status {
+    font-size: 0.9em;
+    margin-bottom: 1.1em;
+    text-align: right;
+}
+
+.email-status {
+    font-size: 0.9em;
+    margin-top: 0.5em;
+    text-align: right;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the checkbox */
+    margin-top: 10px;
+}
+
+.checkbox-container label {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 0.8em;
+    margin-bottom: 5px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.checkbox-container a {
+    color: #007BFF;
+    text-decoration: underline;
+    margin: 0 3px; /* Add margin to create space */
+}
+
+.checkbox-container a:hover {
+    color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .page-title h1 {
+        font-size: 30px;
+    }
+    .denr-logo, .newph-logo {
+        height: 50px;
+    }
+    .login-container {
+        width: 80%;
+        padding: 10px;
+    }
+    .login-container h2 {
+        font-size: 30px;
+    }
+    .login-container input, .login-container button {
+        font-size: 18px;
+    }
+    .modal-content {
+        width: 90%;
+        padding: 10px;
+        max-width: 350px; /* Further reduced max-width */
+    }
+    .modal-content input, .modal-content button {
+        font-size: 18px;
+    }
+    .info p {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Styles for phones */
+    body {
+        font-size: 14px;
+    }
+    .container {
+        padding: 10px;
+    }
+    .login-container {
+        width: 90%;
+    }
+    .login-container h2 {
+        font-size: 25px;
+    }
+    .login-container input, .login-container button {
+        font-size: 16px;
+    }
+    .modal-content {
+        width: 95%;
+    }
+    .modal-content input, .modal-content button {
+        font-size: 16px;
+    }
+    .info p {
+        font-size: 0.9em;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    /* Styles for tablets */
+    body {
+        font-size: 16px;
+    }
+    .container {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 1025px) {
+    /* Styles for laptops and desktops */
+    body {
+        font-size: 18px;
+    }
+    .container {
+        padding: 30px;
+    }
+}

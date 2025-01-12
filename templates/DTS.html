@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/css/DTS_styles.css">
+    <link rel="icon" href="/uploads/denr_logo.png" type="image/png">
+</head>
+<body class="fade-in">
+
+    <header>
+        <div class="top-bar" id="topBar">
+            <div class="left-section">
+                <div class="profile-button-small-screen">
+                    <button class="profile-button" onclick="toggleProfileModal()">👤</button>
+                </div>
+                <div class="menu-icon" onclick="toggleMenu()">☰</div>
+                <div class="page-title">Document Action Tracking System</div>
+            </div>
+            <div class="center-section">
+                <div class="datetime" id="datetime"></div>
+                <div class="username">{{ section_designation }} SECTION || {{ office }}</div>
+            </div>
+            <div class="icons-right" id="iconsRight">
+                <div class="icon-container">
+                    <div class="search-icon" onclick="toggleSearch()" data-tooltip="Search">🔍</div>
+                    <div class="icon-label">Search</div>
+                </div>
+                <div class="icon-container">
+                    <div class="notification-bell" onclick="toggleNotifications()" data-tooltip="Notifications">🔔</div>
+                    <div class="icon-label">Notifications</div>
+                </div>
+                <div class="icon-container">
+                    <div class="print-icon" onclick="printSelectedDocument()" data-tooltip="Print">🖨️</div>
+                    <div class="icon-label">Print</div>
+                </div>
+                <div class="icon-container">
+                    <div class="chat-icon" onclick="toggleChat()" data-tooltip="Chat">💬</div>
+                    <div class="icon-label">Chat</div>
+                </div>
+                <div class="icon-container">
+                    <div class="help-icon" onclick="toggleHelp()" data-tooltip="Help">❓</div>
+                    <div class="icon-label">Help</div>
+                </div>
+            </div>
+            <div class="notifications" id="notifications">
+                <ul>
+                    <li>Notification 1</li>
+                    <li>Notification 2</li>
+                    <li>Notification 3</li>
+                </ul>
+            </div>
+            <!-- Content for the top bar -->
+        </div>
+    </header>
+    <div class="sliding-menu" id="slidingMenu">
+        <ul>
+            <li><a href="#" onclick="toggleNewDocumentModal()">➕ New Document</a></li>
+            <li><a href="{{ url_for('incoming_documents', username=request.args.get('username')) }}">⬇️ Incoming</a></li> <!-- Updated link -->
+            <li><a href="{{ url_for('outgoing_documents', username=request.args.get('username')) }}">⬆️ Outgoing</a></li> <!-- Updated link -->
+            <li><a href="{{ url_for('on_process_documents', username=request.args.get('username')) }}">🔃 On Process</a></li> <!-- Updated link -->
+            <li><a href="{{ url_for('all_documents', username=request.args.get('username')) }}">📄 All Docs</a></li> <!-- Updated link -->
+        </ul>
+        <div class="logout-trademark">
+            <a href="{{ url_for('index') }}" class="logout-button">Logout</a>
+            <div class="trademark">© 2024 DATS</div>
+        </div>
+    </div>
+    <div class="search-bar" id="searchBar">
+        <input type="text" placeholder="Search...">
+        <select id="searchCategory">
+            <option value="tracking_no">Tracking No.</option>
+            <option value="document_type">Document Type</option>
+            <option value="subject">Subject</option>
+            <option value="receiving_office">Receiving Office</option>
+        </select>
+        <button onclick="performSearch()">Search</button>
+    </div>
+    <div class="chatbox" id="chatbox">
+        <div class="chatbox-header">
+            Chat
+            <span class="close-icon" onclick="toggleChat()">✖</span>
+        </div>
+        <div class="chatbox-messages" id="chatboxMessages"></div>
+        <div class="chatbox-input">
+            <input type="text" id="chatInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <div class="content" id="content">
+        <div class="table-container">
+            <table class="document-table" id="documentTable">
+                <thead>
+                    <tr>
+                        <th>TRACKING NO.</th>
+                        <th>DOCUMENT TYPE</th>
+                        <th>DOCUMENT PROPERTIES</th>
+                        <th>SUBJECT</th>
+                        <th>DATE RELEASED</th>
+                        <th>RECEIVING OFFICE/SECTION</th> <!-- Updated title -->
+                        <th>STATUS</th>
+                        <th>DOCUMENT CATEGORY</th> <!-- New column added -->
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in documents %}
+                    <tr onclick="selectRow(this)" ondblclick="viewDocument('{{ document.tracking_no }}')">
+                        <td>{{ document.tracking_no }}</td>
+                        <td>{{ document.document_type }}</td>
+                        <td>{{ document.document_properties }}</td>
+                        <td>{{ document.subject }}</td>
+                        <td>{{ document.date_released.strftime('%B %d, %Y %I:%M %p') }}</td> <!-- Updated format -->
+                        <td>{{ document.receiving_office }} / {{ document.receiving_section }}</td> <!-- Updated row -->
+                        <td>{{ document.status }}</td>
+                        <td>{{ document.document_category }}</td>
+                        <td><button class="action-button" onclick="viewDocument('{{ document.tracking_no }}')">View</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination">
+                <button onclick="firstPage()" id="firstButton" title="First Page">First</button>
+                <button onclick="prevPage()" id="prevButton" title="Previous Page"><</button>
+                <span id="pageNumbers"></span>
+                <button onclick="nextPage()" id="nextButton" title="Next Page">></button>
+                <button onclick="lastPage()" id="lastButton" title="Last Page">Last</button>
+            </div>
+        </div>
+    <div class="notifications-modal" id="notificationsModal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleNotificationsModal()">✖</span>
+            <ul>
+                <li onclick="displayNotification('Notification 1 details')">Notification 1</li>
+                <li onclick="displayNotification('Notification 2 details')">Notification 2</li>
+                <li onclick="displayNotification('Notification 3 details')">Notification 3</li>
+            </ul>
+            <div id="notificationDetails"></div>
+        </div>
+    </div>
+    <div class="expired-alert-overlay" id="expiredAlertOverlay"></div>
+    <div class="expired-alert-modal" id="expiredAlertModal">
+        <div class="notification-content">
+            <p>You have a Simple Document that needs your attention!</p>
+            <button id="viewExpiredDocumentButton" onclick="viewExpiredDocument()">View Document</button>
+        </div>
+    </div>
+    <div class="new-document-modal" id="newDocumentModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleNewDocumentModal()">✖</span>
+            <form id="newDocumentForm" enctype="multipart/form-data">
+                <label for="documentType">Document Type:</label>
+                <select id="documentType" name="documentType" required onchange="updateDocumentCategory()">
+                    {% for doc_type in document_types %}
+                    <option value="{{ doc_type.document_type }}">{{ doc_type.document_type }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="documentCategory">Document Category:</label>
+                <select id="documentCategory" name="documentCategory" required disabled>
+                    <!-- Options will be populated based on the selected document type -->
+                </select>
+                
+                <label for="documentProperties">Document Properties:</label>
+                <textarea id="documentProperties" name="documentProperties" required></textarea>
+                
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required>
+
+                <label for="dateReleased">Date Released:</label>
+                <input type="datetime-local" id="dateReleased" name="dateReleased" required>
+                
+                <label for="receivingOffice">Receiving Office:</label>
+                <select id="receivingOffice" name="receivingOffice" required>
+                    <option value="{{ office }}">{{ office }}</option>
+                    <option value="PENRO Isabela">PENRO Isabela</option>
+                </select>
+
+                <label for="receivingSection">Receiving Section:</label>
+                <select id="receivingSection" name="receivingSection" required>
+                    {% for office in offices %}
+                    <option value="{{ office.section_designation }}">{{ office.section_designation }}</option>
+                    {% endfor %}
+                </select>
+                
+                <input type="hidden" id="senderOffice" name="senderOffice" value="{{ office }}">
+                <input type="hidden" id="senderSection" name="senderSection" value="{{ section_designation }}">
+                <input type="hidden" id="username" name="username" value="{{ request.args.get('username') }}"> <!-- Ensure this field is included -->
+                <input type="hidden" id="section" name="section" value="{{ section_designation }}"> <!-- Ensure this field is included -->
+                <button type="submit">Add Document</button>
+            </form>
+        </div>
+    </div>
+    <div class="success-dialog" id="successDialog">
+        <div class="dialog-content">
+            <span class="close-dialog" onclick="toggleSuccessDialog()">✖</span>
+            <p>Document added successfully!</p>
+            <button onclick="toggleSuccessDialog()">OK</button>
+        </div>
+    </div>
+    <div class="view-document-modal" id="viewDocumentModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleViewDocumentModal()">✖</span>
+            <div id="documentDetails">
+                <!-- Document details will be loaded here -->
+            </div>
+        </div>
+    </div>
+    <div class="help-modal" id="helpModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleHelp()">✖</span>
+            <h2>Help</h2>
+            <p>Republic Act No. 9485, also known as the Anti-Red Tape Act of 2007, aims to improve the efficiency of government services by reducing bureaucratic red tape, preventing graft and corruption, and providing penalties for violations.</p>
+        </div>
+    </div>
+    <div class="profile-modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleProfileModal()">✖</span>
+            <h2>Profile Options</h2>
+            <button onclick="manageProfile()">Manage Profile</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <button onclick="toggleDocumentsModal()" class="nav-icon">
+            📄
+            <span>Documents</span>
+        </button>
+        <button onclick="toggleSearch()" class="nav-icon">
+            🔍
+            <span>Search</span>
+        </button>
+        <button onclick="toggleNotifications()" class="nav-icon">
+            🔔
+            <span>Notifications</span>
+        </button>
+        <button onclick="toggleHelp()" class="nav-icon">
+            ❓
+            <span>Help</span>
+        </button>
+        <button onclick="toggleChat()" class="nav-icon">
+            💬
+            <span>Chat</span>
+        </button>
+        <button onclick="toggleProfileModal()" class="nav-icon">
+            👤
+            <span>Profile</span>
+        </button>
+    </div>
+
+    <div class="documents-modal" id="documentsModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleDocumentsModal()">✖</span>
+            <button onclick="toggleNewDocumentModal()">➕ New Document</button>
+            <button onclick="toggleIncomingDocuments()">⬇️ Incoming</button>
+            <button onclick="toggleOutgoingDocuments()">⬆️ Outgoing</button>
+            <button onclick="toggleOnProcessDocuments()">🔃 On Process</button>
+            <button onclick="toggleAllDocuments()">📄 All Docs</button>
+        </div>
+    </div>
+
+    <script src="/static/js/DTS_jvs.js"></script>
+</body>
+</html>

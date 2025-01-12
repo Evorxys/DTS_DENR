@@ -1,0 +1,13 @@
+Flask
+Flask-SQLAlchemy
+gunicorn
+python-dotenv
+psycopg2-binary
+flask_dance
+twilio
+flask-bcrypt
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
+qrcode[pil]
