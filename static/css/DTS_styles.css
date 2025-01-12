@@ -1387,3 +1387,108 @@ html::before {
 }
 
 /* ...existing code... */
+
+button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:active {
+    background-color: #3e8e41;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px #4CAF50;
+}
+
+.action-button {
+    background-color: #008CBA; /* Blue */
+}
+
+.action-button:hover {
+    background-color: #007bb5;
+}
+
+.action-button:active {
+    background-color: #006f9b;
+}
+
+.action-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px #008CBA;
+}
+
+.send-to-button {
+    background-color: #FFA500; /* Orange */
+    color: black;
+}
+
+.send-to-button:hover {
+    background-color: #FF8C00;
+}
+
+.send-to-button:active {
+    background-color: #FF7F50;
+}
+
+.send-to-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px #FFA500;
+}
+
+.mark-processed-button {
+    background-color: #32CD32; /* Lime Green */
+    color: black;
+}
+
+.mark-processed-button:hover {
+    background-color: #2E8B57;
+}
+
+.mark-processed-button:active {
+    background-color: #228B22;
+}
+
+.mark-processed-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px #32CD32;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.mark-processed-button {
+    background-color: #32CD32; /* Lime Green */
+    margin-left: auto; /* Align to the right */
+}
+
+.mark-processed-button:hover {
+    background-color: #2E8B57;
+}
+
+.mark-processed-button:active {
+    background-color: #228B22;
+}
+
+.mark-processed-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px #32CD32;
+}

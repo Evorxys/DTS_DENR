@@ -134,7 +134,7 @@ def send_document_added_email(user, user_gmail, section, office, document_subjec
     sender_email = os.getenv('SENDER_EMAIL')
     sender_password = os.getenv('SENDER_PASSWORD')
     subject = "New Document Added"
-    view_file_url = f"https://dts-denr.onrender.com/viewFile.html/{tracking_no}"
+    view_file_url = f"http://dts-denr.onrender.com/viewFile.html/{tracking_no}" #localhost dts-denr
     body = f"""
     <html>
     <body>
@@ -551,8 +551,7 @@ def get_document_categories():
 def view_file(tracking_no):
     document = Document.query.filter_by(tracking_no=tracking_no).first()
     if document:
-        file_url = f"/uploads/{document.tracking_no}.pdf"  # Adjust the file path as needed
-        return render_template('viewFile.html', document=document, file_url=file_url)
+        return render_template('viewFile.html', document=document)
     else:
         return {'error': 'Document not found'}, 404
 

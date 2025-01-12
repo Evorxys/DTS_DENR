@@ -121,19 +121,24 @@ function toggleFloatingMenu() {
 }
 
 function updateDateTime() {
-    const now = new Date();
-    const options = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit',
-        hour12: true 
-    };
-    const formattedDateTime = now.toLocaleDateString('en-US', options);
-    document.getElementById('datetime').textContent = formattedDateTime;
+    fetch('https://worldtimeapi.org/api/timezone/Etc/GMT')
+        .then(response => response.json())
+        .then(data => {
+            const now = new Date(data.datetime);
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: true 
+            };
+            const formattedDateTime = now.toLocaleDateString('en-US', options);
+            document.getElementById('datetime').textContent = formattedDateTime;
+        })
+        .catch(error => console.error('Error fetching time:', error));
 }
 
 setInterval(updateDateTime, 1000);
@@ -217,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkSimpleDocumentTimers();
         checkTechnicalDocumentTimers();
         checkHighlyTechnicalDocumentTimers();
-    }, 30000); // Refresh every 30 seconds
+    }, 300000); // Refresh every 30 seconds /5 mins
 });
 
 function toggleNewDocumentModal() {
@@ -297,9 +302,17 @@ function viewDocument(trackingNo) {
                 <p><strong>Document Category:</strong> ${data.document_category}</p>
             `;
             toggleViewDocumentModal();
-            updateDocumentStatus(trackingNo, 'Processed');
             const notification = document.getElementById('expiredAlertModal');
             notification.classList.remove('show');
+
+            // Show or hide the "Mark as Processed" button based on the user's section
+            const userSection = document.querySelector('.username').textContent.split(' ')[0];
+            const markProcessedButton = document.querySelector('.mark-processed-button');
+            if (userSection === 'RECORDS') {
+                markProcessedButton.style.display = 'inline-block';
+            } else {
+                markProcessedButton.style.display = 'none';
+            }
         })
         .catch(error => console.error('Error:', error));
 }
@@ -580,9 +593,17 @@ function viewDocument(trackingNo) {
                 <p><strong>Receiving Section:</strong> ${data.receiving_section}</p> <!-- New field -->
             `;
             toggleViewDocumentModal();
-            updateDocumentStatus(trackingNo, 'Processed');
             const notification = document.getElementById('expiredAlertModal');
             notification.classList.remove('show');
+
+            // Show or hide the "Mark as Processed" button based on the user's section
+            const userSection = document.querySelector('.username').textContent.split(' ')[0];
+            const markProcessedButton = document.querySelector('.mark-processed-button');
+            if (userSection === 'RECORDS') {
+                markProcessedButton.style.display = 'inline-block';
+            } else {
+                markProcessedButton.style.display = 'none';
+            }
         })
         .catch(error => console.error('Error:', error));
 }
@@ -593,4 +614,17 @@ function uploadDocument() {
 
 function handleFileUpload() {
     // Remove the file upload functionality
+}
+
+function sendTo() {
+    const trackingNo = document.querySelector('#documentDetails p:nth-child(2) strong').nextSibling.textContent.trim();
+    alert(`Send document with Tracking No: ${trackingNo} to another user.`);
+    // Implement the logic to send the document to another user
+}
+
+function markAsProcessed() {
+    const trackingNo = document.querySelector('#documentDetails p:nth-child(2) strong').nextSibling.textContent.trim();
+    updateDocumentStatus(trackingNo, 'Processed');
+    alert(`Document with Tracking No: ${trackingNo} marked as processed.`);
+    toggleViewDocumentModal();
 }

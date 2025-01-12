@@ -177,7 +177,7 @@
 
                 <label for="receivingSection">Receiving Section:</label>
                 <select id="receivingSection" name="receivingSection" required>
-                    {% for office in offices %}
+                    {% for office in offices|unique(attribute='section_designation') %}
                     <option value="{{ office.section_designation }}">{{ office.section_designation }}</option>
                     {% endfor %}
                 </select>
@@ -202,6 +202,10 @@
             <span class="close-modal" onclick="toggleViewDocumentModal()">✖</span>
             <div id="documentDetails">
                 <!-- Document details will be loaded here -->
+            </div>
+            <div class="modal-actions">
+                <button class="send-to-button" onclick="sendTo()">Send To</button>
+                <button class="mark-processed-button" onclick="markAsProcessed()">Mark as Processed</button>
             </div>
         </div>
     </div>
