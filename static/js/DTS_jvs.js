@@ -121,7 +121,7 @@ function toggleFloatingMenu() {
 }
 
 function updateDateTime() {
-    fetch('https://timeapi.io/api/Time/current/zone?timeZone=Etc/GMT')
+    fetch('https://timeapi.io/api/Time/current/zone?timeZone=Asia/Manila')
         .then(response => response.json())
         .then(data => {
             const now = new Date(data.dateTime);
