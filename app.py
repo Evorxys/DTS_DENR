@@ -536,7 +536,7 @@ def add_document():
         if file.filename != '':
             # Rename the file
             file_extension = os.path.splitext(file.filename)[1]
-            new_filename = f"{tracking_no}_{sender_office}_{sender_section}_{file_extension}"
+            new_filename = f"{tracking_no}_{sender_office.replace(' ', '_')}_{sender_section.replace(' ', '_')}{file_extension}"
             file_path = os.path.join('uploads', new_filename)
             file.save(file_path)
 
@@ -567,6 +567,8 @@ def document_details():
             'date_released': document.date_released.isoformat(),
             'receiving_office': document.receiving_office,  # Changed variable name
             'receiving_section': document.receiving_section,  # New variable
+            'sender_office': document.sender_office,  # New variable
+            'sender_section': document.sender_section,  # New variable
             'status': document.status,
             'document_category': document.document_category
         }

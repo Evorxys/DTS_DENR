@@ -1,56 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/static/css/viewFile.css">
-    <title>View File</title>
+    <title>View Document</title>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>View File</h1>
+            <h1>Document Details</h1>
         </header>
         <main>
             <div class="file-details">
-                <table>
-                    <tr>
-                        <th>Tracking No</th>
-                        <td>{{ document.tracking_no }}</td>
-                    </tr>
-                    <tr>
-                        <th>Document Type</th>
-                        <td>{{ document.document_type }}</td>
-                    </tr>
-                    <tr>
-                        <th>Document Properties</th>
-                        <td>{{ document.document_properties }}</td>
-                    </tr>
-                    <tr>
-                        <th>Subject</th>
-                        <td>{{ document.subject }}</td>
-                    </tr>
-                    <tr>
-                        <th>Date Released</th>
-                        <td>{{ document.date_released.strftime('%B %d, %Y %I:%M %p') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Receiving Office</th>
-                        <td>{{ document.receiving_office }}</td>
-                    </tr>
-                    <tr>
-                        <th>Receiving Section</th>
-                        <td>{{ document.receiving_section }}</td>
-                    </tr>
-                    <tr>
-                        <th>Status</th>
-                        <td>{{ document.status }}</td>
-                    </tr>
-                    <tr>
-                        <th>Document Category</th>
-                        <td>{{ document.document_category }}</td>
-                    </tr>
-                </table>
+                <p><strong>Tracking No:</strong> {{ document.tracking_no }}</p>
+                <p><strong>Document Type:</strong> {{ document.document_type }}</p>
+                <p><strong>Document Properties:</strong> {{ document.document_properties }}</p>
+                <p><strong>Subject:</strong> {{ document.subject }}</p>
+                <p><strong>Date Released:</strong> {{ document.date_released.strftime('%B %d, %Y %I:%M %p') }}</p>
+                <p><strong>Receiving Office:</strong> {{ document.receiving_office }}</p>
+                <p><strong>Receiving Section:</strong> {{ document.receiving_section }}</p>
+                <p><strong>Status:</strong> {{ document.status }}</p>
+                <p><strong>Document Category:</strong> {{ document.document_category }}</p>
             </div>
+            <h2>View Attachment</h2>
+            <iframe src="{{ file_url }}" width="100%" height="600px"></iframe>
         </main>
         <footer>
             <button class="action-button" onclick="window.location.href='{{ url_for('index') }}'">Back</button>

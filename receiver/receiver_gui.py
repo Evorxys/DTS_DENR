@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from dotenv import load_dotenv
 import threading
 
@@ -35,6 +35,10 @@ def receive_file():
     file.save(file_path)
     update_file_list(file.filename)
     return jsonify({'message': 'File received successfully'}), 200
+
+@app.route('/file_server/<filename>')
+def serve_file(filename):
+    return send_from_directory(FILE_SERVER_FOLDER, filename)
 
 def start_flask_app():
     app.run(host='0.0.0.0', port=5000)
