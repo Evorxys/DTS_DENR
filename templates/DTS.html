@@ -148,6 +148,10 @@
         <div class="modal-content">
             <span class="close-modal" onclick="toggleNewDocumentModal()">✖</span>
             <form id="newDocumentForm" enctype="multipart/form-data">
+                <!-- Tracking Number Display -->
+                <div id="trackingNoDisplay" style="font-size: 18px; margin-bottom: 10px;">
+                    <strong>Tracking No:</strong> <span id="generatedTrackingNo"></span>
+                </div>
                 <label for="documentType">Document Type:</label>
                 <select id="documentType" name="documentType" required onchange="updateDocumentCategory()">
                     <option value="" disabled selected>Select Document Type</option>
@@ -192,7 +196,8 @@
                 <input type="hidden" id="section" name="section" value="{{ section_designation }}"> <!-- Ensure this field is included -->
                 
                 <!-- Add Upload Document button -->
-                <button type="button" onclick="uploadDocument()">Upload Document</button>
+                <label for="file">Upload Document:</label>
+                <input type="file" id="file" name="file" accept=".pdf,.doc,.docx,.txt">
                 
                 <button type="submit">Add Document</button>
             </form>

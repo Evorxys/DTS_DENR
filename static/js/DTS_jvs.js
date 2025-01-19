@@ -248,6 +248,17 @@ function toggleNewDocumentModal() {
     modal.classList.toggle('open');
     modal.classList.add('animate');
     setTimeout(() => modal.classList.remove('animate'), 500);
+
+    if (modal.classList.contains('open')) {
+        generateTrackingNo();
+    }
+}
+
+function generateTrackingNo() {
+    const currentYear = new Date().getFullYear();
+    const lastId = Math.floor(Math.random() * 100000); // Simulate last ID for demonstration
+    const trackingNo = `TN-${currentYear}-${lastId + 1}`;
+    document.getElementById('generatedTrackingNo').textContent = trackingNo;
 }
 
 function toggleSuccessDialog() {

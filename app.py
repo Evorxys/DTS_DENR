@@ -530,6 +530,28 @@ def add_document():
     # Send email notification to super users and receiving user
     send_document_added_email(username, user_gmail, section, sender_office, subject, document_category, tracking_no, receiving_office, receiving_section)
 
+    # Handle file upload
+    if 'file' in request.files:
+        file = request.files['file']
+        if file.filename != '':
+            # Rename the file
+            file_extension = os.path.splitext(file.filename)[1]
+            new_filename = f"{tracking_no}_{sender_office}_{sender_section}_{file_extension}"
+            file_path = os.path.join('uploads', new_filename)
+            file.save(file_path)
+
+            # Send the file directly to the receiver server
+            receiver_url = f"https://{os.getenv('LOCAL_SERVER_IP')}:{os.getenv('LOCAL_SERVER_PORT')}/receive"
+            headers = {'Authorization': f"Bearer {os.getenv('SECRET_KEY')}"}
+            files = {'file': (new_filename, open(file_path, 'rb'), file.content_type)}
+
+            try:
+                response = requests.post(receiver_url, headers=headers, files=files, verify=False)
+                if response.status_code != 200:
+                    return jsonify({'success': False, 'error': f"Failed to send file: {response.status_code}, {response.text}"}), 500
+            except requests.exceptions.RequestException as e:
+                return jsonify({'success': False, 'error': str(e)}), 500
+
     return {'success': True}
 
 @app.route('/document_details')
