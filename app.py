@@ -681,11 +681,10 @@ def upload_document():
 
     try:
         response = requests.post(receiver_url, headers=headers, files=files, verify=False)
-        response_data = response.json()
         if response.status_code == 200:
             return jsonify({'success': True, 'message': 'File uploaded and sent successfully'}), 200
         else:
-            return jsonify({'success': False, 'error': response_data.get('error', 'Failed to send file')}), response.status_code
+            return jsonify({'success': False, 'error': f"Failed to send file: {response.status_code}, {response.text}"}), 500
     except requests.exceptions.RequestException as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
