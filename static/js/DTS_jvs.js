@@ -161,6 +161,7 @@ setTimeout(() => {
 
 function checkSimpleDocumentTimers() {
     const rows = document.querySelectorAll('#documentTable tbody tr');
+    const expiredDocuments = [];
     rows.forEach(row => {
         const status = row.querySelector('td:nth-child(7)').textContent.trim();
         const category = row.querySelector('td:nth-child(8)').textContent.trim();
@@ -171,13 +172,18 @@ function checkSimpleDocumentTimers() {
 
         if ((status === 'Pending' || status === 'Processing') && category === 'Simple' && timeDiff > 1) { // 3 days
             const trackingNo = row.querySelector('td:nth-child(1)').textContent.trim();
-            showExpiredAlertModal(trackingNo);
+            expiredDocuments.push({ trackingNo, daysOverdue: Math.floor(timeDiff - 1) });
         }
     });
+
+    if (expiredDocuments.length > 0) {
+        showExpiredAlertModal(expiredDocuments);
+    }
 }
 
 function checkTechnicalDocumentTimers() {
     const rows = document.querySelectorAll('#documentTable tbody tr');
+    const expiredDocuments = [];
     rows.forEach(row => {
         const status = row.querySelector('td:nth-child(7)').textContent.trim();
         const category = row.querySelector('td:nth-child(8)').textContent.trim();
@@ -188,13 +194,18 @@ function checkTechnicalDocumentTimers() {
 
         if ((status === 'Pending' || status === 'Processing') && category === 'Technical' && timeDiff > 4) { // 7 days
             const trackingNo = row.querySelector('td:nth-child(1)').textContent.trim();
-            showExpiredAlertModal(trackingNo);
+            expiredDocuments.push({ trackingNo, daysOverdue: Math.floor(timeDiff - 4) });
         }
     });
+
+    if (expiredDocuments.length > 0) {
+        showExpiredAlertModal(expiredDocuments);
+    }
 }
 
 function checkHighlyTechnicalDocumentTimers() {
     const rows = document.querySelectorAll('#documentTable tbody tr');
+    const expiredDocuments = [];
     rows.forEach(row => {
         const status = row.querySelector('td:nth-child(7)').textContent.trim();
         const category = row.querySelector('td:nth-child(8)').textContent.trim();
@@ -205,9 +216,13 @@ function checkHighlyTechnicalDocumentTimers() {
 
         if ((status === 'Pending' || status === 'Processing') && category === 'Highly Technical' && timeDiff > 24) { // 30 days
             const trackingNo = row.querySelector('td:nth-child(1)').textContent.trim();
-            showExpiredAlertModal(trackingNo);
+            expiredDocuments.push({ trackingNo, daysOverdue: Math.floor(timeDiff - 24) });
         }
     });
+
+    if (expiredDocuments.length > 0) {
+        showExpiredAlertModal(expiredDocuments);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -215,14 +230,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const notificationsModal = document.getElementById('notificationsModal');
     notificationsModal.classList.remove('open');
 
-    checkSimpleDocumentTimers();
-    checkTechnicalDocumentTimers();
-    checkHighlyTechnicalDocumentTimers();
-    setInterval(() => {
+    const currentPage = window.location.pathname;
+    if (currentPage.includes('incoming_documents')) {
         checkSimpleDocumentTimers();
         checkTechnicalDocumentTimers();
         checkHighlyTechnicalDocumentTimers();
-    }, 300000); // Refresh every 30 seconds /5 mins
+        setInterval(() => {
+            checkSimpleDocumentTimers();
+            checkTechnicalDocumentTimers();
+            checkHighlyTechnicalDocumentTimers();
+        }, 300000); // Refresh every 300 seconds / 5 minutes
+    }
 });
 
 function toggleNewDocumentModal() {
@@ -261,36 +279,41 @@ document.getElementById('newDocumentForm').addEventListener('submit', function(e
     .catch(error => console.error('Error:', error));
 });
 
-function showExpiredAlertModal(trackingNo) {
+function showExpiredAlertModal(expiredDocuments) {
     const overlay = document.getElementById('expiredAlertOverlay');
     const notification = document.getElementById('expiredAlertModal');
-    const viewButton = document.getElementById('viewExpiredDocumentButton');
-    viewButton.setAttribute('onclick', `viewDocument('${trackingNo}')`);
+    const notificationContent = document.querySelector('.notification-content');
     overlay.classList.add('show');
     notification.classList.add('show');
-    notification.classList.add('animate');
-    setTimeout(() => notification.classList.remove('animate'), 500);
 
-    // Use the time on the top bar
-    const datetime = document.getElementById('datetime').textContent;
-    const notificationContent = document.querySelector('.notification-content');
+    let overdueMessage = '';
+    expiredDocuments.forEach(doc => {
+        overdueMessage += `<p>Tracking No: <span class="overdue-message">${doc.trackingNo}</span> - Overdue by ${doc.daysOverdue} day(s)</p>`;
+    });
+
     notificationContent.innerHTML = `
-        <p>You have a Simple Document that needs your attention!</p>
-        <p>Current Time: ${datetime}</p>
-        <button id="viewExpiredDocumentButton" onclick="viewExpiredDocument()">View Document</button>
+        <p>You have Documents that need your attention!</p>
+        <div class="scrollable-content">
+            ${overdueMessage}
+        </div>
+        <button id="viewExpiredDocumentsButton" onclick="viewExpiredDocuments()">View Documents</button>
     `;
 }
 
-function viewExpiredDocument() {
-    // Redirect to the document with expired timer
-    window.location.href = '/DTS.html'; // Adjust the URL as needed
-}
+function viewExpiredDocuments() {
+    const overlay = document.getElementById('expiredAlertOverlay');
+    const notification = document.getElementById('expiredAlertModal');
+    overlay.classList.remove('show');
+    notification.classList.remove('show');
 
-function toggleViewDocumentModal() {
-    const modal = document.getElementById('viewDocumentModal');
-    modal.classList.toggle('open');
-    modal.classList.add('animate');
-    setTimeout(() => modal.classList.remove('animate'), 500);
+    const expiredTrackingNos = Array.from(document.querySelectorAll('.overdue-message')).map(el => el.textContent.trim());
+    const rows = document.querySelectorAll('#documentTable tbody tr');
+    rows.forEach(row => {
+        const trackingNo = row.querySelector('td:nth-child(1)').textContent.trim();
+        if (expiredTrackingNos.includes(trackingNo)) {
+            row.style.backgroundColor = 'red';
+        }
+    });
 }
 
 function viewDocument(trackingNo) {
@@ -310,23 +333,40 @@ function viewDocument(trackingNo) {
                 <p><strong>Status:</strong> ${data.status}</p>
                 <p><strong>Document Category:</strong> ${data.document_category}</p>
             `;
-            toggleViewDocumentModal();
+            toggleViewDocumentModal(true);
             const notification = document.getElementById('expiredAlertModal');
+            const overlay = document.getElementById('expiredAlertOverlay');
             notification.classList.remove('show');
+            overlay.classList.remove('show');
 
-            // Show or hide the "Send To" and "Mark as Processed" buttons based on the page
+            // Show or hide the "Send To" and "Mark as Processed" buttons based on the page and user section
             const currentPage = window.location.pathname;
             const sendToButton = document.querySelector('.send-to-button');
             const markProcessedButton = document.querySelector('.mark-processed-button');
+            const userSection = document.querySelector('.username').textContent.split(' ')[0];
+
             if (currentPage.includes('incoming_documents') || currentPage.includes('on_process_documents')) {
                 sendToButton.style.display = 'inline-block';
-                markProcessedButton.style.display = 'inline-block';
+                if (userSection === 'RECORDS') {
+                    markProcessedButton.style.display = 'inline-block';
+                } else {
+                    markProcessedButton.style.display = 'none';
+                }
             } else {
                 sendToButton.style.display = 'none';
                 markProcessedButton.style.display = 'none';
             }
         })
         .catch(error => console.error('Error:', error));
+}
+
+function toggleViewDocumentModal(open) {
+    const modal = document.getElementById('viewDocumentModal');
+    if (open) {
+        modal.classList.add('open');
+    } else {
+        modal.classList.remove('open');
+    }
 }
 
 function updateDocumentStatus(trackingNo, status) {
@@ -518,6 +558,15 @@ function printSelectedDocument() {
     printWindow.document.write('th, td { border: 1px solid #000; padding: 8px; text-align: left; }');
     printWindow.document.write('th { background-color: #f2f2f2; }');
     printWindow.document.write('</style></head><body>');
+    printWindow.document.write('<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">');
+    printWindow.document.write('<img src="/uploads/denr_logo.png" alt="DENR Logo" style="height: 100px;">');
+    printWindow.document.write('<div style="text-align: center; flex-grow: 1;">');
+    printWindow.document.write('<p>Republic of the Philippines</p>');
+    printWindow.document.write('<p><strong>DEPARTMENT OF ENVIRONMENT AND NATURAL RESOURCES</strong></p>');
+    printWindow.document.write('<p>' + receivingOffice + ' OFFICE</p>');
+    printWindow.document.write('</div>');
+    printWindow.document.write('<img src="/uploads/newph_logo.png" alt="NewPH Logo" style="height: 100px;">');
+    printWindow.document.write('</div>');
     printWindow.document.write('<h2>Document Details</h2>');
     printWindow.document.write('<table>');
     printWindow.document.write('<tr><th>Tracking No</th><td>' + trackingNo + '</td></tr>');
@@ -619,27 +668,44 @@ function viewDocument(trackingNo) {
                 <p><strong>Subject:</strong> ${data.subject}</p>
                 <p><strong>Date Released:</strong> ${new Date(data.date_released).toLocaleString()}</p>
                 <p><strong>Receiving Office:</strong> ${data.receiving_office}</p>
+                <p><strong>Receiving Section:</strong> ${data.receiving_section}</p>
                 <p><strong>Status:</strong> ${data.status}</p>
                 <p><strong>Document Category:</strong> ${data.document_category}</p>
-                <p><strong>Receiving Section:</strong> ${data.receiving_section}</p> <!-- New field -->
             `;
-            toggleViewDocumentModal();
+            toggleViewDocumentModal(true);
             const notification = document.getElementById('expiredAlertModal');
+            const overlay = document.getElementById('expiredAlertOverlay');
             notification.classList.remove('show');
+            overlay.classList.remove('show');
 
-            // Show or hide the "Send To" and "Mark as Processed" buttons based on the page
+            // Show or hide the "Send To" and "Mark as Processed" buttons based on the page and user section
             const currentPage = window.location.pathname;
             const sendToButton = document.querySelector('.send-to-button');
             const markProcessedButton = document.querySelector('.mark-processed-button');
+            const userSection = document.querySelector('.username').textContent.split(' ')[0];
+
             if (currentPage.includes('incoming_documents') || currentPage.includes('on_process_documents')) {
                 sendToButton.style.display = 'inline-block';
-                markProcessedButton.style.display = 'inline-block';
+                if (userSection === 'RECORDS') {
+                    markProcessedButton.style.display = 'inline-block';
+                } else {
+                    markProcessedButton.style.display = 'none';
+                }
             } else {
                 sendToButton.style.display = 'none';
                 markProcessedButton.style.display = 'none';
             }
         })
         .catch(error => console.error('Error:', error));
+}
+
+function toggleViewDocumentModal(open) {
+    const modal = document.getElementById('viewDocumentModal');
+    if (open) {
+        modal.classList.add('open');
+    } else {
+        modal.classList.remove('open');
+    }
 }
 
 function uploadDocument() {
@@ -693,3 +759,30 @@ function markAsProcessed() {
     alert(`Document with Tracking No: ${trackingNo} marked as processed.`);
     toggleViewDocumentModal();
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Highlight the expired document if the highlight parameter is present in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const highlightTrackingNo = urlParams.get('highlight');
+    if (highlightTrackingNo) {
+        const rows = document.querySelectorAll('#documentTable tbody tr');
+        rows.forEach(row => {
+            const trackingNo = row.querySelector('td:nth-child(1)').textContent.trim();
+            if (trackingNo === highlightTrackingNo) {
+                row.style.backgroundColor = 'red';
+            }
+        });
+    }
+
+    // Add event listeners for double-click on rows
+    const rows = document.querySelectorAll('#documentTable tbody tr');
+    rows.forEach(row => {
+        row.addEventListener('dblclick', (event) => {
+            const trackingNo = row.querySelector('td:nth-child(1)').textContent.trim();
+            viewDocument(trackingNo);
+            event.stopPropagation(); // Prevent triggering other click events
+        });
+    });
+
+    // ...existing code...
+});

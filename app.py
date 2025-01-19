@@ -16,6 +16,10 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')  # Load secret key from .env file
+
+if not app.secret_key:
+    raise ValueError("SECRET_KEY is not set in the .env file.")
+
 serializer = URLSafeSerializer(app.secret_key)  # Initialize the URLSafeSerializer
 bcrypt = Bcrypt(app)  # Initialize Bcrypt
 
@@ -308,12 +312,13 @@ def create_account():
         name = request.form['name']
         position = request.form['position']
         section_designation = request.form['section']
+        office = request.form['office']  # Ensure this field is included
         username = request.form['username']
         encrypted_password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
         gmail = request.form['email']
         otp = request.form['otp']
         
-        if not name or not position or not section_designation or not username or not encrypted_password or not gmail or not otp:
+        if not name or not position or not section_designation or not office or not username or not encrypted_password or not gmail or not otp:
             return 'All fields are required', 400
         
         # Check if the username already exists
@@ -330,7 +335,7 @@ def create_account():
         
         try:
             # Create a new user
-            new_user = OtherUser(name=name, position=position, section_designation=section_designation, username=username, password=encrypted_password, gmail=gmail)
+            new_user = OtherUser(name=name, position=position, section_designation=section_designation, office=office, username=username, password=encrypted_password, gmail=gmail)
             db.session.add(new_user)
             db.session.commit()
             send_account_creation_email(gmail)  # Send account creation email
@@ -418,15 +423,20 @@ def all_documents():
 
     user = OtherUser.query.filter_by(username=username).first()
     if user:
-        section_designation = user.section_designation
         office = user.office
+        section_designation = user.section_designation
     else:
-        section_designation = "Unknown"
-        office = "Unknown"
-    
-    documents = Document.query.all()
+        return 'User not found', 404
+
+    documents = Document.query.filter_by(receiving_office=office).all()
+    if documents is None:
+        documents = []
     document_types = DocumentCategory.query.with_entities(DocumentCategory.document_type).distinct().all()
+    if document_types is None:
+        document_types = []
     offices = Office.query.all()  # Fetch all offices
+    if offices is None:
+        offices = []
     current_datetime = datetime.now().strftime('%B %d, %Y %I:%M %p')
     return render_template('DTS.html', section_designation=section_designation, office=office, documents=documents, document_types=document_types, offices=offices)
 
@@ -597,6 +607,8 @@ def update_receiving_office_and_section():
 def get_receiving_sections():
     office = request.args.get('office')
     sections = Document.query.with_entities(Document.receiving_section).filter_by(receiving_office=office).distinct().all()
+    if sections is None:
+        sections = []
     return [{'section_designation': section.receiving_section} for section in sections]
 
 @app.route('/check_username', methods=['POST'])
@@ -654,6 +666,8 @@ def delete_office(id):
 def get_document_categories():
     document_type = request.args.get('document_type')
     categories = DocumentCategory.query.filter_by(document_type=document_type).all()
+    if categories is None:
+        categories = []
     return [{'Level_of_Priority': category.level_of_priority} for category in categories]
 
 @app.route('/viewFile.html/<tracking_no>')

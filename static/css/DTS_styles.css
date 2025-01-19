@@ -1006,8 +1006,9 @@ html::before {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #ffcc00;
-    color: #333;
+    background-color: rgb(212, 212, 212);
+    color: rgb(0, 0, 0);
+    border: 5px solid rgb(185, 0, 0);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -1027,15 +1028,34 @@ html::before {
 .expired-alert-modal button {
     margin-top: 10px;
     padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
+    background-color: rgb(255, 0, 0);
+    color: black;
+    border: 2px solid black;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .expired-alert-modal button:hover {
-    background-color: #0056b3;
+    background-color: #bb0000;
+}
+
+.expired-alert-modal .overdue-message {
+    color: red;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.expired-alert-modal .scrollable-content {
+    max-height: 200px; /* Adjust the height as needed */
+    overflow-y: auto;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 .view-document-modal {
