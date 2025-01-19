@@ -668,10 +668,12 @@ def view_file(tracking_no):
 @app.route('/upload_document', methods=['POST'])
 def upload_document():
     if 'file' not in request.files:
+        print("No file part in request")  # Debug print statement
         return jsonify({'success': False, 'error': 'No file part'}), 400
 
     file = request.files['file']
     if file.filename == '':
+        print("No selected file")  # Debug print statement
         return jsonify({'success': False, 'error': 'No selected file'}), 400
 
     # Send the file directly to the receiver server
@@ -680,12 +682,16 @@ def upload_document():
     files = {'file': (file.filename, file.stream, file.content_type)}
 
     try:
+        print(f"Sending file to {receiver_url} with headers {headers}")  # Debug print statement
         response = requests.post(receiver_url, headers=headers, files=files, verify=False)
         if response.status_code == 200:
+            print("File uploaded and sent successfully")  # Debug print statement
             return jsonify({'success': True, 'message': 'File uploaded and sent successfully'}), 200
         else:
+            print(f"Failed to send file: {response.status_code}, {response.text}")  # Debug print statement
             return jsonify({'success': False, 'error': f"Failed to send file: {response.status_code}, {response.text}"}), 500
     except requests.exceptions.RequestException as e:
+        print(f"RequestException: {str(e)}")  # Debug print statement
         return jsonify({'success': False, 'error': str(e)}), 500
 
 if __name__ == '__main__':
