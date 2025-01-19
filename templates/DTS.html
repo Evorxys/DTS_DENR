@@ -190,6 +190,10 @@
                 <input type="hidden" id="senderSection" name="senderSection" value="{{ section_designation }}">
                 <input type="hidden" id="username" name="username" value="{{ request.args.get('username') }}"> <!-- Ensure this field is included -->
                 <input type="hidden" id="section" name="section" value="{{ section_designation }}"> <!-- Ensure this field is included -->
+                
+                <!-- Add Upload Document button -->
+                <button type="button" onclick="uploadDocument()">Upload Document</button>
+                
                 <button type="submit">Add Document</button>
             </form>
         </div>

@@ -709,7 +709,31 @@ function toggleViewDocumentModal(open) {
 }
 
 function uploadDocument() {
-    alert('Upload Document functionality is not implemented yet.');
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.pdf,.doc,.docx,.txt'; // Acceptable file types
+    fileInput.onchange = () => {
+        const file = fileInput.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload_document', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Document uploaded successfully');
+                } else {
+                    alert('Failed to upload document');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    };
+    fileInput.click();
 }
 
 function handleFileUpload() {
