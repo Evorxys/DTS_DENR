@@ -270,6 +270,8 @@ function toggleSuccessDialog() {
 
 document.getElementById('newDocumentForm').addEventListener('submit', function(event) {
     event.preventDefault();
+    const submitButton = this.querySelector('button[type="submit"]');
+    submitButton.disabled = true; // Disable the button
     const formData = new FormData(this);
     fetch('/add_document', {
         method: 'POST',
@@ -285,9 +287,13 @@ document.getElementById('newDocumentForm').addEventListener('submit', function(e
             }, 2000);
         } else {
             alert('Failed to add document');
+            submitButton.disabled = false; // Re-enable the button if there's an error
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        console.error('Error:', error);
+        submitButton.disabled = false; // Re-enable the button if there's an error
+    });
 });
 
 function showExpiredAlertModal(expiredDocuments) {

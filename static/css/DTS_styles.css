@@ -918,10 +918,15 @@ html::before {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .new-document-modal form button:hover {
-    background-color: #0056b3;
+    background-color: #00b34b;
+}
+
+.new-document-modal form button:active {
+    background-color: #800000; /* Change color when clicked */
 }
 
 .new-document-modal form select {
