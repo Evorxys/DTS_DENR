@@ -55,4 +55,52 @@ footer button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+footer button:hover {
+    background-color: #0056b3;
+}
+
+footer button:active {
+    background-color: #004080;
+}
+
+footer button:focus {
+    outline: none;
+    box-shadow: 0 0 5px #007BFF;
+}
+
+#qrcode {
+    margin-bottom: 10px;
+}
+
+#shareQRCodeButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+#shareQRCodeButton:hover {
+    background-color: #218838;
+}
+
+#shareQRCodeButton:active {
+    background-color: #1e7e34;
+}
+
+#shareQRCodeButton:focus {
+    outline: none;
+    box-shadow: 0 0 5px #28a745;
 }

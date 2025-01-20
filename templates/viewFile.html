@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/static/css/viewFile.css">
     <title>View Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -13,6 +14,8 @@
         </header>
         <main>
             <div class="file-details">
+                <div id="qrcode" style="margin-bottom: 10px;"></div>
+                <button id="shareQRCodeButton" onclick="shareQRCode()">Share QR Code</button>
                 <p><strong>Tracking No:</strong> {{ document.tracking_no }}</p>
                 <p><strong>Document Type:</strong> {{ document.document_type }}</p>
                 <p><strong>Document Properties:</strong> {{ document.document_properties }}</p>
@@ -24,11 +27,48 @@
                 <p><strong>Document Category:</strong> {{ document.document_category }}</p>
             </div>
             <h2>View Attachment</h2>
-            <iframe src="{{ file_url }}" width="100%" height="600px"></iframe>
+            <iframe id="documentViewer" src="{{ file_url }}" width="100%" height="600px"></iframe>
         </main>
         <footer>
             <button class="action-button" onclick="window.location.href='{{ url_for('index') }}'">Back</button>
+            <button class="action-button" onclick="copyLink()">Copy Link</button>
         </footer>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const documentViewer = document.getElementById('documentViewer');
+            documentViewer.style.display = 'block';
+
+            const url = window.location.href;
+            new QRCode(document.getElementById("qrcode"), {
+                text: url,
+                width: 128,
+                height: 128
+            });
+        });
+
+        function copyLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link copied to clipboard');
+            }).catch(err => {
+                console.error('Error copying link: ', err);
+            });
+        }
+
+        function shareQRCode() {
+            const qrCodeElement = document.getElementById('qrcode').querySelector('img');
+            if (qrCodeElement) {
+                const qrCodeUrl = qrCodeElement.src;
+                navigator.clipboard.writeText(qrCodeUrl).then(() => {
+                    alert('QR Code URL copied to clipboard');
+                }).catch(err => {
+                    console.error('Error copying QR Code URL: ', err);
+                });
+            } else {
+                alert('QR Code not found');
+            }
+        }
+    </script>
 </body>
 </html>

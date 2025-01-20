@@ -20,7 +20,7 @@ SECURE_KEY = os.getenv('SECURE_KEY')
 # Home route
 @app.route('/')
 def index():
-    return render_template('upload.html')
+    return render_template('upload.html') 
 
 # File upload route
 @app.route('/upload', methods=['POST'])

@@ -183,8 +183,11 @@ def send_document_added_email(user, user_gmail, section, office, document_subjec
                 <th>Receiver Email</th>
                 <td>{receiving_user_email}</td>
             </tr>
+            <tr style="background-color: #f0f0f0; font-size: 18px;">
+                <th>Link</th>
+                <td><a href="{view_file_url}" style="font-size: 18px;">View Document</a></td>
+            </tr>
         </table>
-        <p>View the document details <a href="{view_file_url}">here</a>.</p>
     </body>
     </html>
     """
