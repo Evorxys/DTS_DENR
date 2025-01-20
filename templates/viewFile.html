@@ -28,6 +28,7 @@
             </div>
             <h2>View Attachment</h2>
             <iframe id="documentViewer" src="{{ file_url }}" width="100%" height="600px"></iframe>
+            <button id="reloadButton" class="action-button" style="display: none;" onclick="reloadDocument()">Reload Document</button>
         </main>
         <footer>
             <button class="action-button" onclick="window.location.href='{{ url_for('index') }}'">Back</button>
@@ -45,6 +46,12 @@
                 width: 128,
                 height: 128
             });
+
+            documentViewer.onerror = function() {
+                documentViewer.style.display = 'none';
+                document.getElementById('reloadButton').style.display = 'block';
+                alert('Failed to load document. Please try reloading.');
+            };
         });
 
         function copyLink() {
@@ -60,14 +67,31 @@
             const qrCodeElement = document.getElementById('qrcode').querySelector('img');
             if (qrCodeElement) {
                 const qrCodeUrl = qrCodeElement.src;
-                navigator.clipboard.writeText(qrCodeUrl).then(() => {
-                    alert('QR Code URL copied to clipboard');
-                }).catch(err => {
-                    console.error('Error copying QR Code URL: ', err);
-                });
+                const shareData = {
+                    title: 'QR Code',
+                    text: 'Scan this QR code to view the document.',
+                    files: [new File([qrCodeUrl], 'qrcode.png', { type: 'image/png' })]
+                };
+
+                if (navigator.canShare && navigator.canShare(shareData)) {
+                    navigator.share(shareData).then(() => {
+                        console.log('QR Code shared successfully');
+                    }).catch(err => {
+                        console.error('Error sharing QR Code: ', err);
+                    });
+                } else {
+                    alert('Sharing not supported in this browser.');
+                }
             } else {
                 alert('QR Code not found');
             }
+        }
+
+        function reloadDocument() {
+            const documentViewer = document.getElementById('documentViewer');
+            documentViewer.src = documentViewer.src;
+            documentViewer.style.display = 'block';
+            document.getElementById('reloadButton').style.display = 'none';
         }
     </script>
 </body>
