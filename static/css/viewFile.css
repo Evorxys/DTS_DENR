@@ -104,3 +104,28 @@ footer button:focus {
     outline: none;
     box-shadow: 0 0 5px #28a745;
 }
+
+#copyLinkButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+#copyLinkButton:hover {
+    background-color: #138496;
+}
+
+#copyLinkButton:active {
+    background-color: #117a8b;
+}
+
+#copyLinkButton:focus {
+    outline: none;
+    box-shadow: 0 0 5px #17a2b8;
+}

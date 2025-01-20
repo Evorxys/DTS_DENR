@@ -16,6 +16,7 @@
             <div class="file-details">
                 <div id="qrcode" style="margin-bottom: 10px;"></div>
                 <button id="shareQRCodeButton" onclick="shareQRCode()">Share QR Code</button>
+                <button id="copyLinkButton" onclick="copyLink()">Copy Link</button>
                 <p><strong>Tracking No:</strong> {{ document.tracking_no }}</p>
                 <p><strong>Document Type:</strong> {{ document.document_type }}</p>
                 <p><strong>Document Properties:</strong> {{ document.document_properties }}</p>
@@ -27,12 +28,13 @@
                 <p><strong>Document Category:</strong> {{ document.document_category }}</p>
             </div>
             <h2>View Attachment</h2>
-            <iframe id="documentViewer" src="{{ file_url }}" width="100%" height="600px"></iframe>
+            <iframe id="documentViewer" src="{{ file_url }}" width="100%" height="600px" onerror="handleIframeError()"></iframe>
+            <div id="errorMessage" style="display: none; color: red; text-align: center;">Failed to load document. Please try reloading.</div>
             <button id="reloadButton" class="action-button" style="display: none;" onclick="reloadDocument()">Reload Document</button>
+            <button id="viewAttachmentButton" class="action-button" onclick="viewAttachment('{{ document.tracking_no }}')">View Attachment</button>
         </main>
         <footer>
             <button class="action-button" onclick="window.location.href='{{ url_for('index') }}'">Back</button>
-            <button class="action-button" onclick="copyLink()">Copy Link</button>
         </footer>
     </div>
     <script>
@@ -48,9 +50,7 @@
             });
 
             documentViewer.onerror = function() {
-                documentViewer.style.display = 'none';
-                document.getElementById('reloadButton').style.display = 'block';
-                alert('Failed to load document. Please try reloading.');
+                handleIframeError();
             };
         });
 
@@ -92,6 +92,29 @@
             documentViewer.src = documentViewer.src;
             documentViewer.style.display = 'block';
             document.getElementById('reloadButton').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function handleIframeError() {
+            const documentViewer = document.getElementById('documentViewer');
+            documentViewer.style.display = 'none';
+            document.getElementById('reloadButton').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'block';
+        }
+
+        function viewAttachment(trackingNo) {
+            fetch(`/document_details?tracking_no=${trackingNo}`)
+                .then(response => response.json())
+                .then(data => {
+                    const documentViewer = document.getElementById('documentViewer');
+                    const fileExtension = '.pdf'; // Adjust the file extension as needed
+                    const formattedOffice = data.sender_office.replace(/\s+/g, '_');
+                    const formattedSection = data.sender_section.replace(/\s+/g, '_');
+                    const filename = `${trackingNo}_${formattedOffice}_${formattedSection}${fileExtension}`;
+                    documentViewer.src = `http://localhost:5000/file_server/${filename}`;
+                    documentViewer.style.display = 'block';
+                })
+                .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
