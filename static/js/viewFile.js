@@ -12,6 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
     documentViewer.onerror = function() {
         handleIframeError();
     };
+
+    // Change button text for Android devices
+    if (/Android/i.test(navigator.userAgent)) {
+        const viewAttachmentButton = document.getElementById('viewAttachmentButton');
+        viewAttachmentButton.textContent = 'Download Document';
+    }
 });
 
 function copyLink() {
@@ -71,7 +77,19 @@ function viewAttachment(trackingNo) {
             const formattedSection = data.sender_section.replace(/\s+/g, '_');
             const filename = `${trackingNo}_${formattedOffice}_${formattedSection}${fileExtension}`;
             const fileUrl = `http://localhost:5000/file_server/${filename}`;
-            window.open(fileUrl, '_blank');
+            
+            if (/Android/i.test(navigator.userAgent)) {
+                // Download the file for Android devices
+                const link = document.createElement('a');
+                link.href = fileUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                // Open the file in a new tab for other devices
+                window.open(fileUrl, '_blank');
+            }
         })
         .catch(error => console.error('Error:', error));
 }
