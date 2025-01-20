@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
         handleIframeError();
     };
 
-    // Change button text for Android devices
-    if (/Android/i.test(navigator.userAgent)) {
+    // Change button text for small width devices
+    if (window.innerWidth <= 768) {
         const viewAttachmentButton = document.getElementById('viewAttachmentButton');
         viewAttachmentButton.textContent = 'Download Document';
     }
@@ -78,8 +78,8 @@ function viewAttachment(trackingNo) {
             const filename = `${trackingNo}_${formattedOffice}_${formattedSection}${fileExtension}`;
             const fileUrl = `http://localhost:5000/file_server/${filename}`;
             
-            if (/Android/i.test(navigator.userAgent)) {
-                // Download the file for Android devices
+            if (window.innerWidth <= 768) {
+                // Download the file for small width devices
                 const link = document.createElement('a');
                 link.href = fileUrl;
                 link.download = filename;
