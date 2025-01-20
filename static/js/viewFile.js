@@ -66,27 +66,12 @@ function viewAttachment(trackingNo) {
     fetch(`/document_details?tracking_no=${trackingNo}`)
         .then(response => response.json())
         .then(data => {
-            const documentViewer = document.getElementById('documentViewer');
             const fileExtension = '.pdf'; // Adjust the file extension as needed
             const formattedOffice = data.sender_office.replace(/\s+/g, '_');
             const formattedSection = data.sender_section.replace(/\s+/g, '_');
             const filename = `${trackingNo}_${formattedOffice}_${formattedSection}${fileExtension}`;
             const fileUrl = `http://localhost:5000/file_server/${filename}`;
-            
-            // Open the file in a new tab for Android devices
-            if (/Android/i.test(navigator.userAgent)) {
-                window.open(fileUrl, '_blank');
-            } else {
-                documentViewer.src = fileUrl;
-                documentViewer.style.display = 'block';
-                documentViewer.style.position = 'fixed';
-                documentViewer.style.top = '0';
-                documentViewer.style.left = '0';
-                documentViewer.style.width = '100%';
-                documentViewer.style.height = '90%';
-                documentViewer.style.zIndex = '1000';
-                document.getElementById('closeViewerButton').style.display = 'block';
-            }
+            window.open(fileUrl, '_blank');
         })
         .catch(error => console.error('Error:', error));
 }
