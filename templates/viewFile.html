@@ -111,8 +111,21 @@
                     const formattedOffice = data.sender_office.replace(/\s+/g, '_');
                     const formattedSection = data.sender_section.replace(/\s+/g, '_');
                     const filename = `${trackingNo}_${formattedOffice}_${formattedSection}${fileExtension}`;
-                    documentViewer.src = `http://localhost:5000/file_server/${filename}`;
-                    documentViewer.style.display = 'block';
+                    const fileUrl = `http://localhost:5000/file_server/${filename}`;
+                    
+                    // Open the file in a new tab for smaller screen devices
+                    if (window.innerWidth <= 768) {
+                        window.open(fileUrl, '_blank');
+                    } else {
+                        documentViewer.src = fileUrl;
+                        documentViewer.style.display = 'block';
+                        documentViewer.style.position = 'fixed';
+                        documentViewer.style.top = '0';
+                        documentViewer.style.left = '0';
+                        documentViewer.style.width = '100%';
+                        documentViewer.style.height = '100%';
+                        documentViewer.style.zIndex = '1000';
+                    }
                 })
                 .catch(error => console.error('Error:', error));
         }
