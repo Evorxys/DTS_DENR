@@ -544,15 +544,19 @@ def add_document():
             file.save(file_path)
 
             # Send the file directly to the receiver server
-            receiver_url = f"https://{os.getenv('LOCAL_SERVER_IP')}:{os.getenv('LOCAL_SERVER_PORT')}/receive"
+            receiver_url = f"http://{os.getenv('LOCAL_SERVER_IP')}:{os.getenv('LOCAL_SERVER_PORT')}/receive"  # Use http for localhost
             headers = {'Authorization': f"Bearer {os.getenv('SECRET_KEY')}"}
             files = {'file': (new_filename, open(file_path, 'rb'), file.content_type)}
 
             try:
+                print(f"Sending file to {receiver_url} with headers {headers}")  # Debug print statement
                 response = requests.post(receiver_url, headers=headers, files=files, verify=False)
                 if response.status_code != 200:
+                    print(f"Failed to send file: {response.status_code}, {response.text}")  # Debug print statement
                     return jsonify({'success': False, 'error': f"Failed to send file: {response.status_code}, {response.text}"}), 500
+                print("File uploaded and sent successfully")  # Debug print statement
             except requests.exceptions.RequestException as e:
+                print(f"RequestException: {str(e)}")  # Debug print statement
                 return jsonify({'success': False, 'error': str(e)}), 500
 
     return {'success': True}

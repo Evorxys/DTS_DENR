@@ -286,12 +286,13 @@ document.getElementById('newDocumentForm').addEventListener('submit', function(e
                 location.reload();
             }, 2000);
         } else {
-            alert('Failed to add document');
+            alert('Failed to add document. Please try again.');
             submitButton.disabled = false; // Re-enable the button if there's an error
         }
     })
     .catch(error => {
         console.error('Error:', error);
+        alert('Failed to add document. Please try again.');
         submitButton.disabled = false; // Re-enable the button if there's an error
     });
 });
@@ -598,7 +599,13 @@ function printSelectedDocument() {
     printWindow.document.write('</table>');
     printWindow.document.write('</body></html>');
     printWindow.document.close();
-    printWindow.print();
+
+    // Wait for the document to load before showing the print dialog
+    printWindow.onload = function() {
+        setTimeout(() => {
+            printWindow.print();
+        }, 500); // 500ms delay
+    };
 }
 
 function toggleProfileModal() {
